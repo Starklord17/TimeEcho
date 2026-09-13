@@ -21,7 +21,7 @@ export function GameOverlay() {
           TIME <span>ECHO</span>
           <span className="brand-dot" />
         </a>
-        <span className="phase">TEMPORAL INTERACTION / 004</span>
+        <span className="phase">TEMPORAL LAB / 005</span>
       </header>
       <div className="room-label">
         <span className="eyebrow">TEMPORAL LAB</span>
@@ -59,7 +59,7 @@ export function GameOverlay() {
         className={`welcome ${active ? 'is-hidden' : ''}`}
         aria-hidden={active}
       >
-        <p className="eyebrow">PHASE 4 — FIRST TEMPORAL INTERACTION</p>
+        <p className="eyebrow">PHASE 5 — PUZZLE POLISH</p>
         <h1>
           {completed ? 'Puzzle completado.' : 'Tu pasado abre el camino.'}
         </h1>
@@ -72,8 +72,18 @@ export function GameOverlay() {
           {ready ? 'Entrar / continuar' : 'Preparando la escena…'}
           <span aria-hidden="true">↗</span>
         </button>
+        {!completed && ready && (
+          <button
+            className="secondary-action"
+            onClick={() => useGameStore.getState().resetSession()}
+          >
+            Reiniciar partida
+          </button>
+        )}
         {completed && (
-          <button onClick={() => location.reload()}>Volver a jugar</button>
+          <button onClick={() => useGameStore.getState().resetSession()}>
+            Volver a jugar
+          </button>
         )}
         <p className="hint">
           Click para capturar el mouse · Escape para liberarlo
@@ -91,7 +101,20 @@ export function GameOverlay() {
         )}
         {error && <p role="alert">{error}</p>}
       </section>
-      {active && <div className="crosshair" aria-hidden="true" />}
+      {active && (
+        <>
+          <div className="crosshair" aria-hidden="true" />
+          <div className="objective" role="status">
+            {plateEcho
+              ? 'Tu echo sostiene la placa. Cruzá la puerta y alcanzá la salida.'
+              : platePlayer
+                ? 'Placa activada. Presioná R para dejarle este lugar a tu echo.'
+                : lastRun
+                  ? 'Esperá a tu echo o grabá un recorrido nuevo sobre la placa.'
+                  : 'Buscá la placa amarilla a tu izquierda.'}
+          </div>
+        </>
+      )}
       <footer>
         <div className="controls">
           <span>

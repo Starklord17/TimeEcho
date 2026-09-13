@@ -1,4 +1,7 @@
-import { useEffect, type RefObject } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { Html } from '@react-three/drei'
+import type { Mesh } from 'three'
+import { useEffect, useRef, type RefObject } from 'react'
 import { useRapier } from '@react-three/rapier'
 import { useGameStore } from '../state/gameStore'
 import {
@@ -14,6 +17,7 @@ export function TemporalPuzzle({
 }: {
   runtimeRef: RefObject<PuzzleController | null>
 }) {
+  const doorMesh = useRef<Mesh>(null)
   const { world, rapier } = useRapier()
   const open = useGameStore((state) => state.doorOpen)
   const pressed = useGameStore((state) => state.platePlayer || state.plateEcho)
@@ -25,15 +29,51 @@ export function TemporalPuzzle({
       puzzle.dispose(world)
     }
   }, [world, rapier, runtimeRef])
+  useFrame(() => {
+    if (doorMesh.current && runtimeRef.current)
+      doorMesh.current.position.y = DOOR.y + runtimeRef.current.doorLift
+  })
   return (
     <group>
+      <Html
+        position={[PLATE.x, 0.65, PLATE.z]}
+        center
+        occlude
+        style={{ pointerEvents: 'none' }}
+      >
+        <div className="world-label">
+          <b>01 · PLACA</b>
+          <span>{pressed ? 'ACTIVADA' : 'PISÁ Y GRABÁ CON R'}</span>
+        </div>
+      </Html>
+      <Html
+        position={[DOOR.x, 2.8, DOOR.z + 0.22]}
+        center
+        occlude
+        style={{ pointerEvents: 'none' }}
+      >
+        <div className="world-label">
+          <b>02 · PUERTA</b>
+          <span>{open ? 'PASÁ HACIA LA SALIDA' : 'TU ECHO PUEDE ABRIRLA'}</span>
+        </div>
+      </Html>
+      <Html
+        position={[EXIT.x, 1.2, EXIT.z]}
+        center
+        occlude
+        style={{ pointerEvents: 'none' }}
+      >
+        <div className="world-label">
+          <b>03 · SALIDA</b>
+        </div>
+      </Html>
       {DIVIDER_BOXES.map((wall, index) => (
         <mesh key={index} position={[...wall.position]}>
           <boxGeometry args={[...wall.size]} />
           <meshStandardMaterial color="#586c70" />
         </mesh>
       ))}
-      <mesh position={[DOOR.x, DOOR.y, DOOR.z]} visible={!open}>
+      <mesh ref={doorMesh} position={[DOOR.x, DOOR.y, DOOR.z]}>
         <boxGeometry args={[2.4, 3.6, 0.3]} />
         <meshStandardMaterial color="#ba865a" />
       </mesh>

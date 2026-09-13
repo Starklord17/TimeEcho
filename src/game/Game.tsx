@@ -1,8 +1,10 @@
+import { useGameStore } from '../state/gameStore'
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { GameScene } from './GameScene'
 
 export function Game() {
+  const sessionId = useGameStore((state) => state.sessionId)
   return (
     <div className="game-viewport">
       <Canvas
@@ -16,7 +18,7 @@ export function Game() {
         }
       >
         <Suspense fallback={null}>
-          <GameScene />
+          <GameScene key={sessionId} />
         </Suspense>
       </Canvas>
     </div>

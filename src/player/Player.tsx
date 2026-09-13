@@ -41,6 +41,8 @@ export function Player({
   const { camera, gl } = useThree()
 
   useEffect(() => {
+    camera.quaternion.identity()
+    camera.position.set(SPAWN[0], SPAWN[1] + PLAYER.eyeOffset, SPAWN[2])
     const movement = new PlayerController(
       world,
       rapier.QueryFilterFlags.EXCLUDE_SENSORS,
@@ -70,6 +72,7 @@ export function Player({
     teleported.current = true
     recorder.begin(loop.cycle, body.current.translation(), camera.quaternion)
     recordingStarted.current = true
+    puzzle.current?.reset()
     puzzle.current?.update(
       body.current.translation(),
       useGameStore.getState().lastRun,

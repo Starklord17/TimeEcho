@@ -296,3 +296,45 @@ kbd {
 .welcome.is-hidden {
   pointer-events: none;
 }
+
+.world-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 155px;
+  padding: 9px 12px;
+  border: 1px solid #bfe8d366;
+  border-radius: 3px;
+  background: #102023df;
+  color: #e8fff1;
+  text-align: center;
+  font: 10px monospace;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.world-label span {
+  font-size: 8px;
+  color: #c6decf;
+}
+.objective {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 44px);
+  padding: 12px 18px;
+  border: 1px solid #aec9bf35;
+  background: #122024e8;
+  color: #e1f1e6;
+  font-size: 12px;
+  text-align: center;
+}
+button.secondary-action {
+  background: transparent;
+  color: #c4ecce;
+  border: 1px solid #aec9bf60;
+  margin-top: 12px;
+}
+.welcome {
+  width: 500px;
+}

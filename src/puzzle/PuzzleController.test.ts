@@ -129,3 +129,18 @@ it('keeps an occupied doorway open until the player clears it', () => {
   puzzle.update({ x: 0, y: 0.91, z: -4 }, null, 0)
   expect(puzzle.doorOpen).toBe(false)
 })
+
+it('animates the door progressively and resets its physical pose', () => {
+  const { puzzle, move, body } = setup()
+  const spawn = { x: 0, y: 0.92, z: 4 }
+  puzzle.update(spawn, plateRun(), 0)
+  expect(puzzle.doorLift).toBeGreaterThan(0)
+  expect(puzzle.doorLift).toBeLessThan(3.8)
+  for (let i = 0; i < 24; i++) puzzle.update(spawn, plateRun(), 0)
+  expect(puzzle.doorLift).toBe(3.8)
+  puzzle.reset()
+  expect(puzzle.doorLift).toBe(0)
+  expect(puzzle.doorOpen).toBe(false)
+  move(0, 1, 300)
+  expect(body.translation().z).toBeGreaterThan(-2.56)
+})

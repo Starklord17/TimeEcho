@@ -2,10 +2,12 @@ import type { RapierContext, RapierCollider } from '@react-three/rapier'
 import { Quaternion, Vector3 } from 'three'
 import { ReplaySampler } from '../echo/ReplaySampler'
 import type { RecordedRun } from '../recording/Recorder'
-import { PLAYER } from '../player/PlayerController'
+import { PHYSICS_STEP, PLAYER } from '../player/PlayerController'
 
 export const PLATE = { x: -4, y: 0.15, z: 2 }
 export const DOOR = { x: 0, y: 1.8, z: -3 }
+export const DOOR_TRAVEL = 3.8
+export const DOOR_DURATION = 0.4
 export const EXIT = { x: 0, y: 0.6, z: -5.8 }
 export const DIVIDER_BOXES = [
   { position: [-3.6, 1.8, -3] as const, size: [4.8, 3.6, 0.3] as const },
@@ -18,6 +20,7 @@ export class PuzzleController {
   private colliders: RapierCollider[] = []
   private plate: RapierCollider
   private door: RapierCollider
+  private doorway: RapierCollider
   private exit: RapierCollider
   private capsule: InstanceType<RapierContext['rapier']['Capsule']>
   private sampler = new ReplaySampler()
@@ -27,6 +30,7 @@ export class PuzzleController {
   platePlayer = false
   plateEcho = false
   doorOpen = false
+  doorLift = 0
 
   constructor(world: RapierContext['world'], rapier: RapierContext['rapier']) {
     const box = (
@@ -50,6 +54,7 @@ export class PuzzleController {
       })
     this.plate = box([1.8, 0.3, 1.8], PLATE, true)
     this.door = box([2.4, 3.6, 0.3], DOOR)
+    this.doorway = box([2.4, 3.6, 0.9], DOOR, true)
     this.exit = box([2, 1.2, 1.4], EXIT, true)
     this.capsule = new rapier.Capsule(PLAYER.halfHeight, PLAYER.radius)
   }
@@ -67,9 +72,27 @@ export class PuzzleController {
     // Never close through a player who is already crossing the doorway.
     const crossing =
       this.doorOpen &&
-      this.door.intersectsShape(this.capsule, player, this.upright)
+      this.doorway.intersectsShape(this.capsule, player, this.upright)
     this.doorOpen = this.platePlayer || this.plateEcho || crossing
-    this.door.setEnabled(!this.doorOpen)
+    const travel = (DOOR_TRAVEL * PHYSICS_STEP) / DOOR_DURATION
+    this.doorLift = this.doorOpen
+      ? Math.min(DOOR_TRAVEL, this.doorLift + travel)
+      : Math.max(0, this.doorLift - travel)
+    this.door.setTranslation({
+      x: DOOR.x,
+      y: DOOR.y + this.doorLift,
+      z: DOOR.z,
+    })
+    this.door.setEnabled(this.doorLift < DOOR_TRAVEL)
+  }
+
+  reset() {
+    this.doorOpen = false
+    this.doorLift = 0
+    this.platePlayer = false
+    this.plateEcho = false
+    this.door.setTranslation(DOOR)
+    this.door.setEnabled(true)
   }
 
   reachedExit(player: Position) {

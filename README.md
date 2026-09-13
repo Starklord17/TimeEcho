@@ -1,6 +1,6 @@
 # Time Echo
 
-**Phase 4 — First Temporal Interaction.** Primer puzzle temporal jugable:
+**Phase 5 — Puzzle Polish.** Primer puzzle temporal jugable:
 una placa activada por jugador o echo abre una puerta para alcanzar la salida.
 Mantiene controles FPS, recording, replay y ciclos de 15 segundos.
 
@@ -63,7 +63,7 @@ pnpm build
 pnpm preview
 ```
 
-43 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
+45 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
 drift regreso al spawn y grabación de colisiones con Rapier real. Tipos, lint, formato y build verificados.
 En navegador se comprobó avance automático, restart con R y pausa con Escape.
 
@@ -110,7 +110,7 @@ En el spawn puede superponerse con el jugador: alejarse permite verlo.
 2. Permanecer allí hasta terminar el ciclo o presionar R sobre ella.
 3. En el siguiente ciclo dejar que el echo llegue a la placa: la puerta central se abre.
 4. Cruzar hacia la zona celeste del fondo. Aparece Puzzle completado.
-5. Volver a jugar reinicia la sesión completa.
+5. Volver a jugar reinicia la sesión completa sin recargar la página.
 
 La placa permanece activa con cualquiera de los dos actores. La puerta no se
 cierra mientras el jugador ocupa el vano. El echo no puede ganar por sí solo.
@@ -118,4 +118,12 @@ El ciclo ganador se congela al completar; la exportación conserva el último re
 
 ## Próximo paso
 
-Validar Phase 4 y definir la siguiente milestone. El roadmap inicial está implementado.
+Validar el pulido del primer puzzle y definir la siguiente milestone.
+
+## Pulido de la experiencia
+
+Las señales 01/02/03 y el objetivo del HUD guían placa, puerta y salida. La puerta
+se eleva en 0.4 segundos con su colisión. Escape pausa también la animación.
+**Reiniciar partida** en pausa y **Volver a jugar** en victoria limpian la sesión
+sin recargar: ciclo 1, sin grabaciones, cámara al spawn y puerta cerrada. **R**
+continúa reiniciando únicamente el ciclo actual.
