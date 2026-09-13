@@ -1,6 +1,7 @@
+import type { PuzzleController } from '../puzzle/PuzzleController'
 import { Recorder } from '../recording/Recorder'
 import type { TimeLoop } from '../time-loop/TimeLoop'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { MouseLook } from '../input/MouseLook'
 import {
@@ -18,7 +19,13 @@ import { SPAWN } from '../levels/room'
 import { useGameStore } from '../state/gameStore'
 import { PHYSICS_STEP, PLAYER, PlayerController } from './PlayerController'
 
-export function Player({ loop }: { loop: TimeLoop }) {
+export function Player({
+  loop,
+  puzzle,
+}: {
+  loop: TimeLoop
+  puzzle: RefObject<PuzzleController | null>
+}) {
   const [recorder] = useState(() => new Recorder())
   const sampledStep = useRef(false)
   const recordingStarted = useRef(false)
@@ -30,11 +37,14 @@ export function Player({ loop }: { loop: TimeLoop }) {
   const [input] = useState(() => new InputManager())
   const rotation = useRef(new Euler(0, 0, 0, 'YXZ'))
   const position = useRef(new Vector3())
-  const { world } = useRapier()
+  const { world, rapier } = useRapier()
   const { camera, gl } = useThree()
 
   useEffect(() => {
-    const movement = new PlayerController(world)
+    const movement = new PlayerController(
+      world,
+      rapier.QueryFilterFlags.EXCLUDE_SENSORS,
+    )
     controller.current = movement
     const disconnect = input.connect()
     const button = document.getElementById('enter-game')!
@@ -50,7 +60,7 @@ export function Player({ loop }: { loop: TimeLoop }) {
       useGameStore.getState().setReady(false)
       useGameStore.getState().setLocked(false)
     }
-  }, [world, input, gl, camera, loop])
+  }, [world, rapier, input, gl, camera, loop])
 
   const resetPlayer = () => {
     if (!body.current || !controller.current) return
@@ -60,6 +70,19 @@ export function Player({ loop }: { loop: TimeLoop }) {
     teleported.current = true
     recorder.begin(loop.cycle, body.current.translation(), camera.quaternion)
     recordingStarted.current = true
+    puzzle.current?.update(
+      body.current.translation(),
+      useGameStore.getState().lastRun,
+      0,
+    )
+    if (puzzle.current)
+      useGameStore
+        .getState()
+        .publishPuzzle(
+          puzzle.current.platePlayer,
+          puzzle.current.plateEcho,
+          puzzle.current.doorOpen,
+        )
   }
 
   useBeforePhysicsStep(() => {
@@ -68,7 +91,7 @@ export function Player({ loop }: { loop: TimeLoop }) {
     const active =
       document.pointerLockElement === gl.domElement ||
       useGameStore.getState().fallback
-    if (!active) return
+    if (!active || useGameStore.getState().completed || !puzzle.current) return
     if (!recordingStarted.current) {
       recorder.begin(loop.cycle, body.current.translation(), camera.quaternion)
       recordingStarted.current = true
@@ -81,6 +104,18 @@ export function Player({ loop }: { loop: TimeLoop }) {
       useGameStore.getState().publishCycle(loop.cycle, loop.remainingSeconds)
       return
     }
+    puzzle.current.update(
+      body.current.translation(),
+      useGameStore.getState().lastRun,
+      loop.elapsedSeconds,
+    )
+    useGameStore
+      .getState()
+      .publishPuzzle(
+        puzzle.current.platePlayer,
+        puzzle.current.plateEcho,
+        puzzle.current.doorOpen,
+      )
     rotation.current.setFromQuaternion(camera.quaternion, 'YXZ')
     // 90 degrees/second, synchronized with physics and recording (not key repeat).
     rotation.current.y -= input.lookRight * (Math.PI / 2) * PHYSICS_STEP
@@ -110,6 +145,13 @@ export function Player({ loop }: { loop: TimeLoop }) {
       body.current.translation(),
       camera.quaternion,
     )
+    if (puzzle.current?.reachedExit(body.current.translation())) {
+      useGameStore.getState().completeLevel()
+      input.clear()
+      if (document.pointerLockElement === gl.domElement)
+        document.exitPointerLock()
+      return
+    }
     if (loop.advance()) {
       useGameStore.getState().saveRun(recorder.finish('timeout'))
       resetPlayer()

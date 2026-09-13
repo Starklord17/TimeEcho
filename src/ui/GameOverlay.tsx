@@ -2,6 +2,10 @@ import { downloadRun } from '../recording/downloadRun'
 import { useGameStore } from '../state/gameStore'
 
 export function GameOverlay() {
+  const completed = useGameStore((state) => state.completed)
+  const platePlayer = useGameStore((state) => state.platePlayer)
+  const plateEcho = useGameStore((state) => state.plateEcho)
+  const doorOpen = useGameStore((state) => state.doorOpen)
   const lastRun = useGameStore((state) => state.lastRun)
   const cycle = useGameStore((state) => state.cycle)
   const remainingSeconds = useGameStore((state) => state.remainingSeconds)
@@ -17,7 +21,7 @@ export function GameOverlay() {
           TIME <span>ECHO</span>
           <span className="brand-dot" />
         </a>
-        <span className="phase">ECHO REPLAY / 003</span>
+        <span className="phase">TEMPORAL INTERACTION / 004</span>
       </header>
       <div className="room-label">
         <span className="eyebrow">TEMPORAL LAB</span>
@@ -31,28 +35,46 @@ export function GameOverlay() {
             .padStart(2, '0')}
           :{(remainingSeconds % 60).toString().padStart(2, '0')}
         </strong>
-        <small>{active ? 'GRABANDO RECORRIDO' : 'EN PAUSA'}</small>
+        <small>
+          {completed
+            ? 'NIVEL COMPLETADO'
+            : active
+              ? 'GRABANDO RECORRIDO'
+              : 'EN PAUSA'}
+        </small>
         {lastRun && <small>ECHO DEL CICLO {lastRun.cycle}</small>}
+        <small>
+          PLACA:{' '}
+          {platePlayer && plateEcho
+            ? 'JUGADOR + ECHO'
+            : platePlayer
+              ? 'JUGADOR'
+              : plateEcho
+                ? 'ECHO'
+                : 'LIBRE'}{' '}
+          · PUERTA {doorOpen ? 'ABIERTA' : 'CERRADA'}
+        </small>
       </div>
       <section
         className={`welcome ${active ? 'is-hidden' : ''}`}
         aria-hidden={active}
       >
-        <p className="eyebrow">PHASE 3 — ECHO REPLAY</p>
+        <p className="eyebrow">PHASE 4 — FIRST TEMPORAL INTERACTION</p>
         <h1>
-          Todo empieza
-          <br />
-          en esta habitación.
+          {completed ? 'Puzzle completado.' : 'Tu pasado abre el camino.'}
         </h1>
         <p className="description">
-          Tenés 15 segundos para explorar.
-          <br />
-          En el siguiente ciclo, observá tu recorrido anterior.
+          {completed
+            ? 'El echo sostuvo la puerta mientras alcanzabas la salida.'
+            : 'Ciclo 1: pisá la placa amarilla a la izquierda y presioná R. Ciclo 2: dejá que tu echo la active y cruzá la puerta hacia la zona celeste.'}
         </p>
-        <button id="enter-game" disabled={!ready || active}>
+        <button id="enter-game" disabled={!ready || active || completed}>
           {ready ? 'Entrar / continuar' : 'Preparando la escena…'}
           <span aria-hidden="true">↗</span>
         </button>
+        {completed && (
+          <button onClick={() => location.reload()}>Volver a jugar</button>
+        )}
         <p className="hint">
           Click para capturar el mouse · Escape para liberarlo
         </p>

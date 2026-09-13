@@ -1,9 +1,8 @@
 # Time Echo
 
-**Phase 3 — Echo Replay.** Juego 3D de navegador en construcción progresiva.
-La experiencia de Phase 0 fue validada por el usuario. Esta versión reproduce el último recorrido
-como un echo translúcido durante el ciclo siguiente. Mantiene grabación, exportación
-JSON, ciclos de 15 segundos y reinicio manual. Sin puertas, placas ni puzzles.
+**Phase 4 — First Temporal Interaction.** Primer puzzle temporal jugable:
+una placa activada por jugador o echo abre una puerta para alcanzar la salida.
+Mantiene controles FPS, recording, replay y ciclos de 15 segundos.
 
 La historia desde cero, las decisiones, correcciones, validaciones y límites se
 conservan en [DEVELOPMENT_HISTORY.md](docs/DEVELOPMENT_HISTORY.md).
@@ -36,6 +35,7 @@ Abrir la dirección que imprime Vite en un navegador de escritorio con WebGL.
 - `levels/`: habitación greybox, dimensiones y spawn.
 - `player/`: cápsula cinemática, character controller, cámara y reset físico.
 - `input/`: WASD/R, Pointer Lock nativo y fallback de arrastre.
+- `puzzle/`: sensores Rapier, placa, puerta y salida.
 - `echo/`: entidad visual, muestreo interpolado y reloj de playback.
 - `recording/`: recorder, tipos de ejecución y descarga JSON local.
 - `time-loop/`: reloj de ticks enteros, duración y reglas de reinicio.
@@ -63,7 +63,7 @@ pnpm build
 pnpm preview
 ```
 
-37 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
+43 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
 drift regreso al spawn y grabación de colisiones con Rapier real. Tipos, lint, formato y build verificados.
 En navegador se comprobó avance automático, restart con R y pausa con Escape.
 
@@ -104,7 +104,18 @@ Se muestra solo el último recorrido. Un echo parcial permanece en su punto fina
 no vuelve a empezar hasta otro ciclo. No tiene colisión. La cabeza indica la mirada.
 En el spawn puede superponerse con el jugador: alejarse permite verlo.
 
+## Resolver el primer puzzle
+
+1. Caminar hasta la placa amarilla a la izquierda del spawn. El HUD confirma PLACA: JUGADOR.
+2. Permanecer allí hasta terminar el ciclo o presionar R sobre ella.
+3. En el siguiente ciclo dejar que el echo llegue a la placa: la puerta central se abre.
+4. Cruzar hacia la zona celeste del fondo. Aparece Puzzle completado.
+5. Volver a jugar reinicia la sesión completa.
+
+La placa permanece activa con cualquiera de los dos actores. La puerta no se
+cierra mientras el jugador ocupa el vano. El echo no puede ganar por sí solo.
+El ciclo ganador se congela al completar; la exportación conserva el último recorrido finalizado.
+
 ## Próximo paso
 
-Validar Phase 3 antes de avanzar. Phase 4 agregará pressure plate, puerta y la
-primera interacción temporal.
+Validar Phase 4 y definir la siguiente milestone. El roadmap inicial está implementado.

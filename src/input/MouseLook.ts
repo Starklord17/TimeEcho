@@ -19,13 +19,15 @@ export class MouseLook {
   }
 
   private fallback = () => {
-    if (this.disposed || !this.pending) return
+    if (this.disposed || !this.pending || useGameStore.getState().completed)
+      return
     this.pending = false
     useGameStore.getState().setFallback(true)
   }
 
   private enter = () => {
-    if (this.pending || this.disposed) return
+    if (this.pending || this.disposed || useGameStore.getState().completed)
+      return
     this.pending = true
     const requestId = ++this.requestId
     try {
@@ -55,7 +57,7 @@ export class MouseLook {
 
   private move = (event: MouseEvent) => {
     const locked = document.pointerLockElement === this.canvas
-    if (!locked && !this.dragging) return
+    if ((!locked && !this.dragging) || useGameStore.getState().completed) return
     const dx = locked ? event.movementX : event.clientX - this.lastX
     const dy = locked ? event.movementY : event.clientY - this.lastY
     this.lastX = event.clientX

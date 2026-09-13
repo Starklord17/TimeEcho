@@ -20,11 +20,13 @@ export class PlayerController {
   private controller: ReturnType<
     RapierContext['world']['createCharacterController']
   >
+  private excludeSensors: number
   private verticalSpeed = 0
   private desired = { x: 0, y: 0, z: 0 }
   private next = { x: 0, y: 0, z: 0 }
 
-  constructor(privateWorld: RapierContext['world']) {
+  constructor(privateWorld: RapierContext['world'], excludeSensors: number) {
+    this.excludeSensors = excludeSensors
     this.controller = privateWorld.createCharacterController(0.01)
     this.controller.enableSnapToGround(0.2)
     this.controller.setApplyImpulsesToDynamicBodies(false)
@@ -48,7 +50,11 @@ export class PlayerController {
     this.desired.x = (right * cos - forward * sin) * distance
     this.desired.y = this.verticalSpeed * PHYSICS_STEP
     this.desired.z = (-right * sin - forward * cos) * distance
-    this.controller.computeColliderMovement(collider, this.desired)
+    this.controller.computeColliderMovement(
+      collider,
+      this.desired,
+      this.excludeSensors,
+    )
     const movement = this.controller.computedMovement()
     const position = body.translation()
     this.next.x = position.x + movement.x

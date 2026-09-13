@@ -32,7 +32,10 @@ function createRoom() {
     RAPIER.ColliderDesc.capsule(PLAYER.halfHeight, PLAYER.radius),
     body,
   )
-  const controller = new PlayerController(world)
+  const controller = new PlayerController(
+    world,
+    RAPIER.QueryFilterFlags.EXCLUDE_SENSORS,
+  )
   world.step()
   disposals.push(() => {
     controller.dispose(world)
