@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TimeLoop } from '../time-loop/TimeLoop'
+import { Echo } from '../echo/Echo'
 import { Physics } from '@react-three/rapier'
 import { EmptyRoom } from '../levels/EmptyRoom'
 import { Player } from '../player/Player'
@@ -16,6 +17,7 @@ export function GameScene() {
       <Physics timeStep={PHYSICS_STEP} interpolate gravity={[0, -9.81, 0]}>
         <EmptyRoom />
         <Player loop={loop} />
+        <Echo loop={loop} />
       </Physics>
     </>
   )

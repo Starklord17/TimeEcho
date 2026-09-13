@@ -17,7 +17,7 @@ export function GameOverlay() {
           TIME <span>ECHO</span>
           <span className="brand-dot" />
         </a>
-        <span className="phase">RECORDING / 002</span>
+        <span className="phase">ECHO REPLAY / 003</span>
       </header>
       <div className="room-label">
         <span className="eyebrow">TEMPORAL LAB</span>
@@ -32,13 +32,13 @@ export function GameOverlay() {
           :{(remainingSeconds % 60).toString().padStart(2, '0')}
         </strong>
         <small>{active ? 'GRABANDO RECORRIDO' : 'EN PAUSA'}</small>
-        {lastRun && <small>RECORRIDO {lastRun.cycle} GUARDADO</small>}
+        {lastRun && <small>ECHO DEL CICLO {lastRun.cycle}</small>}
       </div>
       <section
         className={`welcome ${active ? 'is-hidden' : ''}`}
         aria-hidden={active}
       >
-        <p className="eyebrow">PHASE 2 — RECORDING</p>
+        <p className="eyebrow">PHASE 3 — ECHO REPLAY</p>
         <h1>
           Todo empieza
           <br />
@@ -47,7 +47,7 @@ export function GameOverlay() {
         <p className="description">
           Tenés 15 segundos para explorar.
           <br />
-          Cada ciclo te devuelve al punto de partida.
+          En el siguiente ciclo, observá tu recorrido anterior.
         </p>
         <button id="enter-game" disabled={!ready || active}>
           {ready ? 'Entrar / continuar' : 'Preparando la escena…'}
