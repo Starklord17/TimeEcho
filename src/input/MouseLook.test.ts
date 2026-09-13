@@ -80,3 +80,25 @@ it('rotates only while dragging in fallback mode', () => {
   move()
   expect(camera.quaternion.equals(rotation)).toBe(true)
 })
+
+it.each(['blur', 'escape'])(
+  'does not resume after a late rejection following %s',
+  async (reason) => {
+    let reject!: (error: Error) => void
+    const { button, windowTarget } = setup(
+      () =>
+        new Promise((_resolve, fail) => {
+          reject = fail
+        }),
+    )
+    button.dispatchEvent(new Event('click'))
+    windowTarget.dispatchEvent(
+      reason === 'blur'
+        ? new Event('blur')
+        : Object.assign(new Event('keydown'), { code: 'Escape' }),
+    )
+    reject(new Error('denied'))
+    await Promise.resolve()
+    expect(useGameStore.getState().fallback).toBe(false)
+  },
+)

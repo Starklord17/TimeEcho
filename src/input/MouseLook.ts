@@ -7,6 +7,7 @@ export class MouseLook {
   private dragging = false
   private disposed = false
   private pending = false
+  private requestId = 0
   private lastX = 0
   private lastY = 0
   private canvas: HTMLCanvasElement
@@ -18,7 +19,7 @@ export class MouseLook {
   }
 
   private fallback = () => {
-    if (this.disposed) return
+    if (this.disposed || !this.pending) return
     this.pending = false
     useGameStore.getState().setFallback(true)
   }
@@ -26,20 +27,28 @@ export class MouseLook {
   private enter = () => {
     if (this.pending || this.disposed) return
     this.pending = true
+    const requestId = ++this.requestId
     try {
       // Keep the request synchronous with the user gesture, without a React effect.
       if (!this.canvas.requestPointerLock) return this.fallback()
       const request = this.canvas.requestPointerLock()
-      request?.catch(this.fallback)
+      request?.catch(() => {
+        if (requestId === this.requestId) this.fallback()
+      })
     } catch {
       this.fallback()
     }
   }
 
   private change = () => {
+    const wasPending = this.pending
     this.pending = false
     this.dragging = false
     const locked = document.pointerLockElement === this.canvas
+    if (locked && !wasPending) {
+      document.exitPointerLock()
+      return
+    }
     useGameStore.getState().setFallback(false)
     useGameStore.getState().setLocked(locked)
   }
@@ -71,6 +80,8 @@ export class MouseLook {
     this.dragging = false
   }
   private exit = () => {
+    this.pending = false
+    this.requestId += 1
     this.dragging = false
     useGameStore.getState().setFallback(false)
     if (document.pointerLockElement === this.canvas) document.exitPointerLock()
