@@ -2,7 +2,7 @@
 import { beforeAll, expect, it } from 'vitest'
 import { readFile } from 'node:fs/promises'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-import { Group, Object3D } from 'three'
+import { Group, Object3D, Mesh, MeshStandardMaterial } from 'three'
 import { validateEchoAsset } from './echoAsset'
 let scene: Object3D
 beforeAll(async () => {
@@ -56,4 +56,23 @@ it('rejects reversed gaze and keeps body/head transforms independent', () => {
   body.rotation.y = 0
   head.rotation.y = Math.PI
   expect(() => validateEchoAsset(clone)).toThrow('gaze')
+})
+
+it('keeps clothing opaque and attached to body with spectral head separate', () => {
+  const { body, head } = validateEchoAsset(scene)
+  for (const name of [
+    'Echo_Coat_Left',
+    'Echo_Coat_Right',
+    'Echo_Collar_Left',
+    'Echo_Collar_Right',
+  ]) {
+    const mesh = scene.getObjectByName(name) as Mesh
+    expect(mesh.parent).toBe(body)
+    const material = mesh.material as MeshStandardMaterial
+    expect(material.name).toBe('M_Echo_Coat')
+    expect(material.opacity).toBe(1)
+    expect(material.transparent).toBe(false)
+    expect(material.emissive.getHex()).toBe(0)
+  }
+  expect(scene.getObjectByName('Echo_Head')!.parent).toBe(head)
 })

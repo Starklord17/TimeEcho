@@ -39,21 +39,30 @@ function Model({ bodyRef, headRef }: EchoVisualRefs) {
         if (!materials.has(original)) {
           const material = original.clone()
           if (material instanceof MeshStandardMaterial) {
-            material.transparent = true
+            const spectral = [
+              'M_Echo_Shell',
+              'M_Echo_Core',
+              'M_Echo_Gaze',
+            ].includes(material.name)
+            material.transparent = spectral && material.name !== 'M_Echo_Core'
             material.depthTest = true
-            material.depthWrite = material.name === 'M_Echo_Core'
+            material.depthWrite = !material.transparent
             material.opacity =
               material.name === 'M_Echo_Shell'
                 ? 0.62
                 : material.name === 'M_Echo_Core'
                   ? 1
-                  : 0.95
+                  : spectral
+                    ? 0.95
+                    : 1
             material.emissiveIntensity =
               material.name === 'M_Echo_Gaze'
                 ? 1.1
                 : material.name === 'M_Echo_Core'
                   ? 0.4
-                  : 0.18
+                  : spectral
+                    ? 0.18
+                    : 0
           }
           materials.set(original, material)
         }

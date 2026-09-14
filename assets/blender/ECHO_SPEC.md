@@ -1,14 +1,26 @@
-# Echo v1 — revisión artística pendiente
+# Echo v2 — explorador con abrigo negro
 
 ## Métricas finales
 
 - Blender 5.2.0 LTS, autoría local mediante `build_echo.py`; cero servicios pagos.
-- Dimensiones: **0.588 m ancho × 1.700 m alto × 0.275 m profundidad**.
-- **3.368 triángulos**, 10 meshes, 3 materiales; GLB ~71 KiB.
+- Dimensiones: **0.588 m ancho × 1.700 m alto × 0.305 m profundidad**.
+- **4.556 triángulos**, 17 meshes, 6 materiales; GLB 106.476 bytes (~104 KiB).
 - Sin armature, clips, texturas, partículas ni shaders personalizados.
 - Root identidad; base local −0.91 m respecto del centro reproducido de la cápsula.
   Al situar la raíz a y≈0.91, los pies apoyan en suelo. El spawn inicial y el offset
   del character controller pueden dejar un margen centimétrico antes de asentarse.
+
+## Vestimenta
+
+Abrigo negro carbón hasta las rodillas, abierto delante y con abertura posterior.
+Dos faldones con espesor de 6 mm, cuello abierto, pantalón, botas y guantes.
+Las superficies cubiertas de torso y extremidades usan materiales de ropa para
+no superponer capas coincidentes. Cabeza y visera siguen espectrales; pecho y
+puños conservan señales cian. La ropa es rígida: no hay pasos animados ni tela.
+
+- `M_Echo_Coat`: negro carbón, roughness 0.34, opaco, sin emisión.
+- `M_Echo_Fabric`: negro oscuro, roughness 0.8, opaco, sin emisión.
+- `M_Echo_Boots`: negro oscuro, roughness 0.48, opaco, sin emisión.
 
 ## Jerarquía
 
@@ -19,7 +31,11 @@ Echo_Root
 │   ├── Echo_Arm_Left / Echo_Arm_Right
 │   ├── Echo_Leg_Left / Echo_Leg_Right
 │   ├── Echo_Core
-│   └── Echo_Spine
+│   ├── Echo_Spine
+│   ├── Echo_Coat_Left / Echo_Coat_Right
+│   ├── Echo_Collar_Left / Echo_Collar_Right
+│   ├── Echo_Cuff_Left / Echo_Cuff_Right
+│   └── Echo_ChestLight
 └── Echo_HeadPivot (altura local 0.58 m)
     ├── Echo_Head
     ├── Echo_HeadCore
@@ -47,7 +63,7 @@ el paso de conversión: el validador rechaza la visera orientada hacia +Z.
 - `M_Echo_Gaze`: blanco-cian, alpha 0.95, emisión 1.1.
 
 Principled BSDF exportable. Runtime conserva depth testing, sin blending aditivo;
-shell/gaze no escriben profundidad, core sí. La capa interna opaca de cabeza
+shell/gaze no escriben profundidad; core y ropa opaca sí. La capa interna opaca de cabeza
 corrige la visera que se transparentaba desde atrás en la primera revisión.
 No es un segundo personaje duplicado: solo columna/núcleo y volumen interno de
 cabeza para conservar profundidad y dirección. El exterior permanece translúcido.
@@ -79,7 +95,7 @@ el frente de autoría −Y; las capturas runtime muestran la conversión ya apli
 
 Echo.tsx mantiene ReplaySampler, PlaybackClock, visibilidad y transforms del root,
 yaw corporal y quaternion completo de cabeza. EchoVisual carga/clona la jerarquía
-y comparte geometría de caché; clona una vez cada uno de los tres materiales por
+y comparte geometría de caché; clona una vez cada uno de los seis materiales por
 instancia y libera esos clones al desmontar. Ciclos ordinarios no recargan el GLB.
 Suspense y error boundary conservan ProceduralEcho si falla carga o contrato.
 
@@ -92,5 +108,5 @@ reinicio y comparación procedural. Es una página de QA con recorrido sintétic
 creado por Recorder, no una partida manual ni un nuevo modo de juego. No se incluye
 en el build normal. La ruta principal sigue usando el GLB con grabaciones reales.
 
-Revisar imágenes en `echo-review/`. **Aprobación artística pendiente**: no se
-elimina el fallback ni se trabaja en otro asset hasta revisión del usuario.
+Revisar imágenes en `echo-review/`. El fallback procedural se conserva para
+errores de carga y comparación visual.

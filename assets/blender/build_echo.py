@@ -35,6 +35,12 @@ def material(name, color, alpha, emission):
 shell = material('M_Echo_Shell',(.31,.76,.84),.62,.18)
 core = material('M_Echo_Core',(.015,.38,.50),1,.4)
 gaze = material('M_Echo_Gaze',(.64,.94,1),.95,1.1)
+coat = material('M_Echo_Coat',(.018,.022,.028),1,0)
+coat.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value=.34
+fabric = material('M_Echo_Fabric',(.009,.012,.017),1,0)
+fabric.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value=.8
+boots = material('M_Echo_Boots',(.012,.015,.019),1,0)
+boots.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value=.48
 root = empty('Echo_Root')
 body = empty('Echo_Body',root)
 head = empty('Echo_HeadPivot',root,(0,0,.58))
@@ -70,6 +76,57 @@ loft('Echo_Gaze',[(z,0,-.113,w,d) for z,w,d in [(.015,.10,.019),(.025,.125,.024)
 loft('Echo_Core',[(z,0,-.008,w,d) for z,w,d in [(-.16,.025,.038),(-.10,.045,.048),(.03,.042,.049),(.19,.047,.05),(.29,.022,.036)]],body,core)
 # Subtle broad internal spine: visible through shell from behind, attached within body.
 loft('Echo_Spine',[(z,0,.075,w,d) for z,w,d in [(-.15,.016,.012),(-.10,.023,.017),(.08,.024,.018),(.25,.019,.014),(.29,.012,.008)]],body,core)
+# Tailored clothing replaces covered body surfaces, avoiding nested/copanar shells.
+bpy.data.objects['Echo_Torso'].data.materials[0]=fabric
+for side in ['Left','Right']:
+    arm=bpy.data.objects['Echo_Arm_'+side]
+    arm.data.materials[0]=coat
+    arm.data.materials.append(boots)
+    for face in arm.data.polygons:
+        if sum(arm.data.vertices[i].co.z for i in face.vertices)/len(face.vertices)<-.32:
+            face.material_index=1
+    leg=bpy.data.objects['Echo_Leg_'+side]
+    leg.data.materials[0]=fabric
+    leg.data.materials.append(boots)
+    for face in leg.data.polygons:
+        if sum(leg.data.vertices[i].co.z for i in face.vertices)/len(face.vertices)<-.64:
+            face.material_index=1
+
+# Each tailored half is a thick open arc. Front opening and back vent are real gaps.
+def coat_half(name, sign):
+    rows=[(-.54,.202,.15,.51),(-.42,.19,.146,.46),(-.24,.176,.136,.40),
+          (-.10,.153,.119,.35),(.04,.164,.126,.34),(.20,.203,.139,.43),
+          (.30,.204,.136,.54),(.35,.11,.093,.70)]
+    n=14; verts=[]
+    for z,w,d,gap in rows:
+        for j in range(n+1):
+            # -Y front -> +Y rear. Back vent confined below the waist.
+            angle=-math.pi/2+gap+(math.pi-gap-(.055 if z<-.24 else .008))*j/n
+            verts.append((sign*w*math.cos(angle),d*math.sin(angle),z))
+    faces=[]
+    for r in range(len(rows)-1):
+        for j in range(n):
+            a=r*(n+1)+j
+            face=(a,a+1,a+n+2,a+n+1)
+            faces.append(face if sign>0 else tuple(reversed(face)))
+    mesh=bpy.data.meshes.new(name+'_Geometry');mesh.from_pydata(verts,[],faces);mesh.update()
+    obj=bpy.data.objects.new(name,mesh);scene.collection.objects.link(obj);obj.parent=body
+    mesh.materials.append(coat)
+    for face in mesh.polygons: face.use_smooth=True
+    bpy.context.view_layer.objects.active=obj
+    solid=obj.modifiers.new('Tailored thickness','SOLIDIFY');solid.thickness=.006
+    bpy.ops.object.modifier_apply(modifier=solid.name)
+    return obj
+for sign,side in [(-1,'Left'),(1,'Right')]:
+    coat_half('Echo_Coat_'+side,sign)
+    # Cyan wrist seam remains deliberately sparse.
+    loft('Echo_Cuff_'+side,[(-.323,sign*.242,-.014,.046,.054),(-.31,sign*.243,-.014,.046,.054)],body,core,segments=16)
+# Chest beacon is attached to the opaque underlayer, not hidden inside it.
+loft('Echo_ChestLight',[(.14,0,-.123,.014,.006),(.21,0,-.123,.014,.006)],body,core,segments=8)
+# Two collar wings, below the head's swept volume and open at the throat.
+for sign,side in [(-1,'Left'),(1,'Right')]:
+    loft('Echo_Collar_'+side,[(.30,sign*.085,.005,.024,.070),(.355,sign*.079,.014,.018,.055)],body,coat,segments=12)
+
 meshes=[o for o in root.children_recursive if o.type=='MESH']
 for obj in meshes:
     obj.data.calc_loop_triangles()
@@ -78,7 +135,7 @@ coords=[o.matrix_world @ v.co for o in meshes for v in o.data.vertices]
 bpy.context.view_layer.update()
 coords=[o.matrix_world @ v.co for o in meshes for v in o.data.vertices]
 mins=[min(v[i] for v in coords) for i in range(3)];maxs=[max(v[i] for v in coords) for i in range(3)]
-metrics={'triangles':triangles,'boundsBlender':{'min':mins,'max':maxs},'dimensionsBlender':[maxs[i]-mins[i] for i in range(3)],'meshCount':len(meshes),'materialCount':3,'authorFront':'-Y','runtimeFront':'-Z','exportConversion':'Bake Z rotation pi into mesh coordinates and local positions; no runtime correction','source':'Blender local authored loft meshes','blenderVersion':bpy.app.version_string}
+metrics={'triangles':triangles,'boundsBlender':{'min':mins,'max':maxs},'dimensionsBlender':[maxs[i]-mins[i] for i in range(3)],'meshCount':len(meshes),'materialCount':len({m.name for o in meshes for m in o.data.materials}),'authorFront':'-Y','runtimeFront':'-Z','exportConversion':'Bake Z rotation pi into mesh coordinates and local positions; no runtime correction','source':'Blender local authored loft meshes','blenderVersion':bpy.app.version_string}
 assert triangles<=8000
 (OUT/'metrics.json').write_text(json.dumps(metrics,indent=2))
 # Review rig is excluded from GLB and kept editable in blend.
@@ -102,6 +159,7 @@ for name,loc in views.items():
     if name=='level-grey': floor_mat.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value=(.45,.47,.49,1)
     scene.render.filepath=str(OUT/(name+'.png'));bpy.ops.render.render(write_still=True)
 # Save author source with -Y front before runtime-only basis conversion.
+bpy.context.preferences.filepaths.save_version=0
 bpy.ops.wm.save_as_mainfile(filepath=str(BASE/'assets/blender/echo.blend'))
 exec(compile((BASE/'assets/blender/export_echo.py').read_text(), 'export_echo.py', 'exec'))
 print('ECHO_METRICS',json.dumps(metrics))

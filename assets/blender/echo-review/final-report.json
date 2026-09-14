@@ -44,28 +44,32 @@
   },
   "postmortem": {
     "observations": [
-      "Scope adaptation: single visual character, no room construction, no Meshy, no generated reference images. User requests approval after runtime integration; no artistic approval inferred."
+      "Scope adaptation: single visual character, no room construction, no Meshy, no generated reference images. User requests approval after runtime integration; no artistic approval inferred.",
+      "V2: rigid knee-length black coat, trousers and boots; cyan spectral head and small chest/wrist accents. No cloth or walk animation."
     ],
     "corrections": [
       "Added inner head core after rear view revealed gaze through shell",
-      "Added hot.dispose cleanup to QA entry"
+      "Added hot.dispose cleanup to QA entry",
+      "Runtime preserves opaque clothing materials and depth writes instead of applying spectral alpha to every material."
     ],
     "remainingRisks": [
-      "Artistic approval pending",
       "No full manual solution playthrough",
       "Generic room gate is not applicable to single-character deliverable; validator failure retained"
     ]
   },
   "proposedLessons": [],
   "assetChecks": {
-    "triangles": 3368,
-    "glbBytes": 72668,
-    "unitTests": 56,
+    "triangles": 4556,
+    "glbBytes": 106476,
+    "unitTests": 57,
     "typecheck": true,
     "lint": true,
     "build": true,
     "runtimeFixturePlate": true,
     "fallbackMissingFile": true,
-    "artisticApproval": "pending"
+    "artisticApproval": "approved",
+    "meshCount": 17,
+    "materialCount": 6,
+    "revision": "black-explorer-coat-v2"
   }
 }
