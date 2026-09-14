@@ -23,6 +23,8 @@ Abrir la dirección que imprime Vite en un navegador de escritorio con WebGL.
 
 ## Arquitectura
 
+Directorios dentro de `src/`:
+
 - `app/`: composición UI/Canvas y error boundary.
 - `game/`: Canvas, luces y mundo Rapier.
 - `levels/`: habitación greybox, dimensiones y spawn.
@@ -35,13 +37,15 @@ Abrir la dirección que imprime Vite en un navegador de escritorio con WebGL.
 - `state/`: Zustand con metadatos de UI y solicitudes de restart, sin transforms.
 - `ui/`: interfaz HTML, contador y timer.
 
-React 19.2 y sus tipos están fijados por compatibilidad con Fiber 9.7.
+React y sus tipos declaran rangos compatibles con 19.2; las versiones resueltas
+quedan registradas en `pnpm-lock.yaml`.
 Vite + TypeScript strict, Three, React Three Rapier, Zustand. Drei queda instalado
-para helpers; la cámara utiliza la API nativa tras la corrección de Pointer Lock.
+para carga GLB y helpers; la cámara utiliza la API nativa tras la corrección de Pointer Lock.
 No se añadieron dependencias en Phase 1.
 
 El jugador avanza a 3.5 m/s dentro de una habitación de 12 × 14 m. El reloj usa
-900 pasos de 1/60 s. El HUD se actualiza por segundo, sin writes al store por frame.
+900 pasos de 1/60 s. El timer del HUD se publica por segundo; los demás cambios de UI se publican
+al cambiar su estado, sin guardar transforms por frame.
 El reset restablece cuerpo actual y próximo target, orientación, velocidades,
 gravedad acumulada, cámara e input. La cámara evita interpolar el teletransporte.
 
@@ -56,10 +60,11 @@ pnpm build
 pnpm preview
 ```
 
-53 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
+En el árbol de trabajo con Echo GLB, 56 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
 drift regreso al spawn y grabación de colisiones con Rapier real. Tipos, lint, formato y build verificados.
-Las fases anteriores se comprobaron en navegador; la validación específica de esta
-ampliación se registra en el historial.
+La fase publicada tenía 53 tests; los tres nuevos validan el contrato del Echo GLB.
+La revisión visual usa un recorrido de QA y no sustituye una partida manual completa
+de aceptación del nuevo modelo.
 
 Para aceptar la fase, caminar/girar hasta vencer el tiempo y comprobar el retorno
 al marcador claro mirando hacia la pared de referencia; probar también R,
@@ -112,7 +117,8 @@ El ciclo ganador se congela al completar; la exportación conserva el último re
 
 ## Próximo paso
 
-Revisar este diff y la experiencia; luego crear manualmente Door en Blender.
+Revisar el Echo GLB y aprobar su resultado artístico antes de otro asset.
+Door continúa procedural y su modelo Blender sigue pendiente.
 No se inicia Phase 6 ni se hacen commits/push sin aprobación.
 
 ## Pulido de la experiencia
@@ -135,13 +141,19 @@ y texto. Su panel baja 2 cm sin modificar el sensor. La puerta usa easing para
 abrir/cerrar, con collider sincronizado y protección del vano. La salida es ámbar;
 el echo continúa cian y sin colisión. No hay nuevos niveles ni mecánicas temporales.
 
-## Primer modelo Blender
+## Assets Blender
 
-Seguir [BLENDER_ASSET_PIPELINE.md](docs/BLENDER_ASSET_PIPELINE.md): contiene el
-contrato Door v1 y pasos manuales. Guardar fuente en `assets/blender/door.blend`,
-exportar a `public/models/environment/door.glb` y activar `mode: 'glb'` en
-`src/puzzle/doorAsset.ts`. El modo por defecto es procedural, sin requests GLB.
+Consultar [Fuentes Blender](assets/blender/README.md) para los contratos y destinos.
+El primer modelo artístico creado e integrado es Echo, aún en revisión. Door tiene
+un pipeline preparado y conserva `mode: 'procedural'` en `src/puzzle/doorAsset.ts`;
+no existe todavía `door.blend` ni un `door.glb` de producción. La fixture GLB de
+puerta es exclusivamente para tests. Un error de carga o contrato conserva el
+visual procedural y la física del puzzle.
 
-El pipeline está preparado; todavía no hay modelo artístico creado en Blender.
-La fixture GLB incluida es exclusivamente para tests. Un error de carga o contrato
-mantiene el placeholder y la física del puzzle.
+## Echo Blender (en revisión)
+
+El Echo usa un GLB propio de 3.368 triángulos, con fallback procedural.
+[Especificación y renders](assets/blender/ECHO_SPEC.md). En desarrollo,
+`/echo-review.html` permite comparar vistas, movimiento y activación de placa
+con los componentes reales y un recorrido de QA. No se publica en el build normal.
+El fallback se conserva hasta aprobación artística.
