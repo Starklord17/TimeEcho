@@ -60,9 +60,9 @@ pnpm build
 pnpm preview
 ```
 
-En el árbol de trabajo con Echo GLB, 56 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
+En el árbol de trabajo con Echo GLB, 57 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
 drift regreso al spawn y grabación de colisiones con Rapier real. Tipos, lint, formato y build verificados.
-La fase publicada tenía 53 tests; los tres nuevos validan el contrato del Echo GLB.
+Cuatro de esas pruebas validan el contrato del Echo GLB.
 La revisión visual usa un recorrido de QA y no sustituye una partida manual completa
 de aceptación del nuevo modelo.
 
@@ -115,12 +115,6 @@ La placa permanece activa con cualquiera de los dos actores. La puerta no se
 cierra mientras el jugador ocupa el vano. El echo no puede ganar por sí solo.
 El ciclo ganador se congela al completar; la exportación conserva el último recorrido finalizado.
 
-## Próximo paso
-
-Revisar el Echo GLB y aprobar su resultado artístico antes de otro asset.
-Door continúa procedural y su modelo Blender sigue pendiente.
-No se inicia Phase 6 ni se hacen commits/push sin aprobación.
-
 ## Pulido de la experiencia
 
 Las señales 01/02/03 y el objetivo del HUD guían placa, puerta y salida. La puerta
@@ -144,16 +138,16 @@ el echo continúa cian y sin colisión. No hay nuevos niveles ni mecánicas temp
 ## Assets Blender
 
 Consultar [Fuentes Blender](assets/blender/README.md) para los contratos y destinos.
-El primer modelo artístico creado e integrado es Echo, aún en revisión. Door tiene
+El primer modelo artístico creado e integrado es Echo. Door tiene
 un pipeline preparado y conserva `mode: 'procedural'` en `src/puzzle/doorAsset.ts`;
 no existe todavía `door.blend` ni un `door.glb` de producción. La fixture GLB de
 puerta es exclusivamente para tests. Un error de carga o contrato conserva el
 visual procedural y la física del puzzle.
 
-## Echo Blender (en revisión)
+## Echo Blender
 
-El Echo usa un GLB propio de 3.368 triángulos, con fallback procedural.
+El Echo usa un GLB propio de 4.556 triángulos, con fallback procedural.
 [Especificación y renders](assets/blender/ECHO_SPEC.md). En desarrollo,
 `/echo-review.html` permite comparar vistas, movimiento y activación de placa
 con los componentes reales y un recorrido de QA. No se publica en el build normal.
-El fallback se conserva hasta aprobación artística.
+El fallback procedural cubre errores de carga o contrato.

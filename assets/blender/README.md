@@ -1,13 +1,12 @@
 # Fuentes Blender
 
-## Echo — pendiente de aprobación artística
+## Echo
 
 `echo.blend` es la fuente editable del primer modelo artístico integrado.
 El contrato y la reexportación están en [ECHO_SPEC.md](ECHO_SPEC.md).
 `build_echo.py` reconstruye fuente, renders y GLB; `export_echo.py` exporta la
 fuente existente. Ejecutar desde la raíz del proyecto con Blender disponible.
-La fuente, exportación e integración quedan versionadas como base de revisión;
-la aprobación artística sigue pendiente.
+El modelo incluye abrigo negro, pantalón y botas; la cabeza conserva su aspecto espectral.
 
 ## Door — modelo pendiente
 
