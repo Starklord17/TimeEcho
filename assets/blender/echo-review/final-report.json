@@ -1,0 +1,71 @@
+{
+  "schema": "game-room.room-final-report.v1",
+  "roomId": "timeecho-echo",
+  "gates": {
+    "function": false,
+    "form": false,
+    "runtime": false
+  },
+  "formChecks": {
+    "floorPlanParity": false,
+    "primaryArrival": false,
+    "symmetry": false,
+    "shell": false,
+    "manifold": false,
+    "booleans": false,
+    "collisions": false,
+    "support": false,
+    "attachmentOrientation": false,
+    "ceilingAttachmentOrientation": false,
+    "seatingOrientation": false,
+    "focalDistribution": false,
+    "heroClearance": false,
+    "colonnades": false,
+    "screenClearance": false,
+    "scale": false,
+    "camera": false,
+    "ceilingCoverage": false,
+    "environmentCoverage": false,
+    "provenance": false
+  },
+  "reviewRenders": {
+    "corners": [],
+    "ceiling": [],
+    "environment": {}
+  },
+  "runtimeChecks": {
+    "vlow": false,
+    "textureTiers": false,
+    "lightmap": false,
+    "lightingManifest": false,
+    "performance": false,
+    "browserCapture": "runtime-plate.png",
+    "errors": []
+  },
+  "postmortem": {
+    "observations": [
+      "Scope adaptation: single visual character, no room construction, no Meshy, no generated reference images. User requests approval after runtime integration; no artistic approval inferred."
+    ],
+    "corrections": [
+      "Added inner head core after rear view revealed gaze through shell",
+      "Added hot.dispose cleanup to QA entry"
+    ],
+    "remainingRisks": [
+      "Artistic approval pending",
+      "No full manual solution playthrough",
+      "Generic room gate is not applicable to single-character deliverable; validator failure retained"
+    ]
+  },
+  "proposedLessons": [],
+  "assetChecks": {
+    "triangles": 3368,
+    "glbBytes": 72668,
+    "unitTests": 56,
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "runtimeFixturePlate": true,
+    "fallbackMissingFile": true,
+    "artisticApproval": "pending"
+  }
+}

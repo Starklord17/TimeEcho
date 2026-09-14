@@ -1,0 +1,17 @@
+{
+  "triangles": 3368,
+  "boundsBlender": {
+    "min": [-0.2939999997615814, -0.1550000011920929, -0.9100000262260437],
+    "max": [0.2939999997615814, 0.11999999731779099, 0.7899999618530273]
+  },
+  "dimensionsBlender": [
+    0.5879999995231628, 0.2749999985098839, 1.699999988079071
+  ],
+  "meshCount": 10,
+  "materialCount": 3,
+  "authorFront": "-Y",
+  "runtimeFront": "-Z",
+  "exportConversion": "Bake Z rotation pi into mesh coordinates and local positions; no runtime correction",
+  "source": "Blender local authored loft meshes",
+  "blenderVersion": "5.2.0 LTS"
+}

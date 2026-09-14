@@ -1,0 +1,3 @@
+FAIL: missing file: /Users/maxsm/DEV/FullStackProjects/TimeEcho/assets/blender/echo-review/plan-metadata.json
+FAIL: missing file: /Users/maxsm/DEV/FullStackProjects/TimeEcho/assets/blender/echo-review/props.json
+FAIL: missing file: /Users/maxsm/DEV/FullStackProjects/TimeEcho/assets/blender/echo-review/room-layout.json

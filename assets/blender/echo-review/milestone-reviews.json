@@ -1,0 +1,28 @@
+{
+  "schema": "game-room.milestone-reviews.v1",
+  "roomId": "timeecho-echo",
+  "function": {
+    "status": "pending",
+    "approvedBy": "",
+    "approvedAt": "",
+    "evidence": [],
+    "strangestElement": "",
+    "notes": "User explicitly requests direct Blender authoring, export and runtime validation before final artistic approval. No paid generation, room layout or image approval workflow applies. Artistic approval remains pending; no gate approval inferred."
+  },
+  "form": {
+    "status": "pending",
+    "approvedBy": "",
+    "approvedAt": "",
+    "evidence": [],
+    "strangestElement": "",
+    "notes": "User explicitly requests direct Blender authoring, export and runtime validation before final artistic approval. No paid generation, room layout or image approval workflow applies. Artistic approval remains pending; no gate approval inferred."
+  },
+  "runtime": {
+    "status": "pending",
+    "approvedBy": "",
+    "approvedAt": "",
+    "evidence": [],
+    "strangestElement": "",
+    "notes": "User explicitly requests direct Blender authoring, export and runtime validation before final artistic approval. No paid generation, room layout or image approval workflow applies. Artistic approval remains pending; no gate approval inferred."
+  }
+}
