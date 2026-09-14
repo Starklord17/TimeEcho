@@ -83,3 +83,18 @@ it('does not consume arrows while the game is inactive', () => {
   expect(key('keydown', 'ArrowLeft').defaultPrevented).toBe(false)
   expect(input.lookRight).toBe(0)
 })
+
+it('blocks movement, look and repeated restart requests during transition', async () => {
+  const { useGameStore } = await import('../state/gameStore')
+  useGameStore.setState({ cyclePhase: 'RESETTING', restartRequested: false })
+  try {
+    key('keydown', 'KeyW')
+    key('keydown', 'ArrowRight')
+    key('keydown', 'KeyR')
+    expect(input.forward).toBe(0)
+    expect(input.lookRight).toBe(0)
+    expect(useGameStore.getState().restartRequested).toBe(false)
+  } finally {
+    useGameStore.setState({ cyclePhase: 'PLAYING' })
+  }
+})

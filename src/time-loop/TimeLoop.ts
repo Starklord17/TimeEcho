@@ -20,10 +20,10 @@ export class TimeLoop {
     )
   }
 
-  advance() {
+  advance(deferRestart = false) {
     this.ticks += 1
     if (this.ticks < CYCLE_SECONDS * TICKS_PER_SECOND) return false
-    this.restart()
+    if (!deferRestart) this.restart()
     return true
   }
 

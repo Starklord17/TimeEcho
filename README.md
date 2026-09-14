@@ -1,12 +1,5 @@
 # Time Echo
 
-**Phase 5 — Puzzle Polish.** Primer puzzle temporal jugable:
-una placa activada por jugador o echo abre una puerta para alcanzar la salida.
-Mantiene controles FPS, recording, replay y ciclos de 15 segundos.
-
-La historia desde cero, las decisiones, correcciones, validaciones y límites se
-conservan en [DEVELOPMENT_HISTORY.md](docs/DEVELOPMENT_HISTORY.md).
-
 ## Ejecutar
 
 Node 22.12+ (validado con 22.21.0) y pnpm 10.33.2.
@@ -63,12 +56,13 @@ pnpm build
 pnpm preview
 ```
 
-45 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
+53 tests cubren física, input, fallback, ciclo exacto, restart, 100 ciclos sin
 drift regreso al spawn y grabación de colisiones con Rapier real. Tipos, lint, formato y build verificados.
-En navegador se comprobó avance automático, restart con R y pausa con Escape.
+Las fases anteriores se comprobaron en navegador; la validación específica de esta
+ampliación se registra en el historial.
 
 Para aceptar la fase, caminar/girar hasta vencer el tiempo y comprobar el retorno
-al marcador verde mirando hacia la pared de referencia; probar también R,
+al marcador claro mirando hacia la pared de referencia; probar también R,
 Escape y reanudación sin teclas retenidas.
 
 ## Límites actuales
@@ -77,7 +71,7 @@ Escape y reanudación sin teclas retenidas.
 - El spawn es [0, 0.92, 4] al reset; la gravedad asienta la cápsula después.
 - Pausa del jugador/timer; el mundo estático Rapier sigue ejecutando pasos.
 - Solo desktop. Pointer Lock depende del navegador; arrastre es el fallback.
-- Bundle ~1.15 MB gzip; Vite advierte sobre tamaño. Persisten avisos upstream de
+- Bundle ~1.18 MB gzip; Vite advierte sobre tamaño. Persisten avisos upstream de
   THREE.Clock e inicialización WASM. No se ocultaron avisos ni modificaron dependencias.
 - Sin mediciones de FPS en equipos variados ni garantía de replay determinista por input.
 
@@ -109,7 +103,7 @@ En el spawn puede superponerse con el jugador: alejarse permite verlo.
 1. Caminar hasta la placa amarilla a la izquierda del spawn. El HUD confirma PLACA: JUGADOR.
 2. Permanecer allí hasta terminar el ciclo o presionar R sobre ella.
 3. En el siguiente ciclo dejar que el echo llegue a la placa: la puerta central se abre.
-4. Cruzar hacia la zona celeste del fondo. Aparece Puzzle completado.
+4. Cruzar hacia la zona ámbar del fondo. Aparece Puzzle completado.
 5. Volver a jugar reinicia la sesión completa sin recargar la página.
 
 La placa permanece activa con cualquiera de los dos actores. La puerta no se
@@ -118,7 +112,8 @@ El ciclo ganador se congela al completar; la exportación conserva el último re
 
 ## Próximo paso
 
-Validar el pulido del primer puzzle y definir la siguiente milestone.
+Revisar este diff y la experiencia; luego crear manualmente Door en Blender.
+No se inicia Phase 6 ni se hacen commits/push sin aprobación.
 
 ## Pulido de la experiencia
 
@@ -127,3 +122,26 @@ se eleva en 0.4 segundos con su colisión. Escape pausa también la animación.
 **Reiniciar partida** en pausa y **Volver a jugar** en victoria limpian la sesión
 sin recargar: ciclo 1, sin grabaciones, cámara al spawn y puerta cerrada. **R**
 continúa reiniciando únicamente el ciclo actual.
+
+## Transición y feedback
+
+R y timeout cierran el recorrido y ejecutan una transición de 0.3 s (18 pasos).
+En el punto medio se restaura el mundo y se publica el último recorrido como echo.
+El siguiente ciclo tiene 15 segundos completos. Movimiento, mirada y R quedan
+bloqueados durante la transición; Escape o pérdida de foco la pausan.
+
+La placa distingue jugador (ámbar), echo (cian) y ambos con indicadores separados
+y texto. Su panel baja 2 cm sin modificar el sensor. La puerta usa easing para
+abrir/cerrar, con collider sincronizado y protección del vano. La salida es ámbar;
+el echo continúa cian y sin colisión. No hay nuevos niveles ni mecánicas temporales.
+
+## Primer modelo Blender
+
+Seguir [BLENDER_ASSET_PIPELINE.md](docs/BLENDER_ASSET_PIPELINE.md): contiene el
+contrato Door v1 y pasos manuales. Guardar fuente en `assets/blender/door.blend`,
+exportar a `public/models/environment/door.glb` y activar `mode: 'glb'` en
+`src/puzzle/doorAsset.ts`. El modo por defecto es procedural, sin requests GLB.
+
+El pipeline está preparado; todavía no hay modelo artístico creado en Blender.
+La fixture GLB incluida es exclusivamente para tests. Un error de carga o contrato
+mantiene el placeholder y la física del puzzle.

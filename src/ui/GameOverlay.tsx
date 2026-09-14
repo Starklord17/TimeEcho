@@ -2,6 +2,7 @@ import { downloadRun } from '../recording/downloadRun'
 import { useGameStore } from '../state/gameStore'
 
 export function GameOverlay() {
+  const cyclePhase = useGameStore((state) => state.cyclePhase)
   const completed = useGameStore((state) => state.completed)
   const platePlayer = useGameStore((state) => state.platePlayer)
   const plateEcho = useGameStore((state) => state.plateEcho)
@@ -16,6 +17,7 @@ export function GameOverlay() {
   const error = useGameStore((state) => state.error)
   return (
     <div className="overlay">
+      <div id="cycle-transition" aria-hidden="true" />
       <header>
         <a className="wordmark" href="./">
           TIME <span>ECHO</span>
@@ -39,7 +41,9 @@ export function GameOverlay() {
           {completed
             ? 'NIVEL COMPLETADO'
             : active
-              ? 'GRABANDO RECORRIDO'
+              ? cyclePhase === 'PLAYING'
+                ? 'GRABANDO RECORRIDO'
+                : 'REINICIANDO CICLO'
               : 'EN PAUSA'}
         </small>
         {lastRun && <small>ECHO DEL CICLO {lastRun.cycle}</small>}
@@ -52,7 +56,7 @@ export function GameOverlay() {
               : plateEcho
                 ? 'ECHO'
                 : 'LIBRE'}{' '}
-          · PUERTA {doorOpen ? 'ABIERTA' : 'CERRADA'}
+          · PUERTA {doorOpen ? 'APERTURA ACTIVADA' : 'CERRADA'}
         </small>
       </div>
       <section
@@ -66,7 +70,7 @@ export function GameOverlay() {
         <p className="description">
           {completed
             ? 'El echo sostuvo la puerta mientras alcanzabas la salida.'
-            : 'Ciclo 1: pisá la placa amarilla a la izquierda y presioná R. Ciclo 2: dejá que tu echo la active y cruzá la puerta hacia la zona celeste.'}
+            : 'Ciclo 1: pisá la placa amarilla a la izquierda y presioná R. Ciclo 2: dejá que tu echo la active y cruzá la puerta hacia la zona ámbar.'}
         </p>
         <button id="enter-game" disabled={!ready || active || completed}>
           {ready ? 'Entrar / continuar' : 'Preparando la escena…'}

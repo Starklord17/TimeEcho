@@ -1,3 +1,4 @@
+import { DoorMotion } from './DoorMotion'
 import type { RapierContext, RapierCollider } from '@react-three/rapier'
 import { Quaternion, Vector3 } from 'three'
 import { ReplaySampler } from '../echo/ReplaySampler'
@@ -30,7 +31,10 @@ export class PuzzleController {
   platePlayer = false
   plateEcho = false
   doorOpen = false
-  doorLift = 0
+  private motion = new DoorMotion(DOOR_TRAVEL, DOOR_DURATION)
+  get doorLift() {
+    return this.motion.value
+  }
 
   constructor(world: RapierContext['world'], rapier: RapierContext['rapier']) {
     const box = (
@@ -71,13 +75,10 @@ export class PuzzleController {
       this.plate.intersectsShape(this.capsule, this.echoPosition, this.upright)
     // Never close through a player who is already crossing the doorway.
     const crossing =
-      this.doorOpen &&
+      (this.doorOpen || this.doorLift > 0) &&
       this.doorway.intersectsShape(this.capsule, player, this.upright)
     this.doorOpen = this.platePlayer || this.plateEcho || crossing
-    const travel = (DOOR_TRAVEL * PHYSICS_STEP) / DOOR_DURATION
-    this.doorLift = this.doorOpen
-      ? Math.min(DOOR_TRAVEL, this.doorLift + travel)
-      : Math.max(0, this.doorLift - travel)
+    this.motion.step(this.doorOpen, PHYSICS_STEP)
     this.door.setTranslation({
       x: DOOR.x,
       y: DOOR.y + this.doorLift,
@@ -88,7 +89,7 @@ export class PuzzleController {
 
   reset() {
     this.doorOpen = false
-    this.doorLift = 0
+    this.motion.reset()
     this.platePlayer = false
     this.plateEcho = false
     this.door.setTranslation(DOOR)

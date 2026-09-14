@@ -24,7 +24,7 @@ export function Echo({ loop }: { loop: TimeLoop }) {
       loop.cycle,
       loop.elapsedSeconds,
       delta,
-      state.locked || state.fallback,
+      (state.locked || state.fallback) && state.cyclePhase === 'PLAYING',
     )
     root.current.visible =
       !!run && sampler.sample(run, time, position.current, rotation.current)
@@ -44,9 +44,9 @@ export function Echo({ loop }: { loop: TimeLoop }) {
           <meshStandardMaterial
             color="#84e9ed"
             emissive="#226d79"
-            emissiveIntensity={0.6}
+            emissiveIntensity={0.85}
             transparent
-            opacity={0.35}
+            opacity={0.46}
             depthWrite={false}
           />
         </mesh>

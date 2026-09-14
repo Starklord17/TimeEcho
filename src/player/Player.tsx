@@ -1,5 +1,6 @@
+import { CycleTransition } from '../time-loop/CycleTransition'
 import type { PuzzleController } from '../puzzle/PuzzleController'
-import { Recorder } from '../recording/Recorder'
+import { Recorder, type RecordedRun } from '../recording/Recorder'
 import type { TimeLoop } from '../time-loop/TimeLoop'
 import { useEffect, useRef, useState, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
@@ -26,6 +27,8 @@ export function Player({
   loop: TimeLoop
   puzzle: RefObject<PuzzleController | null>
 }) {
+  const pendingRun = useRef<RecordedRun | null>(null)
+  const [transition] = useState(() => new CycleTransition())
   const [recorder] = useState(() => new Recorder())
   const sampledStep = useRef(false)
   const recordingStarted = useRef(false)
@@ -95,16 +98,29 @@ export function Player({
       document.pointerLockElement === gl.domElement ||
       useGameStore.getState().fallback
     if (!active || useGameStore.getState().completed || !puzzle.current) return
+    if (transition.phase !== 'PLAYING') {
+      if (transition.step()) {
+        if (pendingRun.current)
+          useGameStore.getState().saveRun(pendingRun.current)
+        pendingRun.current = null
+        loop.restart()
+        resetPlayer()
+        useGameStore.getState().publishCycle(loop.cycle, loop.remainingSeconds)
+      }
+      input.clear()
+      useGameStore.getState().setCyclePhase(transition.phase)
+      return
+    }
     if (!recordingStarted.current) {
       recorder.begin(loop.cycle, body.current.translation(), camera.quaternion)
       recordingStarted.current = true
     }
     teleported.current = false
     if (useGameStore.getState().restartRequested) {
-      useGameStore.getState().saveRun(recorder.finish('restart'))
-      loop.restart()
-      resetPlayer()
-      useGameStore.getState().publishCycle(loop.cycle, loop.remainingSeconds)
+      pendingRun.current = recorder.finish('restart')
+      transition.begin()
+      input.clear()
+      useGameStore.getState().setCyclePhase(transition.phase)
       return
     }
     puzzle.current.update(
@@ -155,15 +171,20 @@ export function Player({
         document.exitPointerLock()
       return
     }
-    if (loop.advance()) {
-      useGameStore.getState().saveRun(recorder.finish('timeout'))
-      resetPlayer()
+    if (loop.advance(true)) {
+      pendingRun.current = recorder.finish('timeout')
+      transition.begin()
+      input.clear()
+      useGameStore.getState().setCyclePhase(transition.phase)
+      return
     }
     useGameStore.getState().publishCycle(loop.cycle, loop.remainingSeconds)
   })
 
   // Follow the interpolated Three object, not raw fixed-step physics coordinates.
   useFrame(({ camera: renderCamera }) => {
+    const veil = document.getElementById('cycle-transition')
+    if (veil) veil.style.opacity = String(transition.opacity * 0.85)
     if (!visual.current) return
     if (teleported.current) position.current.set(...SPAWN)
     else visual.current.getWorldPosition(position.current)

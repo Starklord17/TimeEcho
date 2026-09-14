@@ -144,3 +144,13 @@ it('animates the door progressively and resets its physical pose', () => {
   move(0, 1, 300)
   expect(body.translation().z).toBeGreaterThan(-2.56)
 })
+
+it('reopens when the player enters a doorway during closing', () => {
+  const { puzzle } = setup()
+  const spawn = { x: 0, y: 0.91, z: 4 }
+  for (let i = 0; i < 25; i++) puzzle.update(spawn, plateRun(), 0)
+  puzzle.update(spawn, null, 0)
+  expect(puzzle.doorOpen).toBe(false)
+  puzzle.update({ x: 0, y: 0.91, z: -3 }, null, 0)
+  expect(puzzle.doorOpen).toBe(true)
+})
