@@ -38,15 +38,10 @@ export function TemporalPuzzle({
         style={{ pointerEvents: 'none' }}
       >
         <div className="world-label">
-          <b>01 · PLACA</b>
           <span>
-            {player && echo
-              ? 'JUGADOR + ECHO'
-              : player
-                ? 'JUGADOR · GRABÁ CON R'
-                : echo
-                  ? 'ECHO · ACTIVADA'
-                  : 'PISÁ Y GRABÁ CON R'}
+            {player || echo
+              ? 'SOMETHING RESPONDS.'
+              : 'EVERY ACTION LEAVES AN ECHO.'}
           </span>
         </div>
       </Html>
@@ -57,18 +52,9 @@ export function TemporalPuzzle({
         style={{ pointerEvents: 'none' }}
       >
         <div className="world-label">
-          <b>02 · PUERTA</b>
-          <span>{open ? 'APERTURA ACTIVADA' : 'TU ECHO PUEDE ABRIRLA'}</span>
-        </div>
-      </Html>
-      <Html
-        position={[EXIT.x, 1.2, EXIT.z]}
-        center
-        occlude
-        style={{ pointerEvents: 'none' }}
-      >
-        <div className="world-label">
-          <b>03 · SALIDA</b>
+          <span>
+            {open ? 'SOMETHING CHANGED.' : 'NOT EVERYTHING HAPPENS AT ONCE.'}
+          </span>
         </div>
       </Html>
       {DIVIDER_BOXES.map((wall, index) => (

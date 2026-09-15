@@ -14,9 +14,9 @@ class GameErrorBoundary extends Component<
     if (this.state.failed)
       return (
         <main className="error-screen">
-          <h1>No pudimos iniciar la escena</h1>
-          <p>Comprobá que WebGL esté disponible y recargá la página.</p>
-          <button onClick={() => location.reload()}>Reintentar</button>
+          <h1>We couldn't start the scene</h1>
+          <p>Make sure WebGL is available, then reload the page.</p>
+          <button onClick={() => location.reload()}>Try again</button>
         </main>
       )
     return this.props.children

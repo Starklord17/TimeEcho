@@ -4,9 +4,6 @@ import { useGameStore } from '../state/gameStore'
 export function GameOverlay() {
   const cyclePhase = useGameStore((state) => state.cyclePhase)
   const completed = useGameStore((state) => state.completed)
-  const platePlayer = useGameStore((state) => state.platePlayer)
-  const plateEcho = useGameStore((state) => state.plateEcho)
-  const doorOpen = useGameStore((state) => state.doorOpen)
   const lastRun = useGameStore((state) => state.lastRun)
   const cycle = useGameStore((state) => state.cycle)
   const remainingSeconds = useGameStore((state) => state.remainingSeconds)
@@ -29,8 +26,8 @@ export function GameOverlay() {
         <span className="eyebrow">TEMPORAL LAB</span>
         <span>Empty Room</span>
       </div>
-      <div className="cycle-hud" aria-label="Estado del ciclo">
-        <span>CICLO {cycle.toString().padStart(2, '0')}</span>
+      <div className="cycle-hud" aria-label="Cycle status">
+        <span>CYCLE {cycle.toString().padStart(2, '0')}</span>
         <strong>
           {Math.floor(remainingSeconds / 60)
             .toString()
@@ -39,41 +36,28 @@ export function GameOverlay() {
         </strong>
         <small>
           {completed
-            ? 'NIVEL COMPLETADO'
+            ? 'LEVEL COMPLETE'
             : active
               ? cyclePhase === 'PLAYING'
-                ? 'GRABANDO RECORRIDO'
-                : 'REINICIANDO CICLO'
-              : 'EN PAUSA'}
+                ? 'RECORDING RUN'
+                : 'RESETTING CYCLE'
+              : 'PAUSED'}
         </small>
-        {lastRun && <small>ECHO DEL CICLO {lastRun.cycle}</small>}
-        <small>
-          PLACA:{' '}
-          {platePlayer && plateEcho
-            ? 'JUGADOR + ECHO'
-            : platePlayer
-              ? 'JUGADOR'
-              : plateEcho
-                ? 'ECHO'
-                : 'LIBRE'}{' '}
-          · PUERTA {doorOpen ? 'APERTURA ACTIVADA' : 'CERRADA'}
-        </small>
+        {lastRun && <small>ECHO FROM CYCLE {lastRun.cycle}</small>}
       </div>
       <section
         className={`welcome ${active ? 'is-hidden' : ''}`}
         aria-hidden={active}
       >
-        <p className="eyebrow">PHASE 5 — PUZZLE POLISH</p>
-        <h1>
-          {completed ? 'Puzzle completado.' : 'Tu pasado abre el camino.'}
-        </h1>
+        <p className="eyebrow">A PLACE OUTSIDE TIME</p>
+        <h1>{completed ? 'Puzzle complete.' : 'Time leaves traces.'}</h1>
         <p className="description">
           {completed
-            ? 'El echo sostuvo la puerta mientras alcanzabas la salida.'
-            : 'Ciclo 1: pisá la placa amarilla a la izquierda y presioná R. Ciclo 2: dejá que tu echo la active y cruzá la puerta hacia la zona ámbar.'}
+            ? 'You found a way forward.'
+            : 'Every cycle returns to the beginning. Not everything you do disappears. Watch what changes around you.'}
         </p>
         <button id="enter-game" disabled={!ready || active || completed}>
-          {ready ? 'Entrar / continuar' : 'Preparando la escena…'}
+          {ready ? 'Enter / continue' : 'Preparing the scene…'}
           <span aria-hidden="true">↗</span>
         </button>
         {!completed && ready && (
@@ -81,25 +65,25 @@ export function GameOverlay() {
             className="secondary-action"
             onClick={() => useGameStore.getState().resetSession()}
           >
-            Reiniciar partida
+            Restart game
           </button>
         )}
         {completed && (
           <button onClick={() => useGameStore.getState().resetSession()}>
-            Volver a jugar
+            Play again
           </button>
         )}
         <p className="hint">
-          Click para capturar el mouse · Escape para liberarlo
+          Click to capture the mouse · Escape to release it
         </p>
         {lastRun && (
           <div className="recording-summary">
             <p>
-              Último recorrido: ciclo {lastRun.cycle} ·{' '}
-              {lastRun.duration.toFixed(2)} s · {lastRun.frames.length} muestras
+              Last run: cycle {lastRun.cycle} · {lastRun.duration.toFixed(2)} s
+              · {lastRun.frames.length} samples
             </p>
             <button onClick={() => downloadRun(lastRun)}>
-              Descargar recorrido JSON
+              Download run JSON
             </button>
           </div>
         )}
@@ -109,46 +93,40 @@ export function GameOverlay() {
         <>
           <div className="crosshair" aria-hidden="true" />
           <div className="objective" role="status">
-            {plateEcho
-              ? 'Tu echo sostiene la placa. Cruzá la puerta y alcanzá la salida.'
-              : platePlayer
-                ? 'Placa activada. Presioná R para dejarle este lugar a tu echo.'
-                : lastRun
-                  ? 'Esperá a tu echo o grabá un recorrido nuevo sobre la placa.'
-                  : 'Buscá la placa amarilla a tu izquierda.'}
+            {lastRun
+              ? 'The room is the same. What happens is not.'
+              : 'Take a moment to observe.'}
           </div>
         </>
       )}
       <footer>
         <div className="controls">
           <span>
-            <kbd>R</kbd> Reiniciar ciclo
+            <kbd>R</kbd> Reset cycle
           </span>
           <span>
             <kbd>W</kbd>
             <kbd>A</kbd>
             <kbd>S</kbd>
-            <kbd>D</kbd> Mover
+            <kbd>D</kbd> Move
           </span>
           <span>
             MOUSE / ↑ ↓ ← →{' '}
-            <span className="muted">
-              {fallback ? 'Arrastrar para mirar' : 'Mirar'}
-            </span>
+            <span className="muted">{fallback ? 'Drag to look' : 'Look'}</span>
           </span>
           <span>
-            <kbd>ESC</kbd> Liberar mouse
+            <kbd>ESC</kbd> Release mouse
           </span>
         </div>
         <span className="status">
           <i />
           {fallback
-            ? 'MODO ARRASTRE'
+            ? 'DRAG MODE'
             : locked
-              ? 'EXPLORANDO'
+              ? 'EXPLORING'
               : ready
-                ? 'LISTO PARA EXPLORAR'
-                : 'CARGANDO'}
+                ? 'READY TO EXPLORE'
+                : 'LOADING'}
         </span>
       </footer>
     </div>

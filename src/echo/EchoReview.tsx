@@ -13,10 +13,10 @@ import { EmptyRoom } from '../levels/EmptyRoom'
 import { useGameStore } from '../state/gameStore'
 
 const views = {
-  Frente: [-4, 1.55, -1.3],
-  Perfil: [-0.7, 1.55, 2],
-  Espalda: [-4, 1.55, 5.3],
-  'Tres cuartos': [-1.6, 1.55, -0.4],
+  Front: [-4, 1.55, -1.3],
+  Profile: [-0.7, 1.55, 2],
+  Back: [-4, 1.55, 5.3],
+  'Three-quarter': [-1.6, 1.55, -0.4],
 } as const
 function CameraView({ view }: { view: keyof typeof views }) {
   const { camera } = useThree()
@@ -55,7 +55,7 @@ function Simulation({ loop }: { loop: TimeLoop }) {
 }
 export function EchoReview() {
   const [loop] = useState(() => new TimeLoop())
-  const [view, setView] = useState<keyof typeof views>('Frente')
+  const [view, setView] = useState<keyof typeof views>('Front')
   const [variant, setVariant] = useState<'glb' | 'procedural'>('glb')
   const [generation, setGeneration] = useState(0)
   const plate = useGameStore((s) => s.plateEcho)
@@ -94,17 +94,17 @@ export function EchoReview() {
           flexWrap: 'wrap',
         }}
       >
-        <strong>Revisión Echo · solo desarrollo</strong>
+        <strong>Echo review · development only</strong>
         {Object.keys(views).map((v) => (
           <button key={v} onClick={() => setView(v as keyof typeof views)}>
             {v}
           </button>
         ))}
-        <button onClick={() => load(false)}>Pose en placa</button>
-        <button onClick={() => load(false, true)}>Mirada inclinada</button>
-        <button onClick={() => load(true)}>Reproducir recorrido</button>
+        <button onClick={() => load(false)}>Plate pose</button>
+        <button onClick={() => load(false, true)}>Tilted look</button>
+        <button onClick={() => load(true)}>Play run</button>
         <button onClick={() => useGameStore.getState().setFallback(!running)}>
-          {running ? 'Pausar' : 'Reanudar'}
+          {running ? 'Pause' : 'Resume'}
         </button>
         <button
           onClick={() => {
@@ -112,7 +112,7 @@ export function EchoReview() {
             setGeneration((n) => n + 1)
           }}
         >
-          Reiniciar ciclo
+          Reset cycle
         </button>
         <button
           onClick={() => {
@@ -121,10 +121,10 @@ export function EchoReview() {
             setVariant(next)
           }}
         >
-          Comparar: {variant}
+          Compare: {variant}
         </button>
         <span role="status">
-          Ciclo {cycle} · Placa {plate ? 'ECHO ACTIVADO' : 'LIBRE'}
+          Cycle {cycle} · Plate {plate ? 'ECHO ACTIVE' : 'CLEAR'}
         </span>
       </div>
       <div style={{ height: 'calc(100vh - 100px)' }}>
