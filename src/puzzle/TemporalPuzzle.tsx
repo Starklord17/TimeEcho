@@ -56,10 +56,10 @@ export function TemporalPuzzle({
         occlude
         style={{ pointerEvents: 'none' }}
       >
-        {/* <div className="world-label">
+        <div className="world-label">
           <b>02 · PUERTA</b>
           <span>{open ? 'APERTURA ACTIVADA' : 'TU ECHO PUEDE ABRIRLA'}</span>
-        </div> */}
+        </div>
       </Html>
       <Html
         position={[EXIT.x, 1.2, EXIT.z]}
