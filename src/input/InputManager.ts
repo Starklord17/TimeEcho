@@ -14,6 +14,7 @@ const controlKeys = new Set([
 export class InputManager {
   private keys = new Set<string>()
   private onKeyDown = (event: KeyboardEvent) => {
+    if (useGameStore.getState().cyclePhase !== 'PLAYING') return
     if (
       event.code === 'KeyR' &&
       !event.repeat &&

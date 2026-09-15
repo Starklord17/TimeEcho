@@ -7,6 +7,7 @@ it('starts a fresh session while preserving store actions', () => {
   recorder.begin(4, { x: 0, y: 1, z: 0 }, { x: 0, y: 0, z: 0, w: 1 })
   useGameStore.setState({
     cycle: 4,
+    cyclePhase: 'RESETTING',
     remainingSeconds: 3,
     completed: true,
     plateEcho: true,
@@ -18,6 +19,7 @@ it('starts a fresh session while preserving store actions', () => {
   useGameStore.getState().resetSession()
   const state = useGameStore.getState()
   expect(state.sessionId).toBe(oldId + 1)
+  expect(state.cyclePhase).toBe('PLAYING')
   expect(state.cycle).toBe(1)
   expect(state.remainingSeconds).toBe(15)
   expect(state.lastRun).toBe(null)

@@ -1,0 +1,75 @@
+{
+  "schema": "game-room.room-final-report.v1",
+  "roomId": "timeecho-echo",
+  "gates": {
+    "function": false,
+    "form": false,
+    "runtime": false
+  },
+  "formChecks": {
+    "floorPlanParity": false,
+    "primaryArrival": false,
+    "symmetry": false,
+    "shell": false,
+    "manifold": false,
+    "booleans": false,
+    "collisions": false,
+    "support": false,
+    "attachmentOrientation": false,
+    "ceilingAttachmentOrientation": false,
+    "seatingOrientation": false,
+    "focalDistribution": false,
+    "heroClearance": false,
+    "colonnades": false,
+    "screenClearance": false,
+    "scale": false,
+    "camera": false,
+    "ceilingCoverage": false,
+    "environmentCoverage": false,
+    "provenance": false
+  },
+  "reviewRenders": {
+    "corners": [],
+    "ceiling": [],
+    "environment": {}
+  },
+  "runtimeChecks": {
+    "vlow": false,
+    "textureTiers": false,
+    "lightmap": false,
+    "lightingManifest": false,
+    "performance": false,
+    "browserCapture": "runtime-plate.png",
+    "errors": []
+  },
+  "postmortem": {
+    "observations": [
+      "Scope adaptation: single visual character, no room construction, no Meshy, no generated reference images. User requests approval after runtime integration; no artistic approval inferred.",
+      "V2: rigid knee-length black coat, trousers and boots; cyan spectral head and small chest/wrist accents. No cloth or walk animation."
+    ],
+    "corrections": [
+      "Added inner head core after rear view revealed gaze through shell",
+      "Added hot.dispose cleanup to QA entry",
+      "Runtime preserves opaque clothing materials and depth writes instead of applying spectral alpha to every material."
+    ],
+    "remainingRisks": [
+      "No full manual solution playthrough",
+      "Generic room gate is not applicable to single-character deliverable; validator failure retained"
+    ]
+  },
+  "proposedLessons": [],
+  "assetChecks": {
+    "triangles": 4556,
+    "glbBytes": 106476,
+    "unitTests": 57,
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "runtimeFixturePlate": true,
+    "fallbackMissingFile": true,
+    "artisticApproval": "approved",
+    "meshCount": 17,
+    "materialCount": 6,
+    "revision": "black-explorer-coat-v2"
+  }
+}

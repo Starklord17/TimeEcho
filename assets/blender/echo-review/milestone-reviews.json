@@ -1,0 +1,35 @@
+{
+  "schema": "game-room.milestone-reviews.v1",
+  "roomId": "timeecho-echo",
+  "function": {
+    "status": "pending",
+    "approvedBy": "",
+    "approvedAt": "",
+    "evidence": [],
+    "strangestElement": "",
+    "notes": "Generic room gate not certified for this single-character asset. See assetReview for the user approval of Echo appearance."
+  },
+  "form": {
+    "status": "pending",
+    "approvedBy": "",
+    "approvedAt": "",
+    "evidence": [],
+    "strangestElement": "",
+    "notes": "Generic room gate not certified for this single-character asset. See assetReview for the user approval of Echo appearance."
+  },
+  "runtime": {
+    "status": "pending",
+    "approvedBy": "",
+    "approvedAt": "",
+    "evidence": [],
+    "strangestElement": "",
+    "notes": "Generic room gate not certified for this single-character asset. See assetReview for the user approval of Echo appearance."
+  },
+  "assetReview": {
+    "revision": "black-explorer-coat-v2",
+    "status": "approved",
+    "approvedBy": "user",
+    "evidence": "Revisi\u00f3n completada. Continuar con los commits correspondientes.",
+    "scope": "Echo appearance; does not certify generic room gates or a full manual playthrough."
+  }
+}

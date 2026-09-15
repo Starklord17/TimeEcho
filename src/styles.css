@@ -338,3 +338,12 @@ button.secondary-action {
 .welcome {
   width: 500px;
 }
+
+#cycle-transition {
+  position: fixed;
+  inset: 0;
+  background: #101519;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+}

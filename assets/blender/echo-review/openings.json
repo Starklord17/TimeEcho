@@ -1,0 +1,9 @@
+{
+  "schema": "game-room.opening-schedule.v1",
+  "roomId": "timeecho-echo",
+  "primaryArrival": {
+    "openingId": "",
+    "exception": "Character-only asset; no room or opening modifications requested."
+  },
+  "openings": []
+}

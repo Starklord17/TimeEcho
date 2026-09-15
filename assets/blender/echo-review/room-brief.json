@@ -1,0 +1,52 @@
+{
+  "schema": "game-room.room-brief.v1",
+  "roomId": "timeecho-echo",
+  "family": "custom",
+  "purpose": "Single strictly visual replay character; existing room unchanged",
+  "runtimeSurface": "React Three Fiber FPS",
+  "boundsMeters": [0.6, 0.45, 1.75],
+  "hero": {
+    "id": "Echo_Root",
+    "role": "past recording silhouette",
+    "reservedBoundsMeters": [0.6, 0.45, 1.75]
+  },
+  "symmetry": {
+    "mode": "none",
+    "order": 1,
+    "appliesTo": [],
+    "exceptions": []
+  },
+  "circulation": {
+    "description": "",
+    "minimumClearanceMeters": 0
+  },
+  "productionCamera": {
+    "viewport": [0, 0],
+    "location": [0, 0, 0],
+    "target": [0, 0, 0],
+    "verticalFovDegrees": 0
+  },
+  "performanceBudget": {
+    "maxSceneTriangles": 8000,
+    "maxVLowBytes": 0,
+    "maxHighTextureBytes": 0
+  },
+  "creditBudget": {
+    "maximumCredits": 0,
+    "approvalRequired": true
+  },
+  "environment": {
+    "type": "none",
+    "identity": "",
+    "source": "",
+    "assignmentKey": ""
+  },
+  "artifacts": {
+    "floorPlan": "",
+    "reflectedCeilingPlan": "",
+    "planMetadata": "plan-metadata.json",
+    "wallElevations": [],
+    "visualTarget": "",
+    "openingContactSheet": ""
+  }
+}

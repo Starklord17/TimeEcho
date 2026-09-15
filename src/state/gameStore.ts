@@ -3,6 +3,8 @@ import { CYCLE_SECONDS } from '../time-loop/TimeLoop'
 import { create } from 'zustand'
 
 type GameState = {
+  cyclePhase: 'PLAYING' | 'CYCLE_ENDING' | 'RESETTING'
+  setCyclePhase: (phase: GameState['cyclePhase']) => void
   sessionId: number
   resetSession: () => void
   platePlayer: boolean
@@ -35,10 +37,15 @@ type GameState = {
 
 // Only low-frequency UI/session state. Transforms stay in Three and Rapier.
 export const useGameStore = create<GameState>((set) => ({
+  cyclePhase: 'PLAYING',
+  setCyclePhase: (cyclePhase) => {
+    if (useGameStore.getState().cyclePhase !== cyclePhase) set({ cyclePhase })
+  },
   sessionId: 0,
   resetSession: () =>
     set((state) => ({
       sessionId: state.sessionId + 1,
+      cyclePhase: 'PLAYING',
       platePlayer: false,
       plateEcho: false,
       doorOpen: false,
@@ -71,7 +78,11 @@ export const useGameStore = create<GameState>((set) => ({
   cycle: 1,
   remainingSeconds: CYCLE_SECONDS,
   restartRequested: false,
-  requestRestart: () => set({ restartRequested: true }),
+  requestRestart: () => {
+    const state = useGameStore.getState()
+    if (state.cyclePhase === 'PLAYING' && !state.completed)
+      set({ restartRequested: true })
+  },
   publishCycle: (cycle, remainingSeconds) => {
     const current = useGameStore.getState()
     if (

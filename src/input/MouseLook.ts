@@ -58,6 +58,11 @@ export class MouseLook {
   private move = (event: MouseEvent) => {
     const locked = document.pointerLockElement === this.canvas
     if ((!locked && !this.dragging) || useGameStore.getState().completed) return
+    if (useGameStore.getState().cyclePhase !== 'PLAYING') {
+      this.lastX = event.clientX
+      this.lastY = event.clientY
+      return
+    }
     const dx = locked ? event.movementX : event.clientX - this.lastX
     const dy = locked ? event.movementY : event.clientY - this.lastY
     this.lastX = event.clientX

@@ -1,6 +1,7 @@
+import { EchoVisual } from './EchoVisual'
 import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Euler, Group, Quaternion, Vector3 } from 'three'
+import { Euler, Group, Object3D, Quaternion, Vector3 } from 'three'
 import { useGameStore } from '../state/gameStore'
 import type { TimeLoop } from '../time-loop/TimeLoop'
 import { PlaybackClock } from './PlaybackClock'
@@ -9,8 +10,8 @@ import { ReplaySampler } from './ReplaySampler'
 export function Echo({ loop }: { loop: TimeLoop }) {
   const run = useGameStore((state) => state.lastRun)
   const root = useRef<Group>(null)
-  const torso = useRef<Group>(null)
-  const head = useRef<Group>(null)
+  const torso = useRef<Object3D>(null)
+  const head = useRef<Object3D>(null)
   const [sampler] = useState(() => new ReplaySampler())
   const [clock] = useState(() => new PlaybackClock())
   const position = useRef(new Vector3())
@@ -24,7 +25,7 @@ export function Echo({ loop }: { loop: TimeLoop }) {
       loop.cycle,
       loop.elapsedSeconds,
       delta,
-      state.locked || state.fallback,
+      (state.locked || state.fallback) && state.cyclePhase === 'PLAYING',
     )
     root.current.visible =
       !!run && sampler.sample(run, time, position.current, rotation.current)
@@ -38,39 +39,7 @@ export function Echo({ loop }: { loop: TimeLoop }) {
   // Visual only: deliberately no rigid body, collider or physics interaction.
   return (
     <group ref={root} visible={false}>
-      <group ref={torso}>
-        <mesh position={[0, -0.16, 0]}>
-          <capsuleGeometry args={[0.27, 0.88, 4, 12]} />
-          <meshStandardMaterial
-            color="#84e9ed"
-            emissive="#226d79"
-            emissiveIntensity={0.6}
-            transparent
-            opacity={0.35}
-            depthWrite={false}
-          />
-        </mesh>
-      </group>
-      <group ref={head} position={[0, 0.57, 0]}>
-        <mesh>
-          <sphereGeometry args={[0.21, 12, 8]} />
-          <meshStandardMaterial
-            color="#b6ffff"
-            transparent
-            opacity={0.5}
-            depthWrite={false}
-          />
-        </mesh>
-        <mesh position={[0, 0, -0.25]}>
-          <boxGeometry args={[0.25, 0.055, 0.16]} />
-          <meshBasicMaterial
-            color="#d6ffff"
-            transparent
-            opacity={0.8}
-            depthWrite={false}
-          />
-        </mesh>
-      </group>
+      <EchoVisual bodyRef={torso} headRef={head} />
     </group>
   )
 }

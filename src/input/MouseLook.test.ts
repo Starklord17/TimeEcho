@@ -13,6 +13,7 @@ afterEach(() => {
 function setup(request: () => Promise<void>) {
   const documentTarget = Object.assign(new EventTarget(), {
     pointerLockElement: null,
+    exitPointerLock: vi.fn(),
   })
   const windowTarget = new EventTarget()
   vi.stubGlobal('document', documentTarget)
@@ -102,3 +103,18 @@ it.each(['blur', 'escape'])(
     expect(useGameStore.getState().fallback).toBe(false)
   },
 )
+
+it('ignores mouse look throughout a cycle transition', () => {
+  const { camera, canvas, documentTarget } = setup(() => Promise.resolve())
+  Object.assign(documentTarget, { pointerLockElement: canvas })
+  useGameStore.setState({ cyclePhase: 'RESETTING' })
+  try {
+    const before = camera.quaternion.clone()
+    documentTarget.dispatchEvent(
+      Object.assign(new Event('mousemove'), { movementX: 100, movementY: 100 }),
+    )
+    expect(camera.quaternion.equals(before)).toBe(true)
+  } finally {
+    useGameStore.setState({ cyclePhase: 'PLAYING' })
+  }
+})
