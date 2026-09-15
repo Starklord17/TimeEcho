@@ -103,21 +103,10 @@ Se muestra solo el último recorrido. Un echo parcial permanece en su punto fina
 no vuelve a empezar hasta otro ciclo. No tiene colisión. La cabeza indica la mirada.
 En el spawn puede superponerse con el jugador: alejarse permite verlo.
 
-## Resolver el primer puzzle
-
-1. Caminar hasta la placa amarilla a la izquierda del spawn. El HUD confirma PLACA: JUGADOR.
-2. Permanecer allí hasta terminar el ciclo o presionar R sobre ella.
-3. En el siguiente ciclo dejar que el echo llegue a la placa: la puerta central se abre.
-4. Cruzar hacia la zona ámbar del fondo. Aparece Puzzle completado.
-5. Volver a jugar reinicia la sesión completa sin recargar la página.
-
-La placa permanece activa con cualquiera de los dos actores. La puerta no se
-cierra mientras el jugador ocupa el vano. El echo no puede ganar por sí solo.
-El ciclo ganador se congela al completar; la exportación conserva el último recorrido finalizado.
-
 ## Pulido de la experiencia
 
-Las señales 01/02/03 y el objetivo del HUD guían placa, puerta y salida. La puerta
+Las pistas del entorno invitan a experimentar sin revelar la solución. Las luces
+y el movimiento comunican los cambios; el HUD conserva el tiempo y los controles. La puerta
 se eleva en 0.4 segundos con su colisión. Escape pausa también la animación.
 **Reiniciar partida** en pausa y **Volver a jugar** en victoria limpian la sesión
 sin recargar: ciclo 1, sin grabaciones, cámara al spawn y puerta cerrada. **R**
