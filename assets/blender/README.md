@@ -1,34 +1,42 @@
-# Fuentes Blender
+# Blender sources
 
 ## Echo
 
-`echo.blend` es la fuente editable del primer modelo artístico integrado.
-El contrato y la reexportación están en [ECHO_SPEC.md](ECHO_SPEC.md).
-`build_echo.py` reconstruye fuente, renders y GLB; `export_echo.py` exporta la
-fuente existente. Ejecutar desde la raíz del proyecto con Blender disponible.
-El modelo incluye abrigo negro, pantalón y botas; la cabeza conserva su aspecto espectral.
+`echo.blend` is the editable source for the first integrated art asset. Its
+contract and re-export process are documented in [ECHO_SPEC.md](ECHO_SPEC.md).
 
-## Door — modelo pendiente
+Run the scripts from the repository root with Blender available:
 
-El juego usa la puerta procedural. `assets/test-fixtures/door-contract.glb` es
-solo una fixture de tests. Para crear el modelo de producción:
+- `build_echo.py` rebuilds the source file, review renders, and runtime GLB.
+- `export_echo.py` exports the existing Blender source without rebuilding it.
 
-- Usar metros y escala 1. Panel de 2.4 × 3.6 × 0.3 m, apoyado en el suelo.
-- `Door_Root` identidad, con hijos `Door_Panel` y `Door_Frame`; `Door_Light`
-  debe ser hijo del marco. No duplicar nombres. Panel con origen local cero.
-- Mantener el marco fuera del vano de 2.4 × 3.6 m; perfiles de 0.12 m y
-  profundidad 0.4 m. Solo el panel se mueve, desde y=0 hasta y=3.8 en runtime.
-- Frente Blender −Y, exportado a Three +Z hacia el spawn. La raíz se coloca en
-  `[0, 0, -3]`. Esta orientación es distinta de la del Echo.
-- Materiales simples `M_Door_Panel`, `M_Door_Frame`, `M_Door_Light`;
-  objetivo de hasta 5.000 triángulos y sin texturas.
-- Guardar `assets/blender/door.blend`. Exportar raíz y descendientes como GLB,
-  +Y Up, materiales/normales y modificadores; sin animaciones, cámaras,
-  luces puntuales ni Draco, a `public/models/environment/door.glb`.
-- Activar `mode: 'glb'` en `src/puzzle/doorAsset.ts` y recargar. El validador
-  comprueba jerarquía, transforms, dimensiones y apoyo; un fallo conserva
-  el visual procedural. La física sigue definida por el juego.
+The model includes a black coat, trousers, and boots while preserving the Echo's
+spectral head.
 
-Comprobar apertura, cierre, protección del vano, pausa y reinicios en el juego.
-La guía manual ampliada y el historial son documentación privada local bajo
-`docs/`, excluida de Git; no son requisitos para ejecutar el proyecto.
+## Door — model pending
+
+The game currently uses the procedural door.
+`assets/test-fixtures/door-contract.glb` is only a test fixture. Follow this
+contract when creating the production model:
+
+- Use metric units at scale 1. The panel is 2.4 × 3.6 × 0.3 metres and rests on
+  the floor.
+- `Door_Root` has identity transforms and contains `Door_Panel` and `Door_Frame`.
+  `Door_Light` is a child of the frame. Names must be unique and the panel origin
+  must be at the local floor centre.
+- Keep the frame outside the 2.4 × 3.6 metre opening. Use 0.12 metre profiles and
+  0.4 metre depth. Only the panel moves, from y=0 to y=3.8 at runtime.
+- The Blender front faces −Y and exports toward Three.js +Z, facing the spawn.
+  Runtime places the root at `[0, 0, -3]`. This differs from Echo orientation.
+- Use the material names `M_Door_Panel`, `M_Door_Frame`, and `M_Door_Light`.
+  Target no more than 5,000 triangles and no textures for the first version.
+- Save the source as `assets/blender/door.blend`. Export the root and descendants
+  as a +Y-up GLB with materials, normals, and modifiers, without animations,
+  cameras, punctual lights, or Draco compression. The runtime destination is
+  `public/models/environment/door.glb`.
+- Change `mode` to `glb` in `src/puzzle/doorAsset.ts`, then reload. Contract or
+  loading failures preserve the procedural visual; gameplay physics remain
+  defined by the application.
+
+Test opening, closing, doorway protection, pause, and session resets in the game
+before accepting the production model.
