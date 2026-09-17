@@ -6,12 +6,14 @@ import { useGameStore } from '../state/gameStore'
 import type { TimeLoop } from '../time-loop/TimeLoop'
 import { PlaybackClock } from './PlaybackClock'
 import { ReplaySampler } from './ReplaySampler'
+import type { EchoAnimator } from './EchoAnimator'
 
 export function Echo({ loop }: { loop: TimeLoop }) {
   const run = useGameStore((state) => state.lastRun)
   const root = useRef<Group>(null)
   const torso = useRef<Object3D>(null)
   const head = useRef<Object3D>(null)
+  const animator = useRef<EchoAnimator>(null)
   const [sampler] = useState(() => new ReplaySampler())
   const [clock] = useState(() => new PlaybackClock())
   const position = useRef(new Vector3())
@@ -30,6 +32,7 @@ export function Echo({ loop }: { loop: TimeLoop }) {
     root.current.visible =
       !!run && sampler.sample(run, time, position.current, rotation.current)
     if (!root.current.visible) return
+    animator.current?.sample(run!, time)
     root.current.position.copy(position.current)
     angles.current.setFromQuaternion(rotation.current, 'YXZ')
     torso.current.rotation.set(0, angles.current.y, 0)
@@ -39,7 +42,7 @@ export function Echo({ loop }: { loop: TimeLoop }) {
   // Visual only: deliberately no rigid body, collider or physics interaction.
   return (
     <group ref={root} visible={false}>
-      <EchoVisual bodyRef={torso} headRef={head} />
+      <EchoVisual bodyRef={torso} headRef={head} animatorRef={animator} />
     </group>
   )
 }

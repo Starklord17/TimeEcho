@@ -1,8 +1,10 @@
 import type { RefObject } from 'react'
 import type { Object3D } from 'three'
+import type { EchoAnimator } from './EchoAnimator'
 export type EchoVisualRefs = {
   bodyRef: RefObject<Object3D | null>
   headRef: RefObject<Object3D | null>
+  animatorRef?: RefObject<EchoAnimator | null>
 }
 export function ProceduralEcho({ bodyRef, headRef }: EchoVisualRefs) {
   return (

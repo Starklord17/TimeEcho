@@ -1,5 +1,6 @@
 """Run with Blender --background --python assets/blender/build_echo.py.
-Local authored geometry only. No network, paid services, rigs or textures.
+Local authored geometry only. No network, paid services or textures.
+For incremental edits use animate_echo.py on the existing source instead.
 """
 import bpy, math, json
 from pathlib import Path
@@ -161,5 +162,6 @@ for name,loc in views.items():
 # Save author source with -Y front before runtime-only basis conversion.
 bpy.context.preferences.filepaths.save_version=0
 bpy.ops.wm.save_as_mainfile(filepath=str(BASE/'assets/blender/echo.blend'))
+exec(compile((BASE/'assets/blender/animate_echo.py').read_text(), 'animate_echo.py', 'exec'))
 exec(compile((BASE/'assets/blender/export_echo.py').read_text(), 'export_echo.py', 'exec'))
 print('ECHO_METRICS',json.dumps(metrics))
