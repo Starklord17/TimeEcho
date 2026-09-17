@@ -1,112 +1,131 @@
-# Echo v2 — explorador con abrigo negro
+# Echo asset contract
 
-## Métricas finales
+## Source and budget
 
-- Blender 5.2.0 LTS, autoría local mediante `build_echo.py`; cero servicios pagos.
-- Dimensiones: **0.588 m ancho × 1.700 m alto × 0.305 m profundidad**.
-- **4.556 triángulos**, 17 meshes, 6 materiales; GLB 106.476 bytes (~104 KiB).
-- Sin armature, clips, texturas, partículas ni shaders personalizados.
-- Root identidad; base local −0.91 m respecto del centro reproducido de la cápsula.
-  Al situar la raíz a y≈0.91, los pies apoyan en suelo. El spawn inicial y el offset
-  del character controller pueden dejar un margen centimétrico antes de asentarse.
+- Editable source: `assets/blender/echo.blend`, Blender 5.2.0 LTS.
+- Runtime: `public/models/characters/echo.glb`, **276,492 bytes** (270 KiB).
+- Rest dimensions: **0.588 m wide × 1.700 m tall × 0.305 m deep**.
+- **5,896 triangles**, 26 authored meshes, 8 materials, 14 bones.
+- Hard limit: **8,000 triangles**. No textures, cloth, particles or custom shaders.
+- Root identity; feet at runtime local y = −0.91 m. No collider.
 
-## Vestimenta
-
-Abrigo negro carbón hasta las rodillas, abierto delante y con abertura posterior.
-Dos faldones con espesor de 6 mm, cuello abierto, pantalón, botas y guantes.
-Las superficies cubiertas de torso y extremidades usan materiales de ropa para
-no superponer capas coincidentes. Cabeza y visera siguen espectrales; pecho y
-puños conservan señales cian. La ropa es rígida: no hay pasos animados ni tela.
-
-- `M_Echo_Coat`: negro carbón, roughness 0.34, opaco, sin emisión.
-- `M_Echo_Fabric`: negro oscuro, roughness 0.8, opaco, sin emisión.
-- `M_Echo_Boots`: negro oscuro, roughness 0.48, opaco, sin emisión.
-
-## Jerarquía
+## Hierarchy
 
 ```text
 Echo_Root
-├── Echo_Body
-│   ├── Echo_Torso
-│   ├── Echo_Arm_Left / Echo_Arm_Right
-│   ├── Echo_Leg_Left / Echo_Leg_Right
-│   ├── Echo_Core
-│   ├── Echo_Spine
-│   ├── Echo_Coat_Left / Echo_Coat_Right
-│   ├── Echo_Collar_Left / Echo_Collar_Right
-│   ├── Echo_Cuff_Left / Echo_Cuff_Right
-│   └── Echo_ChestLight
-└── Echo_HeadPivot (altura local 0.58 m)
+├── Echo_Body                         # recorded yaw, never a clip target
+│   └── Echo_Rig                      # identity object transform
+│       ├── Echo_NeckGuard            # opaque collar, weighted to spine
+│       ├── Echo_Hips
+│       │   ├── Echo_SpineBone
+│       │   │   ├── Echo_UpperArm_Left / Right
+│       │   │   │   └── Echo_Forearm_Left / Right
+│       │   │   └── Echo_Tail_Left / Right
+│       │   └── Echo_Thigh_Left / Right
+│       │       └── Echo_Shin_Left / Right
+│       │           └── Echo_Foot_Left / Right
+│       └── skinned torso, arms, legs, coat halves, collars, cuffs, core,
+│           spine and chest light
+└── Echo_HeadPivot                    # recorded full look quaternion
     ├── Echo_Head
     ├── Echo_HeadCore
-    └── Echo_Gaze
+    ├── Echo_GlassesBridge
+    ├── Echo_GlassesFrame_Left / Right
+    ├── Echo_GlassesLens_Left / Right
+    ├── Echo_GlassesTemple_Left / Right
+    └── Echo_GlassesAccent_Left / Right
 ```
 
-Core se ubica bajo Body para acompañar el yaw; el núcleo de cabeza acompaña la
-rotación completa del HeadPivot. No hay cuerpos físicos ni sensores en el asset.
-Meshes tienen rotación cero y escala uno, con geometría horneada en sus coordenadas.
+Existing body geometry receives vertex weights. Lower coat vertices follow two
+tail bones; the upper coat follows the spine. Cuffs follow forearms. The head is
+not skinned. glTF material primitives may appear as children of authored meshes.
 
-## Orientación y desviación necesaria
+`Echo_NeckGuard` is an opaque charcoal raised collar using `M_Echo_Fabric`,
+weighted entirely to the existing spine so it follows the coat during movement.
+Its base overlaps the coat; a narrow inner cap maintains contact during head turns.
+The bottom 12.5 cm of the head uses opaque cyan `M_Echo_Chin` to block the collar
+silhouette. The upper 70% retains its original transparency, including the face
+and glasses area. No extra head motion or clip tracks are used. Recorded look,
+Idle and Walk remain unchanged.
 
-La fuente editable mira hacia **Blender −Y**. El exportador glTF +Y Up transforma
-ese frente en Three +Z, pero ReplaySampler y la cámara de Time Echo miran hacia
-**Three −Z** con quaternion identidad. Se aplica una conversión de base de 180°
-sobre Z a coordenadas de mesh y posiciones locales **solo durante exportación**.
-Root y transforms quedan identidad; no existe rotación correctiva en runtime.
-La fuente `.blend` se guarda antes de esa conversión. No exportar manualmente sin
-el paso de conversión: el validador rechaza la visera orientada hacia +Z.
+## Materials
 
-## Materiales y capas
+| Material              | Appearance                               | Alpha | Roughness | Emission |
+| --------------------- | ---------------------------------------- | ----- | --------- | -------- |
+| `M_Echo_Shell`        | Pale cyan spectral head                  | 0.62  | 0.40      | 0.18     |
+| `M_Echo_Chin`         | Opaque cyan lower head                   | 1     | 0.40      | 0.18     |
+| `M_Echo_Core`         | Inner head, chest, cuffs, temple accents | 1     | 0.40      | 0.40     |
+| `M_Echo_Coat`         | Charcoal coat and sleeves                | 1     | 0.34      | 0        |
+| `M_Echo_Fabric`       | Dark trousers and torso                  | 1     | 0.80      | 0        |
+| `M_Echo_Boots`        | Boots and gloves                         | 1     | 0.48      | 0        |
+| `M_Echo_GlassesFrame` | Graphite frame, bridge and temples       | 1     | 0.38      | 0        |
+| `M_Echo_GlassesLens`  | Dark, subtly reflective lenses           | 1     | 0.24      | 0        |
 
-- `M_Echo_Shell`: cian pálido, alpha 0.62, roughness 0.4, emisión 0.18.
-- `M_Echo_Core`: cian más oscuro/saturado, alpha 1, emisión 0.4.
-- `M_Echo_Gaze`: blanco-cian, alpha 0.95, emisión 1.1.
+All use exportable Principled BSDF. Only the shell is transparent and does not
+write depth. The opaque inner head occludes the front lenses from behind.
+The former `Echo_Gaze` mesh and material are not exported.
 
-Principled BSDF exportable. Runtime conserva depth testing, sin blending aditivo;
-shell/gaze no escriben profundidad; core y ropa opaca sí. La capa interna opaca de cabeza
-corrige la visera que se transparentaba desde atrás en la primera revisión.
-No es un segundo personaje duplicado: solo columna/núcleo y volumen interno de
-cabeza para conservar profundidad y dirección. El exterior permanece translúcido.
+## Clips and runtime
 
-## Reproducir o editar
+Exactly two looping clips sampled at 30 fps:
 
-Requisito: Blender disponible en `PATH` (o sustituir `blender` por su ejecutable).
-La autoría se verificó con Blender 5.2.0 LTS desde un volumen temporal; esa ejecución
-no instaló Blender globalmente. Ejecutar los comandos desde la raíz del repositorio.
+- **Idle**, 3 seconds: minimal spine breathing, stationary feet.
+- **Walk**, 1 second: alternating thighs and arms, knee flexion, foot correction,
+  slight weight shift and two restrained coat-tail oscillations.
 
-Construcción completa (sobrescribe fuente/renders/exportación):
+Only the 14 named bones may receive tracks. Root, body, rig object and head are
+never animation targets. Translations remain constant except for a vertical hips
+correction under 4 cm to maintain support. Clips return to their initial pose,
+with no accumulated root motion.
+
+`EchoMotion` derives horizontal speed from adjacent recorded positions, builds a
+120 Hz timeline per immutable run, blends over 0.15 seconds and advances Walk by
+travelled distance (0.8 m per authored cycle). No live input is consulted.
+`EchoAnimator` samples both clips at absolute replay time. Pause, restart and
+backwards seeks are independent of rendering FPS. At the end of a partial run,
+position remains fixed and Walk fades to Idle.
+
+Runtime clones skeletons and materials per instance, shares cached geometry and
+disposes its mixer, cloned materials and skeleton resources on unmount.
+The procedural fallback remains available for loading and contract failures.
+
+## Authoring and export
+
+Run from the repository root with Blender available:
 
 ```sh
-blender --background --python assets/blender/build_echo.py
-```
-
-Para editar la fuente manualmente y exportarla sin reconstruirla:
-
-```sh
+# Incremental update preserving the existing body meshes.
+blender --background assets/blender/echo.blend --python assets/blender/animate_echo.py
+# Update only the neck insert, preserving existing rig, weights and clips.
+blender --background assets/blender/echo.blend --python assets/blender/fit_echo_neck.py
+# Export the saved source.
 blender --background assets/blender/echo.blend --python assets/blender/export_echo.py
+# Eight light/dark views and a Walk pose.
+blender --background assets/blender/echo.blend --python assets/blender/render_echo.py
+# Neck close-ups for Idle/Walk and the full supported pitch range.
+blender --background assets/blender/echo.blend --python assets/blender/render_echo_neck.py -- after
 ```
 
-GLB único, selección de Echo_Root y descendientes, +Y Up, Apply Modifiers,
-sin cámaras/luces de revisión ni animaciones. Fuente: `assets/blender/echo.blend`.
-Destino: `public/models/characters/echo.glb`. Los renders de fondo neutro conservan
-el frente de autoría −Y; las capturas runtime muestran la conversión ya aplicada.
+`build_echo.py` is a destructive full rebuild from the original loft definitions,
+followed by the glasses/animation upgrade. Prefer incremental editing for a source
+with manual changes. `animate_echo.py` replaces generated glasses, weights, rig and
+clips; manual edits to those parts are not preserved.
 
-## Integración y revisión
+Authoring faces Blender −Y. Export rotates mesh coordinates, local positions and
+armature rest data by π around Z before glTF +Y-up conversion, producing runtime
+−Z. Bone-local channels remain in their rotated rest basis. The saved source is
+not overwritten. Reload the source before another export. Review cameras and
+lights are excluded.
 
-Echo.tsx mantiene ReplaySampler, PlaybackClock, visibilidad y transforms del root,
-yaw corporal y quaternion completo de cabeza. EchoVisual carga/clona la jerarquía
-y comparte geometría de caché; clona una vez cada uno de los seis materiales por
-instancia y libera esos clones al desmontar. Ciclos ordinarios no recargan el GLB.
-Suspense y error boundary conservan ProceduralEcho si falla carga o contrato.
+## Verification
 
-El validador y sus tests comprueban nombres, duplicados, jerarquía, dimensiones,
-root, apoyo, frente, materiales y presupuesto, cargando el GLB real.
+`echoAsset.test.ts` loads the real GLB and checks hierarchy, materials, budget,
+clip targets, loop closure, bounded displacement, independent skeletons, head
+control and evaluated animated feet. `EchoMotion.test.ts` checks transitions,
+partial runs, pause, seeks, restarts and display-rate independence.
 
-Con `pnpm dev`, abrir `/echo-review.html`: usa Canvas/FOV 70°, Echo, reloj, sensores
-y visuales reales del puzzle; permite frente/perfil/espalda, movimiento, mirada,
-reinicio y comparación procedural. Es una página de QA con recorrido sintético
-creado por Recorder, no una partida manual ni un nuevo modo de juego. No se incluye
-en el build normal. La ruta principal sigue usando el GLB con grabaciones reales.
-
-Revisar imágenes en `echo-review/`. El fallback procedural se conserva para
-errores de carga y comparación visual.
+With `pnpm dev`, open `/echo-review.html`. The puzzle fixture uses the production
+Echo, Recorder and sensors with a synthetic partial run. **Idle / Walk comparison**
+uses the production visual and animator, with time, yaw, pitch, pause/reset and
+light/dark background controls. The review entry is excluded from production.
+Use **Neck close-up** to inspect the joint while changing time and look direction.

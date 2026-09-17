@@ -9,9 +9,17 @@ Run the scripts from the repository root with Blender available:
 
 - `build_echo.py` rebuilds the source file, review renders, and runtime GLB.
 - `export_echo.py` exports the existing Blender source without rebuilding it.
+- `animate_echo.py` updates glasses, rig and clips on the existing body meshes.
+- `fit_echo_neck.py` updates only the opaque neck insert, preserving the existing
+  rig, weights and clips.
+- `render_echo_neck.py` renders close-ups through Idle/Walk and head turns.
+- `render_echo.py` renders front, three-quarter, profile and back on light/dark
+  backgrounds, plus a Walk pose.
 
-The model includes a black coat, trousers, and boots while preserving the Echo's
-spectral head.
+The model includes a black coat, trousers, boots and dark glasses while preserving
+the spectral head. A small rig provides in-place `Idle` and `Walk` clips; recorded
+movement and gaze remain controlled by the runtime. See the asset contract before
+editing or exporting animated geometry.
 
 ## Door — model pending
 
