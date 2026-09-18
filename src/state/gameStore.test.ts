@@ -36,3 +36,36 @@ it('starts a fresh session while preserving store actions', () => {
   expect(useGameStore.getState().restartRequested).toBe(true)
   state.resetSession()
 })
+
+it('unlocks levels in order and clears transient state without losing session progress', () => {
+  useGameStore.setState({
+    currentLevel: 'empty-room',
+    unlockedLevels: ['empty-room'],
+  })
+  useGameStore.getState().resetSession()
+  useGameStore.getState().selectLevel('split-signal')
+  expect(useGameStore.getState().currentLevel).toBe('empty-room')
+  useGameStore.getState().completeLevel()
+  expect(useGameStore.getState().unlockedLevels).toEqual([
+    'empty-room',
+    'split-signal',
+  ])
+  useGameStore.getState().selectLevel('split-signal')
+  expect(useGameStore.getState().remainingSeconds).toBe(20)
+  expect(useGameStore.getState().completed).toBe(false)
+  expect(useGameStore.getState().ready).toBe(false)
+  expect(useGameStore.getState().lastRun).toBe(null)
+  useGameStore.getState().completeLevel()
+  useGameStore.getState().resetSession()
+  expect(useGameStore.getState().currentLevel).toBe('split-signal')
+  expect(useGameStore.getState().completed).toBe(false)
+  expect(useGameStore.getState().cycle).toBe(1)
+  useGameStore.getState().selectLevel('empty-room')
+  expect(useGameStore.getState().remainingSeconds).toBe(15)
+  expect(useGameStore.getState().unlockedLevels).toEqual([
+    'empty-room',
+    'split-signal',
+  ])
+  useGameStore.setState({ unlockedLevels: ['empty-room'] })
+  useGameStore.getState().resetSession()
+})

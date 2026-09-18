@@ -7,7 +7,9 @@ import { useGameStore } from '../state/gameStore'
 export function PressurePlateVisual({
   player,
   echo,
+  position = PLATE,
 }: {
+  position?: { x: number; z: number }
   player: boolean
   echo: boolean
 }) {
@@ -38,7 +40,7 @@ export function PressurePlateVisual({
     if (material.current) material.current.emissiveIntensity = 0.15 + t * 0.7
   })
   return (
-    <group position={[PLATE.x, 0, PLATE.z]}>
+    <group position={[position.x, 0, position.z]}>
       <mesh position={[0, 0.015, 0]}>
         <boxGeometry args={[1.8, 0.03, 1.8]} />
         <meshStandardMaterial color="#292e32" />

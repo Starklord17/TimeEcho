@@ -19,6 +19,11 @@ type Rotation = Position & { w: number }
 
 /** Owns copied immutable samples; never retains mutable Three/Rapier objects. */
 export class Recorder {
+  private readonly cycleSeconds: number
+  constructor(cycleSeconds = CYCLE_SECONDS) {
+    this.cycleSeconds = cycleSeconds
+  }
+
   private frames: ReplayFrame[] = []
   private cycle = 1
 
@@ -33,11 +38,11 @@ export class Recorder {
     if (
       !Number.isFinite(time) ||
       time < 0 ||
-      time > CYCLE_SECONDS ||
+      time > this.cycleSeconds ||
       (previous && time <= previous.time)
     )
       throw new Error('Recording timestamps must increase within the cycle.')
-    if (this.frames.length >= CYCLE_SECONDS * TICKS_PER_SECOND + 1)
+    if (this.frames.length >= this.cycleSeconds * TICKS_PER_SECOND + 1)
       throw new Error('Recording sample limit exceeded.')
     this.frames.push(
       Object.freeze({

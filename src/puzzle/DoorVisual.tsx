@@ -10,10 +10,15 @@ import {
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { Group, MeshStandardMaterial } from 'three'
-import { DOOR, type PuzzleController } from './PuzzleController'
+import { DOOR } from './PuzzleController'
+import type { PuzzleRuntime, Position } from './PuzzleRuntime'
 import { DOOR_ASSET, validateDoorAsset } from './doorAsset'
 
-type Props = { runtimeRef: RefObject<PuzzleController | null>; open: boolean }
+type Props = {
+  runtimeRef: RefObject<PuzzleRuntime | null>
+  open: boolean
+  position?: Position
+}
 
 class AssetBoundary extends Component<
   { children: ReactNode; fallback: ReactNode },
@@ -34,14 +39,14 @@ class AssetBoundary extends Component<
   }
 }
 
-function ProceduralDoor({ runtimeRef, open }: Props) {
+function ProceduralDoor({ runtimeRef, open, position = DOOR }: Props) {
   const panel = useRef<Group>(null)
   useFrame(() => {
     if (panel.current)
       panel.current.position.y = runtimeRef.current?.doorLift ?? 0
   })
   return (
-    <group position={[DOOR.x, 0, DOOR.z]}>
+    <group position={[position.x, 0, position.z]}>
       <group ref={panel}>
         <mesh position={[0, 1.8, 0]}>
           <boxGeometry args={[2.4, 3.6, 0.3]} />
@@ -80,7 +85,7 @@ function ProceduralDoor({ runtimeRef, open }: Props) {
   )
 }
 
-function GltfDoor({ runtimeRef, open }: Props) {
+function GltfDoor({ runtimeRef, open, position = DOOR }: Props) {
   const { scene } = useGLTF(DOOR_ASSET.url, false)
   const asset = useMemo(() => {
     const clone = scene.clone(true)
@@ -112,7 +117,7 @@ function GltfDoor({ runtimeRef, open }: Props) {
   return (
     <primitive
       object={asset.clone}
-      position={[DOOR.x, 0, DOOR.z]}
+      position={[position.x, 0, position.z]}
       dispose={null}
     />
   )

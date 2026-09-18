@@ -63,7 +63,12 @@ export class PuzzleController {
     this.capsule = new rapier.Capsule(PLAYER.halfHeight, PLAYER.radius)
   }
 
-  update(player: Position, run: RecordedRun | null, time: number) {
+  update(
+    player: Position,
+    run: RecordedRun | null,
+    time: number,
+    step = PHYSICS_STEP,
+  ) {
     this.platePlayer = this.plate.intersectsShape(
       this.capsule,
       player,
@@ -78,7 +83,7 @@ export class PuzzleController {
       (this.doorOpen || this.doorLift > 0) &&
       this.doorway.intersectsShape(this.capsule, player, this.upright)
     this.doorOpen = this.platePlayer || this.plateEcho || crossing
-    this.motion.step(this.doorOpen, PHYSICS_STEP)
+    this.motion.step(this.doorOpen, step)
     this.door.setTranslation({
       x: DOOR.x,
       y: DOOR.y + this.doorLift,

@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import { GameScene } from './GameScene'
 
 export function Game() {
+  const levelId = useGameStore((state) => state.currentLevel)
   const sessionId = useGameStore((state) => state.sessionId)
   return (
     <div className="game-viewport">
@@ -13,12 +14,12 @@ export function Game() {
         gl={{ antialias: true }}
         fallback={
           <div className="error-screen">
-            Este navegador necesita WebGL para ejecutar Time Echo.
+            This browser needs WebGL to run Time Echo.
           </div>
         }
       >
         <Suspense fallback={null}>
-          <GameScene key={sessionId} />
+          <GameScene key={sessionId} levelId={levelId} />
         </Suspense>
       </Canvas>
     </div>

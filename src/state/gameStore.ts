@@ -1,8 +1,11 @@
 import type { RecordedRun } from '../recording/Recorder'
-import { CYCLE_SECONDS } from '../time-loop/TimeLoop'
+import { LEVELS, levelMetadata, type LevelId } from '../levels/levelMetadata'
 import { create } from 'zustand'
 
 type GameState = {
+  currentLevel: LevelId
+  unlockedLevels: LevelId[]
+  selectLevel: (id: LevelId) => void
   cyclePhase: 'PLAYING' | 'CYCLE_ENDING' | 'RESETTING'
   setCyclePhase: (phase: GameState['cyclePhase']) => void
   sessionId: number
@@ -35,6 +38,26 @@ type GameState = {
   setError: (error: string | null) => void
 }
 
+function freshSession(currentLevel: LevelId, sessionId: number) {
+  return {
+    currentLevel,
+    sessionId,
+    cyclePhase: 'PLAYING' as const,
+    platePlayer: false,
+    plateEcho: false,
+    doorOpen: false,
+    completed: false,
+    lastRun: null,
+    cycle: 1,
+    remainingSeconds: levelMetadata(currentLevel).duration,
+    restartRequested: false,
+    fallback: false,
+    ready: false,
+    locked: false,
+    error: null,
+  }
+}
+
 // Only low-frequency UI/session state. Transforms stay in Three and Rapier.
 export const useGameStore = create<GameState>((set) => ({
   cyclePhase: 'PLAYING',
@@ -42,28 +65,33 @@ export const useGameStore = create<GameState>((set) => ({
     if (useGameStore.getState().cyclePhase !== cyclePhase) set({ cyclePhase })
   },
   sessionId: 0,
+  currentLevel: 'empty-room',
+  unlockedLevels: ['empty-room'],
+  selectLevel: (id) => {
+    const state = useGameStore.getState()
+    if (state.unlockedLevels.includes(id))
+      set(freshSession(id, state.sessionId + 1))
+  },
   resetSession: () =>
-    set((state) => ({
-      sessionId: state.sessionId + 1,
-      cyclePhase: 'PLAYING',
-      platePlayer: false,
-      plateEcho: false,
-      doorOpen: false,
-      completed: false,
-      lastRun: null,
-      cycle: 1,
-      remainingSeconds: CYCLE_SECONDS,
-      restartRequested: false,
-      fallback: false,
-      ready: false,
-      locked: false,
-      error: null,
-    })),
+    set((state) => freshSession(state.currentLevel, state.sessionId + 1)),
   platePlayer: false,
   plateEcho: false,
   doorOpen: false,
   completed: false,
-  completeLevel: () => set({ completed: true, fallback: false, locked: false }),
+  completeLevel: () =>
+    set((state) => {
+      const next =
+        LEVELS[LEVELS.findIndex((level) => level.id === state.currentLevel) + 1]
+      return {
+        completed: true,
+        fallback: false,
+        locked: false,
+        unlockedLevels:
+          next && !state.unlockedLevels.includes(next.id)
+            ? [...state.unlockedLevels, next.id]
+            : state.unlockedLevels,
+      }
+    }),
   publishPuzzle: (platePlayer, plateEcho, doorOpen) => {
     const state = useGameStore.getState()
     if (
@@ -76,7 +104,7 @@ export const useGameStore = create<GameState>((set) => ({
   lastRun: null,
   saveRun: (lastRun) => set({ lastRun }),
   cycle: 1,
-  remainingSeconds: CYCLE_SECONDS,
+  remainingSeconds: LEVELS[0].duration,
   restartRequested: false,
   requestRestart: () => {
     const state = useGameStore.getState()

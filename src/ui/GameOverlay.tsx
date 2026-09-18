@@ -1,7 +1,17 @@
+import { LEVELS, levelMetadata, type LevelId } from '../levels/levelMetadata'
 import { downloadRun } from '../recording/downloadRun'
 import { useGameStore } from '../state/gameStore'
 
 export function GameOverlay() {
+  const currentLevel = useGameStore((s) => s.currentLevel)
+  const unlockedLevels = useGameStore((s) => s.unlockedLevels)
+  const level = levelMetadata(currentLevel)
+  const nextLevel =
+    LEVELS[LEVELS.findIndex((entry) => entry.id === currentLevel) + 1]
+  const selectLevel = (id: LevelId) => {
+    if (document.pointerLockElement) document.exitPointerLock()
+    useGameStore.getState().selectLevel(id)
+  }
   const cyclePhase = useGameStore((state) => state.cyclePhase)
   const completed = useGameStore((state) => state.completed)
   const lastRun = useGameStore((state) => state.lastRun)
@@ -20,11 +30,11 @@ export function GameOverlay() {
           TIME <span>ECHO</span>
           <span className="brand-dot" />
         </a>
-        <span className="phase">TEMPORAL LAB / 005</span>
+        <span className="phase">TEMPORAL LAB</span>
       </header>
       <div className="room-label">
         <span className="eyebrow">TEMPORAL LAB</span>
-        <span>Empty Room</span>
+        <span>{level.name}</span>
       </div>
       <div className="cycle-hud" aria-label="Cycle status">
         <span>CYCLE {cycle.toString().padStart(2, '0')}</span>
@@ -48,9 +58,16 @@ export function GameOverlay() {
       <section
         className={`welcome ${active ? 'is-hidden' : ''}`}
         aria-hidden={active}
+        inert={active}
       >
         <p className="eyebrow">A PLACE OUTSIDE TIME</p>
-        <h1>{completed ? 'Puzzle complete.' : 'Time leaves traces.'}</h1>
+        <h1>
+          {completed
+            ? nextLevel
+              ? 'Puzzle complete.'
+              : 'Demo complete.'
+            : 'Time leaves traces.'}
+        </h1>
         <p className="description">
           {completed
             ? 'You found a way forward.'
@@ -65,13 +82,36 @@ export function GameOverlay() {
             className="secondary-action"
             onClick={() => useGameStore.getState().resetSession()}
           >
-            Restart game
+            Restart level
           </button>
         )}
         {completed && (
-          <button onClick={() => useGameStore.getState().resetSession()}>
-            Play again
-          </button>
+          <div className="level-actions">
+            {nextLevel && (
+              <button onClick={() => selectLevel(nextLevel.id)}>
+                Next level
+              </button>
+            )}
+            <button onClick={() => selectLevel(currentLevel)}>Replay</button>
+          </div>
+        )}
+        {unlockedLevels.length > 1 && (
+          <label className="level-selector">
+            Level{' '}
+            <select
+              aria-label="Level"
+              value={currentLevel}
+              onChange={(event) => selectLevel(event.target.value as LevelId)}
+            >
+              {LEVELS.filter((entry) => unlockedLevels.includes(entry.id)).map(
+                (entry) => (
+                  <option key={entry.id} value={entry.id}>
+                    {entry.name}
+                  </option>
+                ),
+              )}
+            </select>
+          </label>
         )}
         <p className="hint">
           Click to capture the mouse · Escape to release it

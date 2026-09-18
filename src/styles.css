@@ -347,3 +347,23 @@ button.secondary-action {
   opacity: 0;
   z-index: 2;
 }
+
+.level-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.level-selector {
+  display: block;
+  margin-top: 18px;
+  font-size: 13px;
+}
+.level-selector select {
+  margin-left: 8px;
+  padding: 8px 12px;
+  border: 1px solid #aec9bf60;
+  border-radius: 4px;
+  background: #152228;
+  color: #e1f1e6;
+  font: inherit;
+}
