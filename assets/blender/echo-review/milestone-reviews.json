@@ -7,7 +7,7 @@
     "approvedAt": "",
     "evidence": [],
     "strangestElement": "",
-    "notes": "Generic room gate not certified for this single-character asset. See assetReview for the user approval of Echo appearance."
+    "notes": "Generic room gate is not certified for this single-character asset."
   },
   "form": {
     "status": "pending",
@@ -15,7 +15,7 @@
     "approvedAt": "",
     "evidence": [],
     "strangestElement": "",
-    "notes": "Generic room gate not certified for this single-character asset. See assetReview for the user approval of Echo appearance."
+    "notes": "Generic room gate is not certified for this single-character asset."
   },
   "runtime": {
     "status": "pending",
@@ -23,13 +23,13 @@
     "approvedAt": "",
     "evidence": [],
     "strangestElement": "",
-    "notes": "Generic room gate not certified for this single-character asset. See assetReview for the user approval of Echo appearance."
+    "notes": "Generic room gate is not certified for this single-character asset."
   },
   "assetReview": {
-    "revision": "black-explorer-coat-v2",
-    "status": "approved",
-    "approvedBy": "user",
-    "evidence": "Revisi\u00f3n completada. Continuar con los commits correspondientes.",
-    "scope": "Echo appearance; does not certify generic room gates or a full manual playthrough."
+    "revision": "graphite-glasses-motion-v3",
+    "status": "pending",
+    "approvedBy": "",
+    "evidence": "",
+    "scope": "Glasses and Idle/Walk motion; prior static-coat approval does not apply."
   }
 }

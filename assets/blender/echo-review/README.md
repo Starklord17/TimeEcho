@@ -1,21 +1,26 @@
-# Echo v2 review evidence
+# Echo inspection assets
 
-Blender renders: front, three-quarter, profile, back, and level-grey. Runtime
-captures: front, profile, back, tilted look, procedural placeholder, and pressure
-plate activation. The QA scene uses production components with a synthetic run;
-it does not replace a complete manual acceptance playthrough.
+Run `pnpm dev` and open `/echo-review.html` for the puzzle fixture and the
+side-by-side Idle/Walk comparison. Controls include pause, restart, animation time,
+look orientation, light/dark backgrounds and procedural comparison.
 
-`metrics.json` contains measurements evaluated from Blender, while
-`milestone-reviews.json` records the asset review. The room brief, openings, and
-final-report schemas come from the Build 3D Game Rooms workflow. This deliverable
-is a character rather than a room, so the generic room validator reports missing
-floor-plan and layout artifacts that do not apply. Its output remains in
-`room-validator.txt`; no room gate is presented as passing. The applicable asset
-validation runs in `echoAsset.test.ts` against the real GLB.
+Current Blender views: `glasses-{light|dark}-{front|three-quarter|profile|back}.png`.
+`walk-three-quarter.png` shows a Walk pose. Current browser captures use the
+`runtime-motion-` prefix. Unprefixed images show the previous static model.
 
-The project used local Blender authoring, export, and runtime integration. No
-Meshy task, paid generation, or external reference-image service was used.
+`metrics.json` contains source measurements. Commands and the character contract
+are in [ECHO_SPEC.md](../ECHO_SPEC.md). The real GLB is checked by
+`src/echo/echoAsset.test.ts`; fixture captures do not replace a complete manual
+acceptance playthrough.
 
-The first review found that the visor remained visible through the back of the
-translucent head. An opaque inner head core was added to preserve depth and front
-direction.
+Generic room schemas are retained for workflow compatibility. Room gates are
+not certified for this character: floor plans and room layouts do not apply.
+Artistic acceptance of this revision remains pending.
+
+Neck correction: `neck-before-*` and `neck-after-*` use identical Blender cameras
+and poses. `runtime-neck-before.png` and `runtime-neck-after.png` show the same
+runtime view at replay time 0.2 s. Use **Neck close-up** in the comparison scene.
+
+The final collar and lower-head opacity revision uses `neck-sealed-*` Blender
+renders and `runtime-neck-v2-*` browser captures. Earlier neck images retain
+the intermediate versions for comparison.

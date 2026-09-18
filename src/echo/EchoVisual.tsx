@@ -7,7 +7,9 @@ import {
   type ReactNode,
 } from 'react'
 import { useGLTF } from '@react-three/drei'
-import { Material, Mesh, MeshStandardMaterial } from 'three'
+import { Material, Mesh, MeshStandardMaterial, SkinnedMesh } from 'three'
+import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js'
+import { EchoAnimator } from './EchoAnimator'
 import { ECHO_ASSET_URL, ECHO_VISUAL, validateEchoAsset } from './echoAsset'
 import { ProceduralEcho, type EchoVisualRefs } from './ProceduralEcho'
 
@@ -26,12 +28,12 @@ class EchoBoundary extends Component<
     return this.state.failed ? this.props.fallback : this.props.children
   }
 }
-function Model({ bodyRef, headRef }: EchoVisualRefs) {
-  const { scene } = useGLTF(ECHO_ASSET_URL, false)
+function Model({ bodyRef, headRef, animatorRef }: EchoVisualRefs) {
+  const { scene, animations } = useGLTF(ECHO_ASSET_URL, false)
   const asset = useMemo(() => {
-    validateEchoAsset(scene)
-    const clone = scene.clone(true)
-    const { body, head } = validateEchoAsset(clone)
+    validateEchoAsset(scene, animations)
+    const clone = cloneSkeleton(scene)
+    const { body, head } = validateEchoAsset(clone, animations)
     const materials = new Map<Material, Material>()
     clone.traverse((node) => {
       if (!(node instanceof Mesh)) return
@@ -42,27 +44,14 @@ function Model({ bodyRef, headRef }: EchoVisualRefs) {
             const spectral = [
               'M_Echo_Shell',
               'M_Echo_Core',
-              'M_Echo_Gaze',
+              'M_Echo_Chin',
             ].includes(material.name)
-            material.transparent = spectral && material.name !== 'M_Echo_Core'
+            material.transparent = material.name === 'M_Echo_Shell'
             material.depthTest = true
             material.depthWrite = !material.transparent
-            material.opacity =
-              material.name === 'M_Echo_Shell'
-                ? 0.62
-                : material.name === 'M_Echo_Core'
-                  ? 1
-                  : spectral
-                    ? 0.95
-                    : 1
+            material.opacity = material.name === 'M_Echo_Shell' ? 0.62 : 1
             material.emissiveIntensity =
-              material.name === 'M_Echo_Gaze'
-                ? 1.1
-                : material.name === 'M_Echo_Core'
-                  ? 0.4
-                  : spectral
-                    ? 0.18
-                    : 0
+              material.name === 'M_Echo_Core' ? 0.4 : spectral ? 0.18 : 0
           }
           materials.set(original, material)
         }
@@ -73,17 +62,28 @@ function Model({ bodyRef, headRef }: EchoVisualRefs) {
         : assign(node.material)
     })
     return { clone, body, head, materials }
-  }, [scene])
+  }, [scene, animations])
   useLayoutEffect(() => {
     bodyRef.current = asset.body
     headRef.current = asset.head
+    const animator = new EchoAnimator(asset.clone, animations)
+    if (animatorRef) animatorRef.current = animator
     return () => {
       bodyRef.current = null
       headRef.current = null
+      if (animatorRef) animatorRef.current = null
+      animator.dispose()
     }
-  }, [asset, bodyRef, headRef])
+  }, [asset, bodyRef, headRef, animatorRef, animations])
   useEffect(
-    () => () => asset.materials.forEach((material) => material.dispose()),
+    () => () => {
+      asset.materials.forEach((material) => material.dispose())
+      const skeletons = new Set<SkinnedMesh['skeleton']>()
+      asset.clone.traverse((node) => {
+        if (node instanceof SkinnedMesh) skeletons.add(node.skeleton)
+      })
+      skeletons.forEach((skeleton) => skeleton.dispose())
+    },
     [asset],
   )
   return <primitive object={asset.clone} dispose={null} />
