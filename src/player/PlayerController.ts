@@ -64,11 +64,11 @@ export class PlayerController {
     if (this.controller.computedGrounded()) this.verticalSpeed = 0
   }
 
-  reset(body: RapierRigidBody) {
+  reset(body: RapierRigidBody, spawn: readonly number[] = SPAWN) {
     this.verticalSpeed = 0
-    this.next.x = SPAWN[0]
-    this.next.y = SPAWN[1]
-    this.next.z = SPAWN[2]
+    this.next.x = spawn[0]
+    this.next.y = spawn[1]
+    this.next.z = spawn[2]
     body.setTranslation(this.next, true)
     body.setNextKinematicTranslation(this.next)
     body.setLinvel({ x: 0, y: 0, z: 0 }, true)

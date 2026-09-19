@@ -24,3 +24,13 @@ it('does not drift across 100 cycles', () => {
   expect(loop.cycle).toBe(101)
   expect(loop.remainingSeconds).toBe(15)
 })
+
+it('supports a 20-second level without changing the 15-second default', () => {
+  const longer = new TimeLoop(20)
+  expect(new TimeLoop().remainingSeconds).toBe(15)
+  for (let i = 0; i < 1199; i++) expect(longer.advance()).toBe(false)
+  expect(longer.remainingSeconds).toBe(1)
+  expect(longer.advance()).toBe(true)
+  expect(longer.cycle).toBe(2)
+  expect(longer.remainingSeconds).toBe(20)
+})

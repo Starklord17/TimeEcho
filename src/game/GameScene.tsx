@@ -1,16 +1,17 @@
-import { TemporalPuzzle } from '../puzzle/TemporalPuzzle'
-import type { PuzzleController } from '../puzzle/PuzzleController'
+import { levelDefinition } from '../levels/levelRegistry'
+import type { LevelId } from '../levels/levelMetadata'
+import type { PuzzleRuntime } from '../puzzle/PuzzleRuntime'
 import { useRef, useState } from 'react'
 import { TimeLoop } from '../time-loop/TimeLoop'
 import { Echo } from '../echo/Echo'
 import { Physics } from '@react-three/rapier'
-import { EmptyRoom } from '../levels/EmptyRoom'
 import { Player } from '../player/Player'
 import { PHYSICS_STEP } from '../player/PlayerController'
 
-export function GameScene() {
-  const [loop] = useState(() => new TimeLoop())
-  const puzzle = useRef<PuzzleController | null>(null)
+export function GameScene({ levelId }: { levelId: LevelId }) {
+  const level = levelDefinition(levelId)
+  const [loop] = useState(() => new TimeLoop(level.duration))
+  const puzzle = useRef<PuzzleRuntime | null>(null)
   return (
     <>
       <color attach="background" args={['#10191b']} />
@@ -18,9 +19,9 @@ export function GameScene() {
       <directionalLight position={[3, 7, 4]} intensity={2.2} />
       <pointLight position={[-3, 2.6, -4]} color="#f1f2f3" intensity={8} />
       <Physics timeStep={PHYSICS_STEP} interpolate gravity={[0, -9.81, 0]}>
-        <EmptyRoom />
-        <TemporalPuzzle runtimeRef={puzzle} />
-        <Player loop={loop} puzzle={puzzle} />
+        <level.Room />
+        <level.Puzzle runtimeRef={puzzle} />
+        <Player spawn={level.spawn} loop={loop} puzzle={puzzle} />
         <Echo loop={loop} />
       </Physics>
     </>

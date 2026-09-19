@@ -1,5 +1,5 @@
 import { CycleTransition } from '../time-loop/CycleTransition'
-import type { PuzzleController } from '../puzzle/PuzzleController'
+import type { PuzzleRuntime } from '../puzzle/PuzzleRuntime'
 import { Recorder, type RecordedRun } from '../recording/Recorder'
 import type { TimeLoop } from '../time-loop/TimeLoop'
 import { useEffect, useRef, useState, type RefObject } from 'react'
@@ -23,13 +23,15 @@ import { PHYSICS_STEP, PLAYER, PlayerController } from './PlayerController'
 export function Player({
   loop,
   puzzle,
+  spawn = SPAWN,
 }: {
+  spawn?: readonly [number, number, number]
   loop: TimeLoop
-  puzzle: RefObject<PuzzleController | null>
+  puzzle: RefObject<PuzzleRuntime | null>
 }) {
   const pendingRun = useRef<RecordedRun | null>(null)
   const [transition] = useState(() => new CycleTransition())
-  const [recorder] = useState(() => new Recorder())
+  const [recorder] = useState(() => new Recorder(loop.duration))
   const sampledStep = useRef(false)
   const recordingStarted = useRef(false)
   const teleported = useRef(false)
@@ -45,7 +47,7 @@ export function Player({
 
   useEffect(() => {
     camera.quaternion.identity()
-    camera.position.set(SPAWN[0], SPAWN[1] + PLAYER.eyeOffset, SPAWN[2])
+    camera.position.set(spawn[0], spawn[1] + PLAYER.eyeOffset, spawn[2])
     const movement = new PlayerController(
       world,
       rapier.QueryFilterFlags.EXCLUDE_SENSORS,
@@ -62,14 +64,16 @@ export function Player({
       disconnectMouse()
       movement.dispose(world)
       controller.current = null
+      const veil = document.getElementById('cycle-transition')
+      if (veil) veil.style.opacity = '0'
       useGameStore.getState().setReady(false)
       useGameStore.getState().setLocked(false)
     }
-  }, [world, rapier, input, gl, camera, loop])
+  }, [world, rapier, input, gl, camera, loop, spawn])
 
   const resetPlayer = () => {
     if (!body.current || !controller.current) return
-    controller.current.reset(body.current)
+    controller.current.reset(body.current, spawn)
     camera.quaternion.identity()
     input.clear()
     teleported.current = true
@@ -79,6 +83,7 @@ export function Player({
     puzzle.current?.update(
       body.current.translation(),
       useGameStore.getState().lastRun,
+      0,
       0,
     )
     if (puzzle.current)
@@ -186,7 +191,7 @@ export function Player({
     const veil = document.getElementById('cycle-transition')
     if (veil) veil.style.opacity = String(transition.opacity * 0.85)
     if (!visual.current) return
-    if (teleported.current) position.current.set(...SPAWN)
+    if (teleported.current) position.current.set(...spawn)
     else visual.current.getWorldPosition(position.current)
     position.current.y += PLAYER.eyeOffset
     renderCamera.position.copy(position.current)
@@ -198,7 +203,7 @@ export function Player({
         ref={body}
         type="kinematicPosition"
         colliders={false}
-        position={SPAWN}
+        position={[...spawn]}
         enabledRotations={[false, false, false]}
       >
         <CapsuleCollider

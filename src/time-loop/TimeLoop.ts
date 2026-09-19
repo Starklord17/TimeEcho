@@ -3,6 +3,11 @@ export const TICKS_PER_SECOND = 60
 
 /** Integer simulation ticks avoid floating-point drift and wall-clock catch-up. */
 export class TimeLoop {
+  readonly duration: number
+  constructor(duration = CYCLE_SECONDS) {
+    this.duration = duration
+  }
+
   cycle = 1
   private ticks = 0
 
@@ -16,13 +21,13 @@ export class TimeLoop {
 
   get remainingSeconds() {
     return Math.ceil(
-      (CYCLE_SECONDS * TICKS_PER_SECOND - this.ticks) / TICKS_PER_SECOND,
+      (this.duration * TICKS_PER_SECOND - this.ticks) / TICKS_PER_SECOND,
     )
   }
 
   advance(deferRestart = false) {
     this.ticks += 1
-    if (this.ticks < CYCLE_SECONDS * TICKS_PER_SECOND) return false
+    if (this.ticks < this.duration * TICKS_PER_SECOND) return false
     if (!deferRestart) this.restart()
     return true
   }

@@ -47,3 +47,17 @@ it('allows a restart before the first movement tick', () => {
   expect(run.frames).toHaveLength(1)
   expect(() => recorder.finish('restart')).toThrow()
 })
+
+it('records a full 20-second level with the existing JSON v1 contract', () => {
+  const recorder = new Recorder(20)
+  const p = { x: 0, y: 0.91, z: 7 }
+  const q = { x: 0, y: 0, z: 0, w: 1 }
+  recorder.begin(1, p, q)
+  for (let i = 1; i <= 1200; i++) recorder.capture(i / 60, p, q)
+  expect(() => recorder.capture(20.01, p, q)).toThrow()
+  const run = recorder.finish('timeout')
+  expect(run.version).toBe(1)
+  expect(run.duration).toBe(20)
+  expect(run.frames).toHaveLength(1201)
+  expect(run.sampleRate).toBe(60)
+})

@@ -1,3 +1,4 @@
+import type { PuzzleRuntime } from './PuzzleRuntime'
 import { DoorVisual } from './DoorVisual'
 import { PressurePlateVisual } from './PressurePlateVisual'
 import { Html } from '@react-three/drei'
@@ -15,7 +16,7 @@ import {
 export function TemporalPuzzle({
   runtimeRef,
 }: {
-  runtimeRef: RefObject<PuzzleController | null>
+  runtimeRef: RefObject<PuzzleRuntime | null>
 }) {
   const { world, rapier } = useRapier()
   const open = useGameStore((state) => state.doorOpen)
