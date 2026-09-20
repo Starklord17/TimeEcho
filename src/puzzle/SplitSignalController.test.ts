@@ -1,3 +1,4 @@
+import { update } from './replayTestUtils'
 import { afterEach, beforeAll, expect, it } from 'vitest'
 import RAPIER from '@dimforge/rapier3d-compat'
 import { SplitSignalController, CHARGE_TICKS } from './SplitSignalController'
@@ -35,12 +36,12 @@ function stationary(position: { x: number; y: number; z: number } = left) {
 }
 it('requires different plates and both actors; neither actor alone or together on one plate unlocks', () => {
   const { puzzle } = setup()
-  for (let i = 0; i < 180; i++) puzzle.update(left, null, i / 60)
+  for (let i = 0; i < 180; i++) update(puzzle, left, null, i / 60)
   expect(puzzle.charge).toBe(0)
   for (let i = 0; i < 180; i++)
-    puzzle.update({ x: 0, y: 0.91, z: 7 }, stationary(), i / 60)
+    update(puzzle, { x: 0, y: 0.91, z: 7 }, stationary(), i / 60)
   expect(puzzle.charge).toBe(0)
-  for (let i = 0; i < 180; i++) puzzle.update(left, stationary(), i / 60)
+  for (let i = 0; i < 180; i++) update(puzzle, left, stationary(), i / 60)
   expect(puzzle.doorOpen).toBe(false)
 })
 it.each([false, true])(
@@ -50,19 +51,20 @@ it.each([false, true])(
     const player = swapped ? left : right
     const run = stationary(swapped ? right : left)
     for (let i = 0; i < CHARGE_TICKS - 1; i++)
-      puzzle.update(player, run, i / 60)
+      update(puzzle, player, run, i / 60)
     expect(puzzle.doorOpen).toBe(false)
     expect(puzzle.charge).toBeCloseTo(119 / 120)
     // Sensor refresh and a paused clock cannot count as active simulation.
-    for (let i = 0; i < 200; i++) puzzle.update(player, run, 2, 0)
+    for (let i = 0; i < 200; i++) update(puzzle, player, run, 2, 0)
     expect(puzzle.charge).toBeCloseTo(119 / 120)
-    puzzle.update(player, run, 2)
+    update(puzzle, player, run, 2)
     expect(puzzle.doorOpen).toBe(true)
-    for (let i = 0; i < 60; i++) puzzle.update({ x: 0, y: 0.91, z: 0 }, null, 3)
+    for (let i = 0; i < 60; i++)
+      update(puzzle, { x: 0, y: 0.91, z: 0 }, null, 3)
     expect(puzzle.doorOpen).toBe(true)
     expect(puzzle.doorLift).toBeCloseTo(3.8)
     puzzle.reset()
-    puzzle.update(player, run, 0, 0)
+    update(puzzle, player, run, 0, 0)
     expect(puzzle.charge).toBe(0)
     expect(puzzle.doorLift).toBe(0)
     expect(puzzle.doorOpen).toBe(false)
@@ -70,8 +72,8 @@ it.each([false, true])(
 )
 it('discards interrupted charge and frees every owned collider', () => {
   const { puzzle, world } = setup()
-  for (let i = 0; i < 90; i++) puzzle.update(right, stationary(), i / 60)
-  puzzle.update(left, stationary(), 1.5)
+  for (let i = 0; i < 90; i++) update(puzzle, right, stationary(), i / 60)
+  update(puzzle, left, stationary(), 1.5)
   expect(puzzle.charge).toBe(0)
   const count = world.colliders.len()
   const other = new SplitSignalController(world, RAPIER)
@@ -118,7 +120,7 @@ it('solves the authored corridors in two cycles with real collisions and time to
       steps++ < 600
     ) {
       const p = body.translation()
-      puzzle.update(p, run, ticks / 60)
+      update(puzzle, p, run, ticks / 60)
       controller.step(body, collider, x - p.x, p.z - z, 0)
       world.step()
       ticks++
@@ -143,7 +145,7 @@ it('solves the authored corridors in two cycles with real collisions and time to
   travel(5, 6, run)
   travel(5, -3, run)
   for (let i = 0; i < 120; i++) {
-    puzzle.update(body.translation(), run, ticks++ / 60)
+    update(puzzle, body.translation(), run, ticks++ / 60)
     world.step()
   }
   expect(puzzle.doorOpen).toBe(true)
@@ -169,7 +171,7 @@ it('keeps the door impassable without a recording', () => {
   )
   world.step()
   for (let i = 0; i < 30; i++) {
-    puzzle.update(body.translation(), null, i / 60)
+    update(puzzle, body.translation(), null, i / 60)
     controller.step(body, collider, 0, 1, 0)
     world.step()
   }

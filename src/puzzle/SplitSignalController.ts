@@ -1,7 +1,4 @@
 import type { RapierContext, RapierCollider } from '@react-three/rapier'
-import { Quaternion, Vector3 } from 'three'
-import { ReplaySampler } from '../echo/ReplaySampler'
-import type { RecordedRun } from '../recording/Recorder'
 import { PHYSICS_STEP, PLAYER } from '../player/PlayerController'
 import {
   SPLIT_PLATES,
@@ -19,9 +16,6 @@ export class SplitSignalController implements PuzzleRuntime {
   private door: RapierCollider
   private exit: RapierCollider
   private capsule: InstanceType<RapierContext['rapier']['Capsule']>
-  private sampler = new ReplaySampler()
-  private echoPosition = new Vector3()
-  private echoRotation = new Quaternion()
   private upright = { x: 0, y: 0, z: 0, w: 1 }
   private motion = new DoorMotion(DOOR_TRAVEL, DOOR_DURATION)
   private ticks = 0
@@ -58,24 +52,16 @@ export class SplitSignalController implements PuzzleRuntime {
     this.exit = box([2, 1.2, 1.4], SPLIT_EXIT, true)
     this.capsule = new rapier.Capsule(PLAYER.halfHeight, PLAYER.radius)
   }
-  update(
-    player: Position,
-    run: RecordedRun | null,
-    time: number,
-    step = PHYSICS_STEP,
-  ) {
-    const hasEcho =
-      !!run &&
-      this.sampler.sample(run, time, this.echoPosition, this.echoRotation)
+  update(player: Position, echoes: readonly Position[], step = PHYSICS_STEP) {
     this.sensors.forEach((sensor, i) => {
       this.plates[i].player = sensor.intersectsShape(
         this.capsule,
         player,
         this.upright,
       )
-      this.plates[i].echo =
-        hasEcho &&
-        sensor.intersectsShape(this.capsule, this.echoPosition, this.upright)
+      this.plates[i].echo = echoes.some((position) =>
+        sensor.intersectsShape(this.capsule, position, this.upright),
+      )
     })
     if (step <= 0) return
     const simultaneous =

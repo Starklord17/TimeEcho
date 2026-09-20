@@ -2,11 +2,16 @@ import type { RefObject } from 'react'
 import type { Object3D } from 'three'
 import type { EchoAnimator } from './EchoAnimator'
 export type EchoVisualRefs = {
+  intensity?: number
   bodyRef: RefObject<Object3D | null>
   headRef: RefObject<Object3D | null>
   animatorRef?: RefObject<EchoAnimator | null>
 }
-export function ProceduralEcho({ bodyRef, headRef }: EchoVisualRefs) {
+export function ProceduralEcho({
+  bodyRef,
+  headRef,
+  intensity = 1,
+}: EchoVisualRefs) {
   return (
     <>
       <group ref={bodyRef}>
@@ -15,9 +20,9 @@ export function ProceduralEcho({ bodyRef, headRef }: EchoVisualRefs) {
           <meshStandardMaterial
             color="#84e9ed"
             emissive="#226d79"
-            emissiveIntensity={0.85}
+            emissiveIntensity={0.85 * intensity}
             transparent
-            opacity={0.46}
+            opacity={0.46 * intensity}
             depthWrite={false}
           />
         </mesh>
@@ -28,7 +33,7 @@ export function ProceduralEcho({ bodyRef, headRef }: EchoVisualRefs) {
           <meshStandardMaterial
             color="#b6ffff"
             transparent
-            opacity={0.5}
+            opacity={0.5 * intensity}
             depthWrite={false}
           />
         </mesh>
@@ -37,7 +42,7 @@ export function ProceduralEcho({ bodyRef, headRef }: EchoVisualRefs) {
           <meshBasicMaterial
             color="#d6ffff"
             transparent
-            opacity={0.8}
+            opacity={0.8 * intensity}
             depthWrite={false}
           />
         </mesh>

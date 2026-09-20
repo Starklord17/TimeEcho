@@ -14,7 +14,8 @@ export function GameOverlay() {
   }
   const cyclePhase = useGameStore((state) => state.cyclePhase)
   const completed = useGameStore((state) => state.completed)
-  const lastRun = useGameStore((state) => state.lastRun)
+  const runs = useGameStore((state) => state.runs)
+  const hasMemories = runs.length > 0
   const cycle = useGameStore((state) => state.cycle)
   const remainingSeconds = useGameStore((state) => state.remainingSeconds)
   const ready = useGameStore((state) => state.ready)
@@ -53,7 +54,17 @@ export function GameOverlay() {
                 : 'RESETTING CYCLE'
               : 'PAUSED'}
         </small>
-        {lastRun && <small>ECHO FROM CYCLE {lastRun.cycle}</small>}
+        <small>
+          MEMORIES {runs.length} / {level.echoLimit}
+        </small>
+        {runs.map((run) => (
+          <small key={run.cycle}>
+            CYCLE {run.cycle}
+            {runs.length === level.echoLimit && run === runs[0]
+              ? ' · NEXT TO FADE'
+              : ''}
+          </small>
+        ))}
       </div>
       <section
         className={`welcome ${active ? 'is-hidden' : ''}`}
@@ -116,15 +127,19 @@ export function GameOverlay() {
         <p className="hint">
           Click to capture the mouse · Escape to release it
         </p>
-        {lastRun && (
+        {hasMemories && (
           <div className="recording-summary">
-            <p>
-              Last run: cycle {lastRun.cycle} · {lastRun.duration.toFixed(2)} s
-              · {lastRun.frames.length} samples
-            </p>
-            <button onClick={() => downloadRun(lastRun)}>
-              Download run JSON
-            </button>
+            {runs.map((run) => (
+              <div key={run.cycle}>
+                <p>
+                  Cycle {run.cycle} · {run.duration.toFixed(2)} s ·{' '}
+                  {run.frames.length} samples
+                </p>
+                <button onClick={() => downloadRun(run)}>
+                  Download cycle {run.cycle} JSON
+                </button>
+              </div>
+            ))}
           </div>
         )}
         {error && <p role="alert">{error}</p>}
@@ -133,7 +148,7 @@ export function GameOverlay() {
         <>
           <div className="crosshair" aria-hidden="true" />
           <div className="objective" role="status">
-            {lastRun
+            {hasMemories
               ? 'The room is the same. What happens is not.'
               : 'Take a moment to observe.'}
           </div>

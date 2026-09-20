@@ -1,3 +1,4 @@
+import { ReplayCollection } from '../echo/ReplayCollection'
 import { CycleTransition } from '../time-loop/CycleTransition'
 import type { PuzzleRuntime } from '../puzzle/PuzzleRuntime'
 import { Recorder, type RecordedRun } from '../recording/Recorder'
@@ -39,6 +40,7 @@ export function Player({
   const collider = useRef<RapierCollider>(null)
   const visual = useRef<Object3D>(null)
   const controller = useRef<PlayerController | null>(null)
+  const [echoes] = useState(() => new ReplayCollection())
   const [input] = useState(() => new InputManager())
   const rotation = useRef(new Euler(0, 0, 0, 'YXZ'))
   const position = useRef(new Vector3())
@@ -82,8 +84,7 @@ export function Player({
     puzzle.current?.reset()
     puzzle.current?.update(
       body.current.translation(),
-      useGameStore.getState().lastRun,
-      0,
+      echoes.sample(useGameStore.getState().runs, 0),
       0,
     )
     if (puzzle.current)
@@ -130,8 +131,7 @@ export function Player({
     }
     puzzle.current.update(
       body.current.translation(),
-      useGameStore.getState().lastRun,
-      loop.elapsedSeconds,
+      echoes.sample(useGameStore.getState().runs, loop.elapsedSeconds),
     )
     useGameStore
       .getState()

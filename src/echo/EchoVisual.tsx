@@ -28,7 +28,12 @@ class EchoBoundary extends Component<
     return this.state.failed ? this.props.fallback : this.props.children
   }
 }
-function Model({ bodyRef, headRef, animatorRef }: EchoVisualRefs) {
+function Model({
+  bodyRef,
+  headRef,
+  animatorRef,
+  intensity = 1,
+}: EchoVisualRefs) {
   const { scene, animations } = useGLTF(ECHO_ASSET_URL, false)
   const asset = useMemo(() => {
     validateEchoAsset(scene, animations)
@@ -63,6 +68,22 @@ function Model({ bodyRef, headRef, animatorRef }: EchoVisualRefs) {
     })
     return { clone, body, head, materials }
   }, [scene, animations])
+  useLayoutEffect(() => {
+    asset.materials.forEach((material, original) => {
+      if (material instanceof MeshStandardMaterial) {
+        if (original instanceof MeshStandardMaterial)
+          material.color.copy(original.color).multiplyScalar(intensity)
+        const spectral = [
+          'M_Echo_Shell',
+          'M_Echo_Core',
+          'M_Echo_Chin',
+        ].includes(material.name)
+        material.emissiveIntensity =
+          (material.name === 'M_Echo_Core' ? 0.4 : spectral ? 0.18 : 0) *
+          intensity
+      }
+    })
+  }, [asset, intensity])
   useLayoutEffect(() => {
     bodyRef.current = asset.body
     headRef.current = asset.head
