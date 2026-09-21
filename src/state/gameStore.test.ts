@@ -12,7 +12,7 @@ it('starts a fresh session while preserving store actions', () => {
     completed: true,
     plateEcho: true,
     doorOpen: true,
-    lastRun: recorder.finish('restart'),
+    runs: [recorder.finish('restart')],
     restartRequested: true,
   })
   const oldId = useGameStore.getState().sessionId
@@ -22,7 +22,7 @@ it('starts a fresh session while preserving store actions', () => {
   expect(state.cyclePhase).toBe('PLAYING')
   expect(state.cycle).toBe(1)
   expect(state.remainingSeconds).toBe(15)
-  expect(state.lastRun).toBe(null)
+  expect(state.runs).toEqual([])
   expect([
     state.completed,
     state.plateEcho,
@@ -54,7 +54,7 @@ it('unlocks levels in order and clears transient state without losing session pr
   expect(useGameStore.getState().remainingSeconds).toBe(20)
   expect(useGameStore.getState().completed).toBe(false)
   expect(useGameStore.getState().ready).toBe(false)
-  expect(useGameStore.getState().lastRun).toBe(null)
+  expect(useGameStore.getState().runs).toEqual([])
   useGameStore.getState().completeLevel()
   useGameStore.getState().resetSession()
   expect(useGameStore.getState().currentLevel).toBe('split-signal')
@@ -65,7 +65,44 @@ it('unlocks levels in order and clears transient state without losing session pr
   expect(useGameStore.getState().unlockedLevels).toEqual([
     'empty-room',
     'split-signal',
+    'convergence',
   ])
+  useGameStore.setState({ unlockedLevels: ['empty-room'] })
+  useGameStore.getState().resetSession()
+})
+
+it('keeps the two newest memories in FIFO order only in Convergence, and clears them on level changes', () => {
+  useGameStore.setState({
+    currentLevel: 'convergence',
+    unlockedLevels: ['empty-room', 'split-signal', 'convergence'],
+  })
+  useGameStore.getState().resetSession()
+  const run = (cycle: number) => {
+    const r = new Recorder(20)
+    r.begin(cycle, { x: cycle, y: 1, z: 0 }, { x: 0, y: 0, z: 0, w: 1 })
+    return r.finish(cycle === 3 ? 'timeout' : 'restart')
+  }
+  const first = run(1),
+    second = run(2),
+    third = run(3)
+  useGameStore.getState().saveRun(first)
+  useGameStore.getState().saveRun(second)
+  expect(useGameStore.getState().runs).toEqual([first, second])
+  useGameStore.getState().saveRun(third)
+  expect(useGameStore.getState().runs).toEqual([second, third])
+  expect(useGameStore.getState().runs[0]).toBe(second)
+  useGameStore.getState().completeLevel()
+  expect(useGameStore.getState().unlockedLevels).toHaveLength(3)
+  useGameStore.getState().resetSession()
+  expect(useGameStore.getState().runs).toEqual([])
+  expect(useGameStore.getState().remainingSeconds).toBe(20)
+  for (const level of ['split-signal', 'empty-room'] as const) {
+    useGameStore.getState().selectLevel(level)
+    expect(useGameStore.getState().runs).toEqual([])
+    useGameStore.getState().saveRun(first)
+    useGameStore.getState().saveRun(second)
+    expect(useGameStore.getState().runs).toEqual([second])
+  }
   useGameStore.setState({ unlockedLevels: ['empty-room'] })
   useGameStore.getState().resetSession()
 })

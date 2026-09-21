@@ -1,8 +1,5 @@
 import { DoorMotion } from './DoorMotion'
 import type { RapierContext, RapierCollider } from '@react-three/rapier'
-import { Quaternion, Vector3 } from 'three'
-import { ReplaySampler } from '../echo/ReplaySampler'
-import type { RecordedRun } from '../recording/Recorder'
 import { PHYSICS_STEP, PLAYER } from '../player/PlayerController'
 
 export const PLATE = { x: -4, y: 0.15, z: 2 }
@@ -24,9 +21,6 @@ export class PuzzleController {
   private doorway: RapierCollider
   private exit: RapierCollider
   private capsule: InstanceType<RapierContext['rapier']['Capsule']>
-  private sampler = new ReplaySampler()
-  private echoPosition = new Vector3()
-  private echoRotation = new Quaternion()
   private upright = { x: 0, y: 0, z: 0, w: 1 }
   platePlayer = false
   plateEcho = false
@@ -63,21 +57,15 @@ export class PuzzleController {
     this.capsule = new rapier.Capsule(PLAYER.halfHeight, PLAYER.radius)
   }
 
-  update(
-    player: Position,
-    run: RecordedRun | null,
-    time: number,
-    step = PHYSICS_STEP,
-  ) {
+  update(player: Position, echoes: readonly Position[], step = PHYSICS_STEP) {
     this.platePlayer = this.plate.intersectsShape(
       this.capsule,
       player,
       this.upright,
     )
-    this.plateEcho =
-      !!run &&
-      this.sampler.sample(run, time, this.echoPosition, this.echoRotation) &&
-      this.plate.intersectsShape(this.capsule, this.echoPosition, this.upright)
+    this.plateEcho = echoes.some((position) =>
+      this.plate.intersectsShape(this.capsule, position, this.upright),
+    )
     // Never close through a player who is already crossing the doorway.
     const crossing =
       (this.doorOpen || this.doorLift > 0) &&

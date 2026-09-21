@@ -1,3 +1,4 @@
+import { ReplayCollection } from './ReplayCollection'
 // Development-only review surface. Reuses production Echo, clock, sensors and lighting.
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
@@ -38,14 +39,14 @@ function ComparisonCamera({ close }: { close: boolean }) {
 }
 function Simulation({ loop }: { loop: TimeLoop }) {
   const puzzle = useRef<PuzzleController | null>(null)
+  const [echoes] = useState(() => new ReplayCollection())
   useBeforePhysicsStep(() => {
     const state = useGameStore.getState()
     if (!puzzle.current) return
     if (state.fallback) loop.advance()
     puzzle.current.update(
       { x: 0, y: 0.91, z: 4 },
-      state.lastRun,
-      loop.elapsedSeconds,
+      echoes.sample(state.runs, loop.elapsedSeconds),
     )
     state.publishPuzzle(
       puzzle.current.platePlayer,

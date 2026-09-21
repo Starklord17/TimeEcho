@@ -20,7 +20,7 @@ type GameState = {
     plateEcho: boolean,
     doorOpen: boolean,
   ) => void
-  lastRun: RecordedRun | null
+  runs: readonly RecordedRun[]
   saveRun: (run: RecordedRun) => void
   cycle: number
   remainingSeconds: number
@@ -47,7 +47,7 @@ function freshSession(currentLevel: LevelId, sessionId: number) {
     plateEcho: false,
     doorOpen: false,
     completed: false,
-    lastRun: null,
+    runs: [],
     cycle: 1,
     remainingSeconds: levelMetadata(currentLevel).duration,
     restartRequested: false,
@@ -101,8 +101,13 @@ export const useGameStore = create<GameState>((set) => ({
     )
       set({ platePlayer, plateEcho, doorOpen })
   },
-  lastRun: null,
-  saveRun: (lastRun) => set({ lastRun }),
+  runs: [],
+  saveRun: (run) =>
+    set((state) => ({
+      runs: [...state.runs, run].slice(
+        -levelMetadata(state.currentLevel).echoLimit,
+      ),
+    })),
   cycle: 1,
   remainingSeconds: LEVELS[0].duration,
   restartRequested: false,

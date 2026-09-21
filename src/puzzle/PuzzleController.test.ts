@@ -1,3 +1,4 @@
+import { update } from './replayTestUtils'
 import { afterEach, beforeAll, expect, it } from 'vitest'
 import RAPIER from '@dimforge/rapier3d-compat'
 import { PuzzleController, PLATE } from './PuzzleController'
@@ -52,7 +53,7 @@ function setup() {
     time = 0,
   ) => {
     for (let i = 0; i < steps; i++) {
-      puzzle.update(body.translation(), run, time + i / 60)
+      update(puzzle, body.translation(), run, time + i / 60)
       controller.step(body, collider, right, forward, 0)
       world.step()
     }
@@ -72,25 +73,25 @@ it('opens for either actor, supports both and clears occupancy on reset', () => 
   const { puzzle } = setup()
   const plate = { x: -4, y: 0.91, z: 2 },
     spawn = { x: 0, y: 0.92, z: 4 }
-  puzzle.update(plate, null, 0)
+  update(puzzle, plate, null, 0)
   expect([puzzle.platePlayer, puzzle.plateEcho, puzzle.doorOpen]).toEqual([
     true,
     false,
     true,
   ])
-  puzzle.update(plate, plateRun(), 10)
+  update(puzzle, plate, plateRun(), 10)
   expect([puzzle.platePlayer, puzzle.plateEcho, puzzle.doorOpen]).toEqual([
     true,
     true,
     true,
   ])
-  puzzle.update(spawn, plateRun(), 10)
+  update(puzzle, spawn, plateRun(), 10)
   expect([puzzle.platePlayer, puzzle.plateEcho, puzzle.doorOpen]).toEqual([
     false,
     true,
     true,
   ])
-  puzzle.update(spawn, null, 0)
+  update(puzzle, spawn, null, 0)
   expect(puzzle.doorOpen).toBe(false)
 })
 it('a closed door blocks the real character controller', () => {
@@ -103,7 +104,7 @@ it('solves two cycles using the recorded player on the plate and an echo opening
   const { move, body, controller, world, puzzle } = setup()
   move(-1, 0, 68)
   move(0, 1, 34)
-  puzzle.update(body.translation(), null, 0)
+  update(puzzle, body.translation(), null, 0)
   expect(puzzle.platePlayer).toBe(true)
   const recorder = new Recorder()
   recorder.begin(
@@ -123,20 +124,20 @@ it('solves two cycles using the recorded player on the plate and an echo opening
 })
 it('keeps an occupied doorway open until the player clears it', () => {
   const { puzzle } = setup()
-  puzzle.update({ x: 0, y: 0.91, z: 4 }, plateRun(), 0)
-  puzzle.update({ x: 0, y: 0.91, z: -3 }, null, 0)
+  update(puzzle, { x: 0, y: 0.91, z: 4 }, plateRun(), 0)
+  update(puzzle, { x: 0, y: 0.91, z: -3 }, null, 0)
   expect(puzzle.doorOpen).toBe(true)
-  puzzle.update({ x: 0, y: 0.91, z: -4 }, null, 0)
+  update(puzzle, { x: 0, y: 0.91, z: -4 }, null, 0)
   expect(puzzle.doorOpen).toBe(false)
 })
 
 it('animates the door progressively and resets its physical pose', () => {
   const { puzzle, move, body } = setup()
   const spawn = { x: 0, y: 0.92, z: 4 }
-  puzzle.update(spawn, plateRun(), 0)
+  update(puzzle, spawn, plateRun(), 0)
   expect(puzzle.doorLift).toBeGreaterThan(0)
   expect(puzzle.doorLift).toBeLessThan(3.8)
-  for (let i = 0; i < 24; i++) puzzle.update(spawn, plateRun(), 0)
+  for (let i = 0; i < 24; i++) update(puzzle, spawn, plateRun(), 0)
   expect(puzzle.doorLift).toBe(3.8)
   puzzle.reset()
   expect(puzzle.doorLift).toBe(0)
@@ -148,9 +149,9 @@ it('animates the door progressively and resets its physical pose', () => {
 it('reopens when the player enters a doorway during closing', () => {
   const { puzzle } = setup()
   const spawn = { x: 0, y: 0.91, z: 4 }
-  for (let i = 0; i < 25; i++) puzzle.update(spawn, plateRun(), 0)
-  puzzle.update(spawn, null, 0)
+  for (let i = 0; i < 25; i++) update(puzzle, spawn, plateRun(), 0)
+  update(puzzle, spawn, null, 0)
   expect(puzzle.doorOpen).toBe(false)
-  puzzle.update({ x: 0, y: 0.91, z: -3 }, null, 0)
+  update(puzzle, { x: 0, y: 0.91, z: -3 }, null, 0)
   expect(puzzle.doorOpen).toBe(true)
 })
