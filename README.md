@@ -64,6 +64,11 @@ Empty Room and Split Signal retain one recording; Convergence retains the latest
 two in FIFO order. Recordings keep the JSON v1 format and are sampled at 60 Hz.
 Each Echo has independent animation and materials, driven by a shared playback clock.
 
+The interface loads before the asynchronous 3D scene. Three.js and Rapier are
+separate cacheable chunks. This reduces the code needed to display the interface;
+the complete game still downloads both engines. `pnpm build:check` checks the
+production import graph and JavaScript size budgets.
+
 ## Validation
 
 ```sh
@@ -79,5 +84,6 @@ pnpm preview
 
 Editable sources, export scripts, runtime destinations, and asset contracts are
 documented in [assets/blender/README.md](assets/blender/README.md). The Echo uses a
-GLB model with a procedural fallback. The door remains procedural until its final
-Blender asset is created and enabled.
+GLB model with a procedural fallback. Rooms, doors and pressure plates also load
+Blender GLBs asynchronously and retain procedural visuals if loading or validation
+fails. Collision geometry remains defined independently in the application.
