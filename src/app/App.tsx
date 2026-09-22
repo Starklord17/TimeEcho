@@ -1,6 +1,10 @@
-import { Component, type ReactNode } from 'react'
-import { Game } from '../game/Game'
+import { Component, lazy, Suspense, type ReactNode } from 'react'
 import { GameOverlay } from '../ui/GameOverlay'
+
+// Show the interface while the WebGL scene and physics dependencies load.
+const Game = lazy(() =>
+  import('../game/Game').then(({ Game }) => ({ default: Game })),
+)
 
 class GameErrorBoundary extends Component<
   { children: ReactNode },
@@ -26,7 +30,9 @@ class GameErrorBoundary extends Component<
 export function App() {
   return (
     <GameErrorBoundary>
-      <Game />
+      <Suspense fallback={<div className="game-viewport" aria-hidden="true" />}>
+        <Game />
+      </Suspense>
       <GameOverlay />
     </GameErrorBoundary>
   )

@@ -21,9 +21,16 @@ the spectral head. A small rig provides in-place `Idle` and `Walk` clips; record
 movement and gaze remain controlled by the runtime. See the asset contract before
 editing or exporting animated geometry.
 
-## Door — model pending
+## Environment and door sources
 
-The game currently uses the procedural door.
+`build_environment.py` builds `environment-kit.blend`, `door.blend` and local
+review scenes from `environment-layout.json`. It verifies the door travel and
+mesh budgets without exporting production GLBs. See
+[ENVIRONMENT_SPEC.md](ENVIRONMENT_SPEC.md) for hierarchy, units and validation.
+
+`export_environment.py` exports the generated room scenes, door and plate to
+`public/models/environment/`. Run the builder before the exporter on a fresh
+checkout. Runtime loads only the current room and keeps procedural fallbacks.
 `assets/test-fixtures/door-contract.glb` is only a test fixture. Follow this
 contract when creating the production model:
 
@@ -35,14 +42,15 @@ contract when creating the production model:
 - Keep the frame outside the 2.4 × 3.6 metre opening. Use 0.12 metre profiles and
   0.4 metre depth. Only the panel moves, from y=0 to y=3.8 at runtime.
 - The Blender front faces −Y and exports toward Three.js +Z, facing the spawn.
-  Runtime places the root at `[0, 0, -3]`. This differs from Echo orientation.
+  Runtime places the root at each level's door location (z=−3 or z=−6).
+  This differs from Echo orientation.
 - Use the material names `M_Door_Panel`, `M_Door_Frame`, and `M_Door_Light`.
   Target no more than 5,000 triangles and no textures for the first version.
 - Save the source as `assets/blender/door.blend`. Export the root and descendants
   as a +Y-up GLB with materials, normals, and modifiers, without animations,
   cameras, punctual lights, or Draco compression. The runtime destination is
   `public/models/environment/door.glb`.
-- Change `mode` to `glb` in `src/puzzle/doorAsset.ts`, then reload. Contract or
+- The door uses `glb` mode in `src/puzzle/doorAsset.ts`. Contract or
   loading failures preserve the procedural visual; gameplay physics remain
   defined by the application.
 

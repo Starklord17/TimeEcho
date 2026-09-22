@@ -7,20 +7,8 @@ import type { PuzzleRuntime } from './PuzzleRuntime'
 import { DoorVisual } from './DoorVisual'
 import { PressurePlateVisual } from './PressurePlateVisual'
 import type { Position } from './PuzzleRuntime'
-
-function Signal({ index, active }: { index: number; active: boolean }) {
-  return (
-    <mesh
-      rotation={[0, 0, index === 0 ? Math.PI / 2 : 0]}
-      scale={active ? 1.12 : 1}
-    >
-      <ringGeometry
-        args={[0.16, 0.23, index === 0 ? 3 : index === 1 ? 32 : 4]}
-      />
-      <meshBasicMaterial color={active ? '#d9fbff' : '#727d83'} />
-    </mesh>
-  )
-}
+import { useEnvironmentReady } from '../levels/environmentContext'
+import { PuzzleSignal } from './PuzzleSignal'
 
 interface StationRuntime extends PuzzleRuntime {
   plates: { player: boolean; echo: boolean }[]
@@ -47,6 +35,7 @@ export function StationPuzzle({
   const chargeBar = useRef<Mesh>(null)
   const [signals, setSignals] = useState(0)
   const previous = useRef(0)
+  const environment = useEnvironmentReady()
   useEffect(() => {
     const puzzle = new createController(world, rapier)
     controller.current = puzzle
@@ -87,28 +76,19 @@ export function StationPuzzle({
               position={position}
               player={player}
               echo={echo}
+              index={index}
             />
-            <group
-              position={[position.x, 0.085, position.z]}
-              rotation={[-Math.PI / 2, 0, 0]}
-            >
-              <Signal index={index} active={player || echo} />
+            <group position={[-1.7, 2.65 - index * 0.65, door.z + 0.174]}>
+              <PuzzleSignal index={index} active={player || echo} />
             </group>
-            <group
-              position={[
-                (index - (plates.length - 1) / 2) * 0.7,
-                3.3,
-                door.z + 0.17,
-              ]}
-            >
-              <Signal index={index} active={player || echo} />
-            </group>
-            <pointLight
-              position={[position.x, 2.5, position.z]}
-              intensity={5}
-              distance={6}
-              color="#c3d5da"
-            />
+            {!environment && (
+              <pointLight
+                position={[position.x, 2.5, position.z]}
+                intensity={5}
+                distance={6}
+                color="#c3d5da"
+              />
+            )}
           </group>
         )
       })}
@@ -117,7 +97,7 @@ export function StationPuzzle({
         open={!!(signals & (1 << (plates.length * 2)))}
         position={door}
       />
-      <group position={[0, 2.9, door.z + 0.18]}>
+      <group position={[-2.8, 0.8, door.z + 0.18]}>
         <mesh>
           <boxGeometry args={[2.05, 0.12, 0.03]} />
           <meshBasicMaterial color="#222b30" />
@@ -127,20 +107,22 @@ export function StationPuzzle({
           <meshBasicMaterial color="#bcf5f1" />
         </mesh>
       </group>
-      <mesh position={[exit.x, 0.02, exit.z]}>
-        <boxGeometry args={[2, 0.04, 1.4]} />
-        <meshBasicMaterial color="#efb462" />
-      </mesh>
-      <pointLight
-        position={[0, 2, -8]}
-        color="#ffcf8a"
-        intensity={5}
-        distance={5}
-      />
-      <mesh position={[0, 2, -8.98]}>
-        <boxGeometry args={[1.8, 0.2, 0.02]} />
-        <meshBasicMaterial color="#efb462" />
-      </mesh>
+      <group visible={!environment}>
+        <mesh position={[exit.x, 0.02, exit.z]}>
+          <boxGeometry args={[2, 0.04, 1.4]} />
+          <meshBasicMaterial color="#efb462" />
+        </mesh>
+        <pointLight
+          position={[0, 2, -8]}
+          color="#ffcf8a"
+          intensity={5}
+          distance={5}
+        />
+        <mesh position={[0, 2, -8.98]}>
+          <boxGeometry args={[1.8, 0.2, 0.02]} />
+          <meshBasicMaterial color="#efb462" />
+        </mesh>
+      </group>
     </group>
   )
 }

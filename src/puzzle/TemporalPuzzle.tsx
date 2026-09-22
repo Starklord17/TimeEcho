@@ -5,6 +5,8 @@ import { Html } from '@react-three/drei'
 import { useEffect, type RefObject } from 'react'
 import { useRapier } from '@react-three/rapier'
 import { useGameStore } from '../state/gameStore'
+import { useEnvironmentReady } from '../levels/environmentContext'
+import { PuzzleSignal } from './PuzzleSignal'
 import {
   DIVIDER_BOXES,
   DOOR,
@@ -22,6 +24,7 @@ export function TemporalPuzzle({
   const open = useGameStore((state) => state.doorOpen)
   const player = useGameStore((state) => state.platePlayer)
   const echo = useGameStore((state) => state.plateEcho)
+  const environment = useEnvironmentReady()
   useEffect(() => {
     const puzzle = new PuzzleController(world, rapier)
     runtimeRef.current = puzzle
@@ -59,33 +62,38 @@ export function TemporalPuzzle({
         </div>
       </Html>
       {DIVIDER_BOXES.map((wall, index) => (
-        <mesh key={index} position={[...wall.position]}>
+        <mesh key={index} position={[...wall.position]} visible={!environment}>
           <boxGeometry args={[...wall.size]} />
           <meshStandardMaterial color="#4c5155" />
         </mesh>
       ))}
       <DoorVisual runtimeRef={runtimeRef} open={open} />
       <PressurePlateVisual player={player} echo={echo} />
-      <mesh position={[EXIT.x, 0.02, EXIT.z]}>
-        <boxGeometry args={[2, 0.04, 1.4]} />
-        <meshBasicMaterial color="#efb462" />
-      </mesh>
-      <pointLight
-        position={[EXIT.x, 1.5, EXIT.z]}
-        color="#ffcf8a"
-        intensity={2}
-        distance={4}
-      />
-      {[-1.05, 1.05].map((x) => (
-        <mesh key={x} position={[x, 1, -6.95]}>
-          <boxGeometry args={[0.045, 2, 0.04]} />
+      <group position={[-1.7, 2.65, DOOR.z + 0.174]}>
+        <PuzzleSignal active={player || echo} />
+      </group>
+      <group visible={!environment}>
+        <mesh position={[EXIT.x, 0.02, EXIT.z]}>
+          <boxGeometry args={[2, 0.04, 1.4]} />
           <meshBasicMaterial color="#efb462" />
         </mesh>
-      ))}
-      <mesh position={[EXIT.x, 2, -6.98]}>
-        <boxGeometry args={[1.8, 0.25, 0.02]} />
-        <meshBasicMaterial color="#efb462" />
-      </mesh>
+        <pointLight
+          position={[EXIT.x, 1.5, EXIT.z]}
+          color="#ffcf8a"
+          intensity={2}
+          distance={4}
+        />
+        {[-1.05, 1.05].map((x) => (
+          <mesh key={x} position={[x, 1, -6.95]}>
+            <boxGeometry args={[0.045, 2, 0.04]} />
+            <meshBasicMaterial color="#efb462" />
+          </mesh>
+        ))}
+        <mesh position={[EXIT.x, 2, -6.98]}>
+          <boxGeometry args={[1.8, 0.25, 0.02]} />
+          <meshBasicMaterial color="#efb462" />
+        </mesh>
+      </group>
     </group>
   )
 }
