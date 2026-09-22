@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "kit": {
+    "Floor": {
+      "triangles": 88,
+      "manifold": true
+    },
+    "Wall": {
+      "triangles": 220,
+      "manifold": true
+    },
+    "Door": {
+      "triangles": 296,
+      "manifold": true
+    },
+    "Plate": {
+      "triangles": 176,
+      "manifold": true
+    },
+    "Exit": {
+      "triangles": 176,
+      "manifold": true
+    },
+    "Light": {
+      "triangles": 88,
+      "manifold": true
+    },
+    "Triangle": {
+      "triangles": 24,
+      "manifold": true
+    },
+    "Circle": {
+      "triangles": 256,
+      "manifold": true
+    },
+    "Square": {
+      "triangles": 32,
+      "manifold": true
+    }
+  },
+  "levels": [
+    {
+      "id": "empty-room",
+      "environmentTriangles": 7540,
+      "estimatedMaterialDraws": 15,
+      "panelSweepSamples": 121,
+      "panelIntersections": [],
+      "gateBoolean": true,
+      "ceilingSlotBoolean": true,
+      "manifold": true,
+      "ceilingFixtureCount": 7,
+      "fixtureSupportAndWallClearance": true,
+      "runtimeMeasured": false
+    },
+    {
+      "id": "split-signal",
+      "environmentTriangles": 12432,
+      "estimatedMaterialDraws": 21,
+      "panelSweepSamples": 121,
+      "panelIntersections": [],
+      "gateBoolean": true,
+      "ceilingSlotBoolean": true,
+      "manifold": true,
+      "ceilingFixtureCount": 8,
+      "fixtureSupportAndWallClearance": true,
+      "runtimeMeasured": false
+    },
+    {
+      "id": "convergence",
+      "environmentTriangles": 12716,
+      "estimatedMaterialDraws": 27,
+      "panelSweepSamples": 121,
+      "panelIntersections": [],
+      "gateBoolean": true,
+      "ceilingSlotBoolean": true,
+      "manifold": true,
+      "ceilingFixtureCount": 8,
+      "fixtureSupportAndWallClearance": true,
+      "runtimeMeasured": false
+    }
+  ]
+}

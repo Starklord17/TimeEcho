@@ -2,7 +2,7 @@ import { Box3, Mesh, Object3D, Quaternion, Vector3 } from 'three'
 
 // Opt in only after exporting the manual Blender asset. No request in procedural mode.
 export const DOOR_ASSET: { mode: 'procedural' | 'glb'; url: string } = {
-  mode: 'procedural',
+  mode: 'glb',
   url: `${import.meta.env.BASE_URL}models/environment/door.glb`,
 }
 

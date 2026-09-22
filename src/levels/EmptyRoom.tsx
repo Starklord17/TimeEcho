@@ -1,16 +1,19 @@
-import { RigidBody } from '@react-three/rapier'
+import { CuboidCollider, RigidBody } from '@react-three/rapier'
 import { ROOM_BOXES, SPAWN } from './room'
+import { useEnvironmentReady } from './environmentContext'
 
 export function EmptyRoom() {
+  const environment = useEnvironmentReady()
   return (
-    <group>
+    <group visible={!environment}>
       {ROOM_BOXES.map(({ position, size }, index) => (
         <RigidBody
           key={index}
           type="fixed"
-          colliders="cuboid"
+          colliders={false}
           position={position}
         >
+          <CuboidCollider args={[size[0] / 2, size[1] / 2, size[2] / 2]} />
           <mesh>
             <boxGeometry args={size} />
             <meshStandardMaterial
