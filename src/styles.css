@@ -367,3 +367,32 @@ button.secondary-action {
   color: #e1f1e6;
   font: inherit;
 }
+.audio-settings {
+  border: 1px solid #aec9bf35;
+  margin: 18px 0 0;
+  padding: 12px 16px;
+  font-size: 12px;
+}
+.audio-settings legend {
+  color: #c4ecce;
+  padding: 0 6px;
+}
+.audio-settings label {
+  display: grid;
+  grid-template-columns: 64px 40px minmax(100px, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+.audio-settings output {
+  color: #abbeb4;
+  font-variant-numeric: tabular-nums;
+}
+.audio-settings input {
+  accent-color: #c4ecce;
+  width: 100%;
+}
+.audio-settings button {
+  padding: 7px 11px;
+  margin-top: 8px;
+}
