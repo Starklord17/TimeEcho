@@ -1,8 +1,31 @@
 import { LEVELS, levelMetadata, type LevelId } from '../levels/levelMetadata'
 import { downloadRun } from '../recording/downloadRun'
 import { useGameStore } from '../state/gameStore'
+import { useEffect } from 'react'
+import { activateAudio } from '../audio/audioBridge'
+import {
+  getAudioSettings,
+  setAudioSettings,
+  useAudioSettings,
+} from '../audio/audioSettings'
 
 export function GameOverlay() {
+  const audio = useAudioSettings()
+  useEffect(() => {
+    const toggle = (event: KeyboardEvent) => {
+      if (
+        event.code !== 'KeyM' ||
+        event.repeat ||
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLSelectElement
+      )
+        return
+      event.preventDefault()
+      setAudioSettings({ muted: !getAudioSettings().muted })
+    }
+    window.addEventListener('keydown', toggle)
+    return () => window.removeEventListener('keydown', toggle)
+  }, [])
   const currentLevel = useGameStore((s) => s.currentLevel)
   const unlockedLevels = useGameStore((s) => s.unlockedLevels)
   const level = levelMetadata(currentLevel)
@@ -31,7 +54,9 @@ export function GameOverlay() {
           TIME <span>ECHO</span>
           <span className="brand-dot" />
         </a>
-        <span className="phase">TEMPORAL LAB</span>
+        <span className="phase">
+          TEMPORAL LAB · AUDIO {audio.muted ? 'OFF' : 'ON'} · M
+        </span>
       </header>
       <div className="room-label">
         <span className="eyebrow">TEMPORAL LAB</span>
@@ -84,7 +109,11 @@ export function GameOverlay() {
             ? 'You found a way forward.'
             : 'Every cycle returns to the beginning. Not everything you do disappears. Watch what changes around you.'}
         </p>
-        <button id="enter-game" disabled={!ready || active || completed}>
+        <button
+          id="enter-game"
+          disabled={!ready || active || completed}
+          onClick={activateAudio}
+        >
           {ready ? 'Enter / continue' : 'Preparing the scene…'}
           <span aria-hidden="true">↗</span>
         </button>
@@ -96,6 +125,43 @@ export function GameOverlay() {
             Restart level
           </button>
         )}
+        <fieldset className="audio-settings">
+          <legend>Audio</legend>
+          <label>
+            Music <output>{Math.round(audio.music * 100)}%</output>
+            <input
+              aria-label="Music volume"
+              type="range"
+              min="0"
+              max="100"
+              value={Math.round(audio.music * 100)}
+              onChange={(event) =>
+                setAudioSettings({ music: Number(event.target.value) / 100 })
+              }
+            />
+          </label>
+          <label>
+            Effects <output>{Math.round(audio.effects * 100)}%</output>
+            <input
+              aria-label="Effects volume"
+              type="range"
+              min="0"
+              max="100"
+              value={Math.round(audio.effects * 100)}
+              onChange={(event) =>
+                setAudioSettings({ effects: Number(event.target.value) / 100 })
+              }
+            />
+          </label>
+          <button
+            type="button"
+            className="secondary-action"
+            aria-pressed={audio.muted}
+            onClick={() => setAudioSettings({ muted: !audio.muted })}
+          >
+            {audio.muted ? 'Unmute audio' : 'Mute audio'}
+          </button>
+        </fieldset>
         {completed && (
           <div className="level-actions">
             {nextLevel && (

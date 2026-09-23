@@ -28,6 +28,8 @@ Open the local URL printed by Vite.
 - **Mouse or arrow keys:** look around.
 - **R:** finish the current recording and start the next cycle.
 - **Escape:** pause and release the mouse.
+- **M:** mute or unmute audio. Music and effects volumes are separate controls
+  in the pause screen and persist between visits.
 - **Drag mode:** if pointer lock is unavailable, hold the primary mouse button
   and drag to look around.
 
@@ -57,6 +59,7 @@ Source code is organized by responsibility under `src/`:
 - `time-loop/`: fixed-step cycle timing and reset transitions.
 - `state/`: low-frequency UI and session state.
 - `ui/`: the HTML overlay, controls, and cycle status.
+- `audio/`: original music and effects, event detection, and Web Audio playback.
 
 Per-frame transforms stay in Three.js and Rapier instead of React state. Echoes
 have no physical colliders; puzzle controllers query sampled replay positions.
@@ -68,6 +71,9 @@ The interface loads before the asynchronous 3D scene. Three.js and Rapier are
 separate cacheable chunks. This reduces the code needed to display the interface;
 the complete game still downloads both engines. `pnpm build:check` checks the
 production import graph and JavaScript size budgets.
+Audio starts only after **Enter / continue**. Run `python3 scripts/generate-audio.py`
+to regenerate the original WAV assets; `pnpm build:check` also checks their
+per-level download budget. Audio loading errors do not prevent gameplay.
 
 ## Validation
 

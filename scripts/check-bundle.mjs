@@ -43,3 +43,26 @@ assert(
 log(
   `PASS: initial ${(initialBytes / 1000).toFixed(2)} kB; total ${(totalGzip / 1000).toFixed(2)} kB gzip`,
 )
+
+const effectNames = [
+  'plate-on',
+  'plate-off',
+  'charge',
+  'door-open',
+  'door-close',
+  'cycle',
+  'echo',
+  'victory',
+  'step-player',
+  'step-echo',
+]
+const effectsBytes = (
+  await Promise.all(effectNames.map((name) => stat(`public/audio/${name}.wav`)))
+).reduce((sum, file) => sum + file.size, 0)
+for (const level of ['empty-room', 'split-signal', 'convergence']) {
+  const base = await stat(`public/audio/${level}.wav`)
+  const tension = await stat('public/audio/tension.wav')
+  const bytes = base.size + tension.size + effectsBytes
+  assert(bytes <= 1_500_000, `${level} audio exceeds 1.5 MB: ${bytes}`)
+  log(`${level} audio requested at most: ${(bytes / 1000).toFixed(2)} kB`)
+}

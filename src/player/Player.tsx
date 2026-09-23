@@ -19,6 +19,7 @@ import { Euler, Object3D, Vector3 } from 'three'
 import { InputManager } from '../input/InputManager'
 import { SPAWN } from '../levels/room'
 import { useGameStore } from '../state/gameStore'
+import { isAudioActive, publishAudioFrame } from '../audio/audioBridge'
 import { PHYSICS_STEP, PLAYER, PlayerController } from './PlayerController'
 
 export function Player({
@@ -169,6 +170,28 @@ export function Player({
       body.current.translation(),
       camera.quaternion,
     )
+    if (puzzle.current && isAudioActive()) {
+      const state = useGameStore.getState()
+      const positions = echoes.sample(state.runs, loop.nextSampleTime)
+      const current = body.current.translation()
+      publishAudioFrame({
+        sessionId: state.sessionId,
+        cycle: loop.cycle,
+        time: loop.nextSampleTime,
+        player: { x: current.x, z: current.z },
+        echoes: positions.map((position, index) => ({
+          id: state.runs[index].cycle,
+          x: position.x,
+          z: position.z,
+        })),
+        plateCount: puzzle.current.plates
+          ? puzzle.current.plates.filter((plate) => plate.player || plate.echo)
+              .length
+          : Number(puzzle.current.platePlayer || puzzle.current.plateEcho),
+        charge: puzzle.current.charge ?? 0,
+        doorOpen: puzzle.current.doorOpen,
+      })
+    }
     if (puzzle.current?.reachedExit(body.current.translation())) {
       useGameStore.getState().completeLevel()
       input.clear()
