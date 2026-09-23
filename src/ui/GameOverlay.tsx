@@ -1,5 +1,4 @@
 import { LEVELS, levelMetadata, type LevelId } from '../levels/levelMetadata'
-import { downloadRun } from '../recording/downloadRun'
 import { useGameStore } from '../state/gameStore'
 import { useEffect } from 'react'
 import { activateAudio } from '../audio/audioBridge'
@@ -193,21 +192,6 @@ export function GameOverlay() {
         <p className="hint">
           Click to capture the mouse · Escape to release it
         </p>
-        {hasMemories && (
-          <div className="recording-summary">
-            {runs.map((run) => (
-              <div key={run.cycle}>
-                <p>
-                  Cycle {run.cycle} · {run.duration.toFixed(2)} s ·{' '}
-                  {run.frames.length} samples
-                </p>
-                <button onClick={() => downloadRun(run)}>
-                  Download cycle {run.cycle} JSON
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
         {error && <p role="alert">{error}</p>}
       </section>
       {active && (
