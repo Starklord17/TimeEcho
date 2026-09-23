@@ -274,20 +274,6 @@ kbd {
   }
 }
 
-.recording-summary {
-  border-top: 1px solid #aec9bf35;
-  margin-top: 18px;
-  padding-top: 8px;
-  font-size: 11px;
-  color: #c1cec9;
-}
-.recording-summary button {
-  margin-top: 8px;
-  padding: 10px 14px;
-  background: transparent;
-  color: #c4ecce;
-  border: 1px solid #aec9bf60;
-}
 .welcome {
   max-height: calc(100vh - 170px);
   overflow-y: auto;
