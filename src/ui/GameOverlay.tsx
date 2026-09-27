@@ -44,6 +44,9 @@ export function GameOverlay() {
   const locked = useGameStore((state) => state.locked)
   const fallback = useGameStore((state) => state.fallback)
   const active = locked || fallback
+  const platePlayer = useGameStore((state) => state.platePlayer)
+  const resetHint =
+    active && cyclePhase === 'PLAYING' && !completed && platePlayer
   const error = useGameStore((state) => state.error)
   return (
     <div className="overlay">
@@ -206,7 +209,9 @@ export function GameOverlay() {
       )}
       <footer>
         <div className="controls">
-          <span>
+          <span
+            className={`reset-control${resetHint ? ' is-highlighted' : ''}`}
+          >
             <kbd>R</kbd> Reset cycle
           </span>
           <span>
