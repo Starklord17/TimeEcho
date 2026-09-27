@@ -188,6 +188,14 @@ export function Player({
           ? puzzle.current.plates.filter((plate) => plate.player || plate.echo)
               .length
           : Number(puzzle.current.platePlayer || puzzle.current.plateEcho),
+        plates: puzzle.current.plates?.map((plate, index) => ({
+          id: String(index),
+          active: plate.player || plate.echo,
+        })),
+        doors: puzzle.current.doors?.map((door) => ({
+          id: door.id,
+          open: door.open,
+        })),
         charge: puzzle.current.charge ?? 0,
         doorOpen: puzzle.current.doorOpen,
       })

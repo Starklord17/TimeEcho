@@ -11,7 +11,11 @@ export function PuzzleSignal({
       scale={active ? 1.12 : 1}
     >
       <ringGeometry
-        args={[0.173, 0.227, index === 0 ? 3 : index === 1 ? 32 : 4]}
+        args={[
+          0.173,
+          0.227,
+          index === 0 ? 3 : index === 1 ? 32 : index === 2 ? 4 : 6,
+        ]}
       />
       <meshBasicMaterial color={active ? '#d9fbff' : '#727d83'} />
     </mesh>

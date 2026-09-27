@@ -17,7 +17,14 @@ import { DOOR_ASSET, validateDoorAsset } from './doorAsset'
 type Props = {
   runtimeRef: RefObject<PuzzleRuntime | null>
   open: boolean
+  doorId?: string
   position?: Position
+}
+
+function readLift(runtime: PuzzleRuntime | null, id?: string) {
+  return id
+    ? (runtime?.doors?.find((door) => door.id === id)?.lift ?? 0)
+    : (runtime?.doorLift ?? 0)
 }
 
 class AssetBoundary extends Component<
@@ -39,11 +46,11 @@ class AssetBoundary extends Component<
   }
 }
 
-function ProceduralDoor({ runtimeRef, open, position = DOOR }: Props) {
+function ProceduralDoor({ runtimeRef, open, position = DOOR, doorId }: Props) {
   const panel = useRef<Group>(null)
   useFrame(() => {
     if (panel.current)
-      panel.current.position.y = runtimeRef.current?.doorLift ?? 0
+      panel.current.position.y = readLift(runtimeRef.current, doorId)
   })
   return (
     <group position={[position.x, 0, position.z]}>
@@ -85,7 +92,7 @@ function ProceduralDoor({ runtimeRef, open, position = DOOR }: Props) {
   )
 }
 
-function GltfDoor({ runtimeRef, open, position = DOOR }: Props) {
+function GltfDoor({ runtimeRef, open, position = DOOR, doorId }: Props) {
   const { scene } = useGLTF(DOOR_ASSET.url, false)
   const asset = useMemo(() => {
     const clone = scene.clone(true)
@@ -107,7 +114,7 @@ function GltfDoor({ runtimeRef, open, position = DOOR }: Props) {
   useFrame(() => {
     const current = instance.current
     if (!current) return
-    current.panel.position.y = runtimeRef.current?.doorLift ?? 0
+    current.panel.position.y = readLift(runtimeRef.current, doorId)
     for (const material of current.materials)
       if (material instanceof MeshStandardMaterial) {
         material.emissive.set(open ? '#52b2c3' : '#805219')

@@ -20,13 +20,14 @@ function disposeVisual(scene: Object3D) {
 
 /** Loading never mounts or replaces physical bodies. Each load owns its GPU resources. */
 export function useVisualAsset(
-  url: string,
+  url: string | null,
   validate: (scene: Object3D) => void,
 ) {
   const [loaded, setLoaded] = useState<{ url: string; scene: Object3D } | null>(
     null,
   )
   useEffect(() => {
+    if (url === null) return
     let disposed = false
     let owned: Object3D | null = null
     new GLTFLoader().load(

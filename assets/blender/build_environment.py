@@ -8,12 +8,18 @@ import bpy
 import bmesh
 import json
 import math
+import argparse
+import sys
+import runpy
 from pathlib import Path
 from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 
 BASE = Path(__file__).resolve().parents[2]
-OUT = BASE / 'docs/phase-9-review/form'
+parser = argparse.ArgumentParser()
+parser.add_argument('--level', choices=['empty-room', 'split-signal', 'convergence', 'reversal'])
+args = parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+OUT = BASE / ('docs/phase-11-review/form' if args.level == 'reversal' else 'docs/phase-9-review/form')
 OUT.mkdir(parents=True, exist_ok=True)
 LAYOUT = json.loads((BASE / 'assets/blender/environment-layout.json').read_text())
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -248,11 +254,18 @@ panel = next(o for o in door_root.children if o.name=='Door_Panel')
 low, high = bounds(panel)
 assert all(abs((high[i]-low[i])-v)<1e-5 for i,v in enumerate([2.4,.3,3.6]))
 assert panel.location.length == 0 and abs(low[2]) < 1e-6
-bpy.data.libraries.write(str(BASE/'assets/blender/door.blend'), {kit['Door'][0]}, fake_user=True)
-bpy.data.libraries.write(str(BASE/'assets/blender/environment-kit.blend'), {v[0] for v in kit.values()}, fake_user=True)
+if args.level == 'reversal':
+    runpy.run_path(str(BASE/'assets/blender/build_reversal.py'), init_globals=globals())
+    raise SystemExit(0)
+
+if args.level is None:
+    bpy.data.libraries.write(str(BASE/'assets/blender/door.blend'), {kit['Door'][0]}, fake_user=True)
+    bpy.data.libraries.write(str(BASE/'assets/blender/environment-kit.blend'), {v[0] for v in kit.values()}, fake_user=True)
 
 report = {'schema':1, 'stage':'form-review', 'kit':kit_metrics, 'levels':[], 'runtimeExported':False}
 for level in LAYOUT['levels']:
+    if level['id'] == 'reversal' or (args.level and level['id'] != args.level):
+        continue
     s = scene('Level_' + level['id'])
     width, height, depth = level['bounds']
     door_z = level['door']['z']
@@ -379,5 +392,10 @@ for level in LAYOUT['levels']:
     (OUT/'audit.json').write_text(json.dumps(report,indent=2))
     print('LEVEL_FORM_CHECK',json.dumps({k:v for k,v in metrics.items() if k not in ['sourceColliderBoxes','renderFiles']}))
 
-(BASE/'assets/blender/environment-metrics.json').write_text(json.dumps({'schema':1,'kit':kit_metrics,'levels':[{k:v for k,v in l.items() if k not in ['sourceColliderBoxes','renderFiles']} for l in report['levels']]},indent=2)+'\n')
+metrics_path = BASE/'assets/blender/environment-metrics.json'
+if metrics_path.exists():
+    previous = json.loads(metrics_path.read_text())
+    built_ids = {level['id'] for level in report['levels']}
+    report['levels'] = [l for l in previous['levels'] if l['id'] not in built_ids] + report['levels']
+metrics_path.write_text(json.dumps({'schema':1,'kit':kit_metrics,'levels':[{k:v for k,v in l.items() if k not in ['sourceColliderBoxes','renderFiles']} for l in report['levels']]},indent=2)+'\n')
 print('FORM REVIEW READY. GLB export intentionally not run.')

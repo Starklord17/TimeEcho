@@ -77,6 +77,20 @@
       "ceilingFixtureCount": 8,
       "fixtureSupportAndWallClearance": true,
       "runtimeMeasured": false
+    },
+    {
+      "id": "reversal",
+      "environmentTriangles": 6944,
+      "estimatedMaterialDraws": 5,
+      "panelSweepSamples": 121,
+      "doorCount": 3,
+      "panelIntersections": [],
+      "windowBooleanRayTests": 4,
+      "manifold": true,
+      "ceilingFixtureCount": 10,
+      "fixtureSupportAndWallClearance": true,
+      "glbBytes": 392184,
+      "runtimeMeasured": false
     }
   ]
 }

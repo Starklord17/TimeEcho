@@ -2,7 +2,7 @@
 
 Time Echo is a browser-based first-person temporal puzzle game. Every cycle records
 the player's movement, then replays saved runs as Echoes that can activate room
-sensors. The current build contains three connected puzzle levels and a
+sensors. The current build contains four connected puzzle levels and a
 Blender-authored Echo character. Unlocked levels can be replayed during the current session;
 reloading the page resets progress.
 
@@ -63,7 +63,7 @@ Source code is organized by responsibility under `src/`:
 
 Per-frame transforms stay in Three.js and Rapier instead of React state. Echoes
 have no physical colliders; puzzle controllers query sampled replay positions.
-Empty Room and Split Signal retain one recording; Convergence retains the latest
+Empty Room and Split Signal retain one recording; Convergence and Reversal retain the latest
 two in FIFO order. Recordings keep the JSON v1 format and are sampled at 60 Hz.
 Each Echo has independent animation and materials, driven by a shared playback clock.
 

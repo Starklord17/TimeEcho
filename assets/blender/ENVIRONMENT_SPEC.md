@@ -13,7 +13,8 @@ blender --background --python assets/blender/build_environment.py
 All dimensions are metres. `environment-layout.json` uses Three.js Y-up;
 the builder converts coordinates to Blender `(x, -z, y)`. A test compares the
 manifest's colliders, stations, exits and spawns with the gameplay definitions.
-The first room is 12 × 14 m; the other rooms are 16 × 18 m. Ceiling height is
+The first room is 12 × 14 m; Split Signal and Convergence are 16 × 18 m.
+Reversal is 12 × 32 m and centered at z=-1. Ceiling height is
 3.6 m. Colliders remain authored by the application.
 
 ## Reusable scenes
@@ -75,7 +76,40 @@ hemisphere fill. A restrained 2.5% pulse uses simulation time, freezing on pause
 and restarting with each cycle. This web lighting approximation does not use
 Blender area-light wattage directly, baked maps or external textures.
 
-The room downloads are 413,776 / 659,040 / 661,608 bytes; the shared door and
-plate are 19,732 and 12,732 bytes. Total files are 1.77 MB; a single level needs
+The room downloads are 413,776 / 659,040 / 661,608 / 392,184 bytes; the shared
+door and plate are 19,732 and 12,732 bytes. Total files are 2.16 MB; a single level needs
 at most 694,072 bytes of environment assets. These are external to the JS bundle.
 Private measurements, review captures and approval history stay under `/docs/`.
+
+## Multi-gate rooms
+
+The layout manifest can also describe a `doors` array, scheduled `windows`, and
+an explicit room `center`. Reversal uses a 12 × 32 m interior centered at z=-1,
+three gate assemblies and four 2.4 × 1 m observation apertures with sill y=1.4.
+Window colliders stay continuous; mullions identify them as viewing apertures.
+
+Build only this room with:
+
+```sh
+blender --background --python assets/blender/build_environment.py -- --level reversal
+```
+
+The selective build delegates to `build_reversal.py`, reuses the material/prop
+kit and writes an editable review scene without replacing existing sources or
+GLBs. Door, plate, symbol, charge, conduit and exit proxies are excluded from
+`Environment_Static`; these remain runtime-controlled devices. Wall facing
+projects 3 mm from the structural surface to avoid coplanar faces. Each of the
+three door sweeps is checked at 121 positions, with Boolean slots and service
+pockets. Static geometry has a 14,000-triangle limit.
+
+The exporter accepts the same `--level` selector and does not overwrite shared
+props in selective mode. Its Reversal path requires an explicit local Form
+approval record. Default builds/exports retain the three established rooms.
+
+Reversal exports 6,944 static triangles across five material primitives; its GLB
+is 392,184 bytes (424,648 bytes including the shared door and plate). Its runtime
+validator checks the 12.6 × 32.6 m outer footprint, center z=-1 and floor bottom
+y=-0.3, retaining the 14,000-triangle limit and the existing height limits. The
+other levels are checked against their own footprints. Environment loading
+hides only the procedural meshes and lights; the same rigid bodies and
+explicit cuboid colliders remain mounted.

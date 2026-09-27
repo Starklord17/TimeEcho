@@ -61,3 +61,16 @@ it('records a full 20-second level with the existing JSON v1 contract', () => {
   expect(run.frames).toHaveLength(1201)
   expect(run.sampleRate).toBe(60)
 })
+
+it('keeps JSON v1 and 2701 samples for a 45-second recording', () => {
+  const recorder = new Recorder(45)
+  recorder.begin(4, position, rotation)
+  for (let tick = 1; tick <= 2700; tick++)
+    recorder.capture(tick / 60, position, rotation)
+  expect(() => recorder.capture(45 + 1 / 60, position, rotation)).toThrow()
+  const run = recorder.finish('timeout')
+  expect(run.frames).toHaveLength(2701)
+  expect(run.duration).toBe(45)
+  expect(run.version).toBe(1)
+  expect(JSON.parse(JSON.stringify(run))).toEqual(run)
+})

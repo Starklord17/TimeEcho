@@ -34,3 +34,16 @@ it('supports a 20-second level without changing the 15-second default', () => {
   expect(longer.cycle).toBe(2)
   expect(longer.remainingSeconds).toBe(20)
 })
+
+it('ends Reversal on step 2700 and preserves the deferred reset boundary', () => {
+  const loop = new TimeLoop(45)
+  for (let tick = 1; tick < 2700; tick++) expect(loop.advance(true)).toBe(false)
+  expect(loop.remainingSeconds).toBe(1)
+  expect(loop.advance(true)).toBe(true)
+  expect(loop.cycle).toBe(1)
+  expect(loop.elapsedSeconds).toBe(45)
+  loop.restart()
+  expect(loop.remainingSeconds).toBe(45)
+  expect(loop.elapsedSeconds).toBe(0)
+  expect(loop.cycle).toBe(2)
+})
