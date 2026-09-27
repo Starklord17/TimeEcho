@@ -1,5 +1,5 @@
 import { useGameStore } from '../state/gameStore'
-import type { LevelId } from '../levels/levelMetadata'
+import { levelMusic, type LevelId } from '../levels/levelMetadata'
 import { AudioEvents, type AudioCue, type AudioFrame } from './AudioEvents'
 import { getAudioSettings, subscribeAudioSettings } from './audioSettings'
 
@@ -27,7 +27,7 @@ export class AudioEngine {
   private music: AudioBufferSourceNode[] = []
   private effects = new Set<AudioBufferSourceNode>()
   private events = new AudioEvents()
-  private lastCue = new Map<Effect, number>()
+  private lastCue = new Map<string, number>()
   private level: LevelId | null = null
   private loadToken = 0
   private loadedMusic: [AudioBuffer, AudioBuffer] | null = null
@@ -87,7 +87,10 @@ export class AudioEngine {
     const token = ++this.loadToken
     this.loadedMusic = null
     this.stopMusic()
-    const buffers = await Promise.all([this.load(level), this.load('tension')])
+    const buffers = await Promise.all([
+      this.load(levelMusic(level)),
+      this.load('tension'),
+    ])
     if (token !== this.loadToken || !buffers[0] || !buffers[1]) return
     this.loadedMusic = [buffers[0], buffers[1]]
     this.syncPlayback()
@@ -124,6 +127,7 @@ export class AudioEngine {
       this.stopEffects()
     }
     if (state.cycle !== previous.cycle) {
+      this.lastCue.clear()
       this.events.reset()
     }
     this.syncPlayback()
@@ -170,7 +174,7 @@ export class AudioEngine {
 
   update(frame: AudioFrame) {
     if (!this.active) return
-    for (const cue of this.events.update(frame)) this.play(cue)
+    for (const cue of this.events.update(frame)) this.play(cue.name, cue.source)
     const tension = frame.doorOpen
       ? 0.06
       : Math.min(0.22, frame.plateCount * 0.045 + frame.charge * 0.13)
@@ -181,12 +185,17 @@ export class AudioEngine {
     )
   }
 
-  private async play(name: AudioCue | Exclude<Effect, AudioCue>) {
+  private async play(
+    name: AudioCue | Exclude<Effect, AudioCue>,
+    sourceId = name as string,
+  ) {
     if (document.hidden || getAudioSettings().muted) return
     const epoch = this.cueEpoch
     const now = this.context.currentTime
-    if (now - (this.lastCue.get(name) ?? -10) < 0.12) return
-    this.lastCue.set(name, now)
+    const key = `${name}:${sourceId}`
+    if (name.startsWith('step-') && now - (this.lastCue.get(key) ?? -10) < 0.12)
+      return
+    this.lastCue.set(key, now)
     const buffer = await this.load(name)
     if (
       !buffer ||
@@ -227,6 +236,7 @@ export class AudioEngine {
 
   private stopEffects() {
     this.cueEpoch++
+    this.lastCue.clear()
     for (const source of this.effects) source.stop()
     this.effects.clear()
   }

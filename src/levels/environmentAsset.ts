@@ -1,6 +1,17 @@
 import { Box3, Mesh, Vector3, type Object3D } from 'three'
+import type { LevelId } from './levelMetadata'
 
-export function validateEnvironmentAsset(scene: Object3D) {
+const ROOM_BOUNDS: Record<
+  LevelId,
+  { width: number; depth: number; centerZ: number }
+> = {
+  'empty-room': { width: 12.6, depth: 14.6, centerZ: 0 },
+  'split-signal': { width: 16.6, depth: 18.6, centerZ: 0 },
+  convergence: { width: 16.6, depth: 18.6, centerZ: 0 },
+  reversal: { width: 12.6, depth: 32.6, centerZ: -1 },
+}
+
+export function validateEnvironmentAsset(scene: Object3D, levelId?: LevelId) {
   const root = scene.getObjectByName('Environment_Static')
   if (!root) throw new Error('Environment GLB: missing static geometry')
   let triangles = 0
@@ -12,14 +23,20 @@ export function validateEnvironmentAsset(scene: Object3D) {
     if (node.type === 'SkinnedMesh' || node.type.endsWith('Light'))
       throw new Error('Environment GLB: static meshes only')
   })
-  const size = new Box3().setFromObject(root).getSize(new Vector3())
+  const bounds = new Box3().setFromObject(root)
+  const size = bounds.getSize(new Vector3())
+  const expected = levelId ? ROOM_BOUNDS[levelId] : undefined
+  const horizontalBoundsValid = expected
+    ? Math.abs(size.x - expected.width) < 0.02 &&
+      Math.abs(size.z - expected.depth) < 0.02 &&
+      Math.abs((bounds.min.x + bounds.max.x) / 2) < 0.01 &&
+      Math.abs((bounds.min.z + bounds.max.z) / 2 - expected.centerZ) < 0.01
+    : size.x >= 12 && size.x <= 17 && size.z >= 14 && size.z <= 19
   if (
     triangles === 0 ||
     triangles > 14000 ||
-    size.x < 12 ||
-    size.x > 17 ||
-    size.z < 14 ||
-    size.z > 19 ||
+    !horizontalBoundsValid ||
+    (expected && Math.abs(bounds.min.y + 0.3) > 0.02) ||
     size.y < 7 ||
     size.y > 8
   )

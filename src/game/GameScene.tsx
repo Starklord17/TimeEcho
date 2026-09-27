@@ -1,7 +1,7 @@
 import { levelDefinition } from '../levels/levelRegistry'
 import type { LevelId } from '../levels/levelMetadata'
 import type { PuzzleRuntime } from '../puzzle/PuzzleRuntime'
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { TimeLoop } from '../time-loop/TimeLoop'
 import { Echo } from '../echo/Echo'
 import { Physics } from '@react-three/rapier'
@@ -16,9 +16,16 @@ export function GameScene({ levelId }: { levelId: LevelId }) {
   const level = levelDefinition(levelId)
   const [loop] = useState(() => new TimeLoop(level.duration))
   const puzzle = useRef<PuzzleRuntime | null>(null)
+  const validateEnvironment = useCallback(
+    (scene: Parameters<typeof validateEnvironmentAsset>[0]) =>
+      validateEnvironmentAsset(scene, levelId),
+    [levelId],
+  )
   const environment = useVisualAsset(
-    `${import.meta.env.BASE_URL}models/environment/${levelId}.glb`,
-    validateEnvironmentAsset,
+    level.environment === 'glb'
+      ? `${import.meta.env.BASE_URL}models/environment/${levelId}.glb`
+      : null,
+    validateEnvironment,
   )
   return (
     <EnvironmentContext value={!!environment}>

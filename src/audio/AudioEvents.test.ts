@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { AudioEvents, type AudioFrame } from './AudioEvents'
 
+function namedEvents() {
+  const events = new AudioEvents()
+  return {
+    update: (frame: AudioFrame) =>
+      events.update(frame).map((event) => event.name),
+  }
+}
+
 const initial: AudioFrame = {
   sessionId: 1,
   cycle: 1,
@@ -14,7 +22,7 @@ const initial: AudioFrame = {
 
 describe('audio cues from simulation', () => {
   it('emits plate, charge and door changes once, then rebaselines on reset', () => {
-    const events = new AudioEvents()
+    const events = namedEvents()
     expect(events.update(initial)).toEqual([])
     expect(
       events.update({ ...initial, time: 1 / 60, plateCount: 1, charge: 0.2 }),
@@ -44,7 +52,7 @@ describe('audio cues from simulation', () => {
   })
 
   it('uses actual travel for steps, including Echo, and ignores pauses and teleports', () => {
-    const events = new AudioEvents()
+    const events = namedEvents()
     events.update({
       ...initial,
       echoes: [{ id: 1, x: 0, z: 0 }],
@@ -87,4 +95,36 @@ describe('audio cues from simulation', () => {
       }),
     ).toEqual([])
   })
+})
+
+it('tracks individual devices even when total occupancy stays equal', () => {
+  const events = new AudioEvents()
+  const plates = [
+    { id: 'a', active: true },
+    { id: 'b', active: false },
+  ]
+  const doors = [
+    { id: 'one', open: false },
+    { id: 'two', open: false },
+  ]
+  events.update({ ...initial, plates, doors, plateCount: 1 })
+  const changed = {
+    ...initial,
+    time: 1 / 60,
+    plateCount: 1,
+    plates: [
+      { id: 'a', active: false },
+      { id: 'b', active: true },
+    ],
+    doors: doors.map((door) => ({ ...door, open: true })),
+  }
+  expect(events.update(changed)).toEqual([
+    { name: 'plate-off', source: 'plate:a' },
+    { name: 'plate-on', source: 'plate:b' },
+    { name: 'door-open', source: 'door:one' },
+    { name: 'door-open', source: 'door:two' },
+  ])
+  expect(events.update({ ...changed, time: 2 / 60 })).toEqual([])
+  events.reset()
+  expect(events.update(changed)).toEqual([])
 })

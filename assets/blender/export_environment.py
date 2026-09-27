@@ -5,10 +5,19 @@ The source scenes remain editable; only selected mesh hierarchies are exported.
 """
 import bpy
 import json
+import argparse
+import sys
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[2]
 OUT = BASE / 'public/models/environment'
+parser = argparse.ArgumentParser()
+parser.add_argument('--level', choices=['empty-room', 'split-signal', 'convergence', 'reversal'])
+args = parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+if args.level == 'reversal':
+    review = BASE/'docs/phase-11-review/art/milestone-reviews.json'
+    if not review.exists() or json.loads(review.read_text())['form']['status'] != 'approved':
+        raise SystemExit('Reversal requires explicit Form approval before export.')
 OUT.mkdir(parents=True, exist_ok=True)
 
 
@@ -29,11 +38,13 @@ def export(scene_name, names, target):
         export_extras=False, export_apply=True)
 
 
-bpy.ops.wm.open_mainfile(filepath=str(BASE/'assets/blender/door.blend'))
-export('Asset_Door', ['Door_Root'], 'door.glb')
-bpy.ops.wm.open_mainfile(filepath=str(BASE/'assets/blender/environment-kit.blend'))
-export('Asset_Plate', ['Plate_Root'], 'plate.glb')
-for level in ['empty-room', 'split-signal', 'convergence']:
-    bpy.ops.wm.open_mainfile(filepath=str(BASE/f'docs/phase-9-review/form/{level}.blend'))
+if args.level is None:
+    bpy.ops.wm.open_mainfile(filepath=str(BASE/'assets/blender/door.blend'))
+    export('Asset_Door', ['Door_Root'], 'door.glb')
+    bpy.ops.wm.open_mainfile(filepath=str(BASE/'assets/blender/environment-kit.blend'))
+    export('Asset_Plate', ['Plate_Root'], 'plate.glb')
+for level in ([args.level] if args.level else ['empty-room', 'split-signal', 'convergence']):
+    phase = 'phase-11-review' if level == 'reversal' else 'phase-9-review'
+    bpy.ops.wm.open_mainfile(filepath=str(BASE/f'docs/{phase}/form/{level}.blend'))
     export('Level_'+level, ['Environment_Static'], level+'.glb')
 print(json.dumps({p.name:p.stat().st_size for p in OUT.glob('*.glb')}, indent=2))

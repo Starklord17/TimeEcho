@@ -71,7 +71,7 @@ it('unlocks levels in order and clears transient state without losing session pr
   useGameStore.getState().resetSession()
 })
 
-it('keeps the two newest memories in FIFO order only in Convergence, and clears them on level changes', () => {
+it('keeps the two newest memories in FIFO order in Convergence, and clears them on level changes', () => {
   useGameStore.setState({
     currentLevel: 'convergence',
     unlockedLevels: ['empty-room', 'split-signal', 'convergence'],
@@ -92,7 +92,7 @@ it('keeps the two newest memories in FIFO order only in Convergence, and clears 
   expect(useGameStore.getState().runs).toEqual([second, third])
   expect(useGameStore.getState().runs[0]).toBe(second)
   useGameStore.getState().completeLevel()
-  expect(useGameStore.getState().unlockedLevels).toHaveLength(3)
+  expect(useGameStore.getState().unlockedLevels).toHaveLength(4)
   useGameStore.getState().resetSession()
   expect(useGameStore.getState().runs).toEqual([])
   expect(useGameStore.getState().remainingSeconds).toBe(20)
@@ -105,4 +105,45 @@ it('keeps the two newest memories in FIFO order only in Convergence, and clears 
   }
   useGameStore.setState({ unlockedLevels: ['empty-room'] })
   useGameStore.getState().resetSession()
+})
+
+it('unlocks Reversal after Convergence and resets its two memories on Replay', () => {
+  const store = useGameStore.getState
+  useGameStore.setState({
+    currentLevel: 'convergence',
+    unlockedLevels: ['empty-room', 'split-signal', 'convergence'],
+  })
+  store().resetSession()
+  store().selectLevel('reversal')
+  expect(store().currentLevel).toBe('convergence')
+  store().completeLevel()
+  expect(store().unlockedLevels).toEqual([
+    'empty-room',
+    'split-signal',
+    'convergence',
+    'reversal',
+  ])
+  store().selectLevel('reversal')
+  expect(store().remainingSeconds).toBe(45)
+  for (let cycle = 1; cycle <= 3; cycle++) {
+    const r = new Recorder(45)
+    r.begin(cycle, { x: 0, y: 0.92, z: 13 }, { x: 0, y: 0, z: 0, w: 1 })
+    store().saveRun(r.finish('restart'))
+  }
+  expect(store().runs.map((run) => run.cycle)).toEqual([2, 3])
+  store().completeLevel()
+  expect(store().unlockedLevels).toHaveLength(4)
+  store().selectLevel('reversal')
+  expect(store().runs).toEqual([])
+  expect(store().cycle).toBe(1)
+  expect(store().remainingSeconds).toBe(45)
+  expect(
+    store().completed ||
+      store().ready ||
+      store().locked ||
+      store().fallback ||
+      store().doorOpen,
+  ).toBe(false)
+  store().selectLevel('empty-room')
+  useGameStore.setState({ unlockedLevels: ['empty-room'] })
 })

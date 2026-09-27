@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-import { Mesh } from 'three'
+import { Mesh, Raycaster, Vector3, DoubleSide } from 'three'
+import { LEVELS } from './levelMetadata'
 import { validateEnvironmentAsset, preparePlateAsset } from './environmentAsset'
 import { validateDoorAsset } from '../puzzle/doorAsset'
 
@@ -13,10 +14,10 @@ async function load(name: string) {
   )
 }
 describe('production environment GLBs', () => {
-  for (const level of ['empty-room', 'split-signal', 'convergence']) {
+  for (const { id: level } of LEVELS) {
     it(`${level} contains static geometry only, with bounded dimensions`, async () => {
       const gltf = await load(level)
-      validateEnvironmentAsset(gltf.scene)
+      validateEnvironmentAsset(gltf.scene, level)
       expect(gltf.animations).toHaveLength(0)
       expect(gltf.scenes).toHaveLength(1)
       expect(gltf.scene.children).toHaveLength(1)
@@ -26,9 +27,45 @@ describe('production environment GLBs', () => {
           expect(node.geometry.attributes.position.count).toBeGreaterThan(0)
       })
       gltf.scene.getObjectByName('Environment_Static')!.scale.setScalar(100)
-      expect(() => validateEnvironmentAsset(gltf.scene)).toThrow('bounds')
+      expect(() => validateEnvironmentAsset(gltf.scene, level)).toThrow(
+        'bounds',
+      )
     })
   }
+  it('rejects a displaced Reversal and a room validated for the wrong level', async () => {
+    const { scene } = await load('reversal')
+    expect(() => validateEnvironmentAsset(scene, 'convergence')).toThrow(
+      'bounds',
+    )
+    const root = scene.getObjectByName('Environment_Static')!
+    root.position.z += 1
+    expect(() => validateEnvironmentAsset(scene, 'reversal')).toThrow('bounds')
+  })
+  it('preserves Reversal gate and window apertures in the exported geometry', async () => {
+    const { scene } = await load('reversal')
+    scene.traverse((node) => {
+      if (node instanceof Mesh) {
+        for (const material of Array.isArray(node.material)
+          ? node.material
+          : [node.material])
+          material.side = DoubleSide
+      }
+    })
+    scene.updateMatrixWorld(true)
+    const ray = new Raycaster()
+    for (const z of [6, -2, -10]) {
+      ray.set(new Vector3(0, 1.8, z + 0.5), new Vector3(0, 0, -1))
+      ray.far = 1
+      expect(ray.intersectObject(scene, true)).toHaveLength(0)
+    }
+    for (const z of [6, -2])
+      for (const x of [-3.2, 3.2]) {
+        ray.set(new Vector3(x, 1.9, z + 0.5), new Vector3(0, 0, -1))
+        expect(ray.intersectObject(scene, true)).toHaveLength(0)
+        ray.set(new Vector3(x, 0.8, z + 0.5), new Vector3(0, 0, -1))
+        expect(ray.intersectObject(scene, true).length).toBeGreaterThan(0)
+      }
+  })
   it('loads the production door with the existing movement contract', async () => {
     const gltf = await load('door')
     validateDoorAsset(gltf.scene)

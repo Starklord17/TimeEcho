@@ -59,8 +59,9 @@ const effectNames = [
 const effectsBytes = (
   await Promise.all(effectNames.map((name) => stat(`public/audio/${name}.wav`)))
 ).reduce((sum, file) => sum + file.size, 0)
-for (const level of ['empty-room', 'split-signal', 'convergence']) {
-  const base = await stat(`public/audio/${level}.wav`)
+for (const level of ['empty-room', 'split-signal', 'convergence', 'reversal']) {
+  const track = level === 'reversal' ? 'convergence' : level
+  const base = await stat(`public/audio/${track}.wav`)
   const tension = await stat('public/audio/tension.wav')
   const bytes = base.size + tension.size + effectsBytes
   assert(bytes <= 1_500_000, `${level} audio exceeds 1.5 MB: ${bytes}`)

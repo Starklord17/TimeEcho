@@ -31,6 +31,10 @@ mesh budgets without exporting production GLBs. See
 `export_environment.py` exports the generated room scenes, door and plate to
 `public/models/environment/`. Run the builder before the exporter on a fresh
 checkout. Runtime loads only the current room and keeps procedural fallbacks.
+Both environment scripts accept `-- --level <level-id>` to operate on one room
+without replacing shared assets. Reversal uses the multi-gate adapter described
+in the environment contract.
+
 `assets/test-fixtures/door-contract.glb` is only a test fixture. Follow this
 contract when creating the production model:
 
@@ -42,7 +46,7 @@ contract when creating the production model:
 - Keep the frame outside the 2.4 × 3.6 metre opening. Use 0.12 metre profiles and
   0.4 metre depth. Only the panel moves, from y=0 to y=3.8 at runtime.
 - The Blender front faces −Y and exports toward Three.js +Z, facing the spawn.
-  Runtime places the root at each level's door location (z=−3 or z=−6).
+  Runtime places the root at each controller-defined door location.
   This differs from Echo orientation.
 - Use the material names `M_Door_Panel`, `M_Door_Frame`, and `M_Door_Light`.
   Target no more than 5,000 triangles and no textures for the first version.
