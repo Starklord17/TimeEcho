@@ -1,6 +1,68 @@
-import { expect, it } from 'vitest'
+import { beforeEach, expect, it } from 'vitest'
+import { LEVELS } from '../levels/levelMetadata'
 import { useGameStore } from './gameStore'
 import { Recorder } from '../recording/Recorder'
+
+beforeEach(() => {
+  useGameStore.setState(useGameStore.getInitialState(), true)
+})
+
+it('starts in progression and rejects locked levels', () => {
+  const state = useGameStore.getState()
+  expect(state.levelAccessMode).toBe('progression')
+  state.selectLevel('reversal')
+  expect(useGameStore.getState()).toBe(state)
+})
+
+it('allows every level in free mode without unlocking progression', () => {
+  const store = useGameStore.getState
+  store().setLevelAccessMode('free')
+  for (const level of LEVELS) {
+    store().selectLevel(level.id)
+    expect(store().currentLevel).toBe(level.id)
+    expect(store().remainingSeconds).toBe(level.duration)
+    store().completeLevel()
+    expect(store().completed).toBe(true)
+    expect(store().unlockedLevels).toEqual(['empty-room'])
+    store().resetSession()
+    expect(store().levelAccessMode).toBe('free')
+    expect(store().completed).toBe(false)
+  }
+})
+
+it('returns from a locked demo to the most advanced unlocked level with a fresh session', () => {
+  const store = useGameStore.getState
+  useGameStore.setState({ unlockedLevels: ['split-signal', 'empty-room'] })
+  store().setLevelAccessMode('free')
+  store().selectLevel('reversal')
+  const recorder = new Recorder(45)
+  recorder.begin(2, { x: 0, y: 1, z: 0 }, { x: 0, y: 0, z: 0, w: 1 })
+  store().saveRun(recorder.finish('restart'))
+  store().completeLevel()
+  useGameStore.setState({ cycle: 2, ready: true, error: 'demo error' })
+  const sessionId = store().sessionId
+  store().setLevelAccessMode('progression')
+  expect(store().currentLevel).toBe('split-signal')
+  expect(store().sessionId).toBe(sessionId + 1)
+  expect(store().remainingSeconds).toBe(20)
+  expect(store().runs).toEqual([])
+  expect(store().cycle).toBe(1)
+  expect(store().completed).toBe(false)
+  expect(store().ready).toBe(false)
+  expect(store().error).toBeNull()
+  expect(store().unlockedLevels).toEqual(['split-signal', 'empty-room'])
+})
+
+it('preserves an unlocked session when switching modes and resumes progression unlocks', () => {
+  const store = useGameStore.getState
+  store().setLevelAccessMode('free')
+  useGameStore.setState({ cycle: 3, remainingSeconds: 7, ready: true })
+  const before = store()
+  store().setLevelAccessMode('progression')
+  expect(store()).toEqual({ ...before, levelAccessMode: 'progression' })
+  store().completeLevel()
+  expect(store().unlockedLevels).toEqual(['empty-room', 'split-signal'])
+})
 
 it('starts a fresh session while preserving store actions', () => {
   const recorder = new Recorder()

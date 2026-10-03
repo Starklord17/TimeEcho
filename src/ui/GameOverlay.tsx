@@ -27,6 +27,8 @@ export function GameOverlay() {
   }, [])
   const currentLevel = useGameStore((s) => s.currentLevel)
   const unlockedLevels = useGameStore((s) => s.unlockedLevels)
+  const levelAccessMode = useGameStore((s) => s.levelAccessMode)
+  const freeAccess = levelAccessMode === 'free'
   const level = levelMetadata(currentLevel)
   const nextLevel =
     LEVELS[LEVELS.findIndex((entry) => entry.id === currentLevel) + 1]
@@ -166,15 +168,39 @@ export function GameOverlay() {
         </fieldset>
         {completed && (
           <div className="level-actions">
-            {nextLevel && (
-              <button onClick={() => selectLevel(nextLevel.id)}>
-                Next level
-              </button>
-            )}
+            {nextLevel &&
+              (freeAccess || unlockedLevels.includes(nextLevel.id)) && (
+                <button onClick={() => selectLevel(nextLevel.id)}>
+                  Next level
+                </button>
+              )}
             <button onClick={() => selectLevel(currentLevel)}>Replay</button>
           </div>
         )}
-        {unlockedLevels.length > 1 && (
+        <label className="level-access-switch">
+          <span>
+            <input
+              type="checkbox"
+              role="switch"
+              checked={freeAccess}
+              aria-describedby="level-access-description"
+              onChange={(event) =>
+                useGameStore
+                  .getState()
+                  .setLevelAccessMode(
+                    event.target.checked ? 'free' : 'progression',
+                  )
+              }
+            />{' '}
+            Free level access
+          </span>
+          <small id="level-access-description">
+            {freeAccess
+              ? 'Choose any level for a demo. Progression stays unchanged.'
+              : 'Complete each level to unlock the next.'}
+          </small>
+        </label>
+        {(freeAccess || unlockedLevels.length > 1) && (
           <label className="level-selector">
             Level{' '}
             <select
@@ -182,13 +208,13 @@ export function GameOverlay() {
               value={currentLevel}
               onChange={(event) => selectLevel(event.target.value as LevelId)}
             >
-              {LEVELS.filter((entry) => unlockedLevels.includes(entry.id)).map(
-                (entry) => (
-                  <option key={entry.id} value={entry.id}>
-                    {entry.name}
-                  </option>
-                ),
-              )}
+              {LEVELS.filter(
+                (entry) => freeAccess || unlockedLevels.includes(entry.id),
+              ).map((entry) => (
+                <option key={entry.id} value={entry.id}>
+                  {entry.name}
+                </option>
+              ))}
             </select>
           </label>
         )}

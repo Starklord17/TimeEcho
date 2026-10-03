@@ -381,6 +381,18 @@ button.secondary-action {
   flex-wrap: wrap;
   gap: 12px;
 }
+.level-access-switch {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+}
+.level-access-switch small {
+  opacity: 0.7;
+}
+.level-access-switch input {
+  accent-color: var(--accent, #b8ffd8);
+}
 .level-selector {
   display: block;
   margin-top: 18px;

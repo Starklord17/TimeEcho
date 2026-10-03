@@ -5,6 +5,8 @@ import { create } from 'zustand'
 type GameState = {
   currentLevel: LevelId
   unlockedLevels: LevelId[]
+  levelAccessMode: 'progression' | 'free'
+  setLevelAccessMode: (mode: GameState['levelAccessMode']) => void
   selectLevel: (id: LevelId) => void
   cyclePhase: 'PLAYING' | 'CYCLE_ENDING' | 'RESETTING'
   setCyclePhase: (phase: GameState['cyclePhase']) => void
@@ -67,9 +69,26 @@ export const useGameStore = create<GameState>((set) => ({
   sessionId: 0,
   currentLevel: 'empty-room',
   unlockedLevels: ['empty-room'],
+  levelAccessMode: 'progression',
+  setLevelAccessMode: (levelAccessMode) =>
+    set((state) => {
+      if (
+        levelAccessMode === 'progression' &&
+        !state.unlockedLevels.includes(state.currentLevel)
+      ) {
+        const latest = [...LEVELS]
+          .reverse()
+          .find((level) => state.unlockedLevels.includes(level.id))!
+        return {
+          ...freshSession(latest.id, state.sessionId + 1),
+          levelAccessMode,
+        }
+      }
+      return { levelAccessMode }
+    }),
   selectLevel: (id) => {
     const state = useGameStore.getState()
-    if (state.unlockedLevels.includes(id))
+    if (state.levelAccessMode === 'free' || state.unlockedLevels.includes(id))
       set(freshSession(id, state.sessionId + 1))
   },
   resetSession: () =>
@@ -87,7 +106,9 @@ export const useGameStore = create<GameState>((set) => ({
         fallback: false,
         locked: false,
         unlockedLevels:
-          next && !state.unlockedLevels.includes(next.id)
+          state.levelAccessMode === 'progression' &&
+          next &&
+          !state.unlockedLevels.includes(next.id)
             ? [...state.unlockedLevels, next.id]
             : state.unlockedLevels,
       }
