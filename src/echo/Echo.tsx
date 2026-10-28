@@ -1,3 +1,4 @@
+import { levelMetadata } from '../levels/levelMetadata'
 import { EchoVisual } from './EchoVisual'
 import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
@@ -11,6 +12,8 @@ import type { RefObject } from 'react'
 import type { EchoAnimator } from './EchoAnimator'
 
 export function Echo({ loop }: { loop: TimeLoop }) {
+  const currentLevel = useGameStore((state) => state.currentLevel)
+  const limit = levelMetadata(currentLevel).echoLimit
   const runs = useGameStore((state) => state.runs)
   const [clock] = useState(() => new PlaybackClock())
   const time = useRef(0)
@@ -30,7 +33,7 @@ export function Echo({ loop }: { loop: TimeLoop }) {
       key={run.cycle}
       run={run}
       time={time}
-      intensity={runs.length === 2 && index === 0 ? 0.55 : 1}
+      intensity={runs.length === limit && index === 0 ? 0.55 : 1}
     />
   ))
 }

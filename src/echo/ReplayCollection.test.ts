@@ -27,9 +27,13 @@ it('samples both memories at one clock time, holds partial endpoints, pauses and
   expect(sampler.sample(runs, 1).map((p) => p.z)).toEqual([-1, -1])
   expect(sampler.sample([], 0)).toEqual([])
 })
-it('keeps independent positions in FIFO order and never exposes more than two actors', () => {
+it('keeps independent positions in FIFO order and samples every supplied actor', () => {
   const sampler = new ReplayCollection()
   const result = sampler.sample([run(1, 1), run(2, 1), run(3, 1)], 0.5)
-  expect(result.map((p) => p.x)).toEqual([2, 3])
+  expect(result.map((p) => p.x)).toEqual([1, 2, 3])
   expect(result[0]).not.toBe(result[1])
+  expect(new Set(result).size).toBe(3)
+  const positions = [...result]
+  const again = sampler.sample([run(1, 1), run(2, 1), run(3, 1)], 0.75)
+  again.forEach((position, index) => expect(position).toBe(positions[index]))
 })
