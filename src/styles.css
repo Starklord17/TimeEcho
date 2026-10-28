@@ -400,12 +400,23 @@ button.secondary-action {
 }
 .level-selector select {
   margin-left: 8px;
-  padding: 8px 12px;
+  padding: 8px 36px 8px 12px;
+  appearance: none;
   border: 1px solid #aec9bf60;
   border-radius: 4px;
-  background: #152228;
+  background: #152228
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='m2.5 4.5 3.5 3.5 3.5-3.5' stroke='%23e1f1e6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat right 12px center;
   color: #e1f1e6;
   font: inherit;
+}
+
+@media (forced-colors: active) {
+  .level-selector select {
+    appearance: auto;
+    background: Canvas;
+    color: CanvasText;
+  }
 }
 .audio-settings {
   border: 1px solid #aec9bf35;
