@@ -1,3 +1,5 @@
+import { RelayRoom } from './RelayRoom'
+import { RelayPuzzle } from '../puzzle/RelayPuzzle'
 import { ReversalRoom } from './ReversalRoom'
 import { ReversalPuzzle } from '../puzzle/ReversalPuzzle'
 import { ConvergenceRoom } from './ConvergenceRoom'
@@ -9,6 +11,7 @@ import { SplitSignalPuzzle } from '../puzzle/SplitSignalPuzzle'
 import { levelMetadata, type LevelId } from './levelMetadata'
 
 const components = {
+  relay: { Room: RelayRoom, Puzzle: RelayPuzzle },
   'empty-room': { Room: EmptyRoom, Puzzle: TemporalPuzzle },
   'split-signal': { Room: SplitSignalRoom, Puzzle: SplitSignalPuzzle },
   convergence: { Room: ConvergenceRoom, Puzzle: ConvergencePuzzle },

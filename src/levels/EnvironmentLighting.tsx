@@ -23,7 +23,9 @@ export function EnvironmentLighting({
   })
   return (
     <>
-      <hemisphereLight args={['#c5d8e2', '#263239', 1.25]} />
+      <hemisphereLight
+        args={['#c5d8e2', '#263239', levelId === 'relay' ? 2.4 : 1.25]}
+      />
       {fixtures.map((fixture, index) => (
         <pointLight
           key={fixture.id}

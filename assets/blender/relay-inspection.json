@@ -1,0 +1,2727 @@
+{
+  "blender": "4.5.9 LTS",
+  "scene": "Level_relay",
+  "triangles": 6456,
+  "objects": [
+    {
+      "name": "CeilingRib",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingRib.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingRib.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.012",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.013",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.014",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.015",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.016",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.017",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.018",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.019",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.020",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.021",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.022",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.023",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.024",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.025",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.026",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.027",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.028",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.029",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.030",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.031",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.032",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.033",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.034",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.035",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.036",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.037",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.038",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.039",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.040",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.041",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.042",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.043",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.044",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.045",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.046",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.047",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.048",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.049",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.050",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.051",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.052",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.053",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.054",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.055",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.056",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.057",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.058",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.059",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.060",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.061",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.062",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.063",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.064",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.065",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.066",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.067",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.068",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.069",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.070",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.071",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.072",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.073",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.074",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.075",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.076",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.077",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.078",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.079",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.080",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.081",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.082",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.083",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.084",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.085",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.086",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.087",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.088",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.089",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.090",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.091",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.092",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.093",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.094",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.095",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.096",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.097",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.098",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.099",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.100",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.101",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.102",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.103",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.104",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.105",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.106",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.107",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.108",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.109",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.110",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.111",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.112",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.113",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.114",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.115",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.116",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.117",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.118",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.119",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.120",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.121",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.122",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.123",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.124",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.125",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.126",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.127",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.128",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.129",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.130",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.131",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.132",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.133",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.134",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.135",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.136",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.137",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.138",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.139",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.140",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.141",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.142",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.143",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.144",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.145",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.146",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.147",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.148",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.149",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.150",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.151",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.152",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.153",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.154",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "CeilingTile.155",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.012",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.013",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.014",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.015",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.016",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.017",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.018",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "EndPanel.019",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ExitFacing",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ExitFacing.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ExitReveal",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ExitReveal.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ExitThreshold",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureDiffuser",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureDiffuser.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureDiffuser.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureDiffuser.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureDiffuser.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureDiffuser.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureHousing",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureHousing.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureHousing.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureHousing.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureHousing.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureHousing.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FixtureSupport.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.012",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.013",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.014",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.015",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.016",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.017",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.018",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.019",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.020",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.021",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.022",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.023",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.024",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.025",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.026",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.027",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.028",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.029",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.030",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.031",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.032",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.033",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.034",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.035",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.036",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.037",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.038",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.039",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.040",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.041",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.042",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.043",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.044",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.045",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.046",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.047",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.048",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.049",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.050",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.051",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.052",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.053",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.054",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.055",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.056",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.057",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.058",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.059",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.060",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.061",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.062",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.063",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.064",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.065",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.066",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.067",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.068",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.069",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.070",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.071",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.072",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.073",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.074",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.075",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.076",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.077",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.078",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.079",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.080",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.081",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.082",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.083",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.084",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.085",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.086",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.087",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.088",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.089",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.090",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.091",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.092",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.093",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.094",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.095",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.096",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.097",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.098",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.099",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.100",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.101",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.102",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.103",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.104",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.105",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.106",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.107",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.108",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.109",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.110",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.111",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.112",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.113",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.114",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.115",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.116",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.117",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.118",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.119",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.120",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.121",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.122",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.123",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.124",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.125",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.126",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.127",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.128",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.129",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.130",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.131",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.132",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.133",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.134",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.135",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.136",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.137",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.138",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.139",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.140",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.141",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.142",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.143",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.144",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.145",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.146",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.147",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.148",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.149",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.150",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.151",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.152",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.153",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.154",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.155",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.156",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.157",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.158",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "FloorTile.159",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Pocket",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Pocket.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "PocketCap",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "RelayRoute",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "RelayRoute.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "RelayRoute.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "RelayRoute.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "SectorBand",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "SectorBand.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "SectorBand.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "SectorBand.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServiceIndicator.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServicePanel",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServicePanel.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServicePanel.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "ServicePanel.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.012",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.013",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.014",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.015",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.016",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.017",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.018",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.019",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.020",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.021",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.022",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.023",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.024",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.025",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.026",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.027",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.028",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.029",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.030",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "StationBorder.031",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Structure_0",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Structure_1",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Structure_2",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Structure_3",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Structure_4",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Structure_5",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "Structure_6",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.012",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.013",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.014",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.015",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.016",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.017",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.018",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.019",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.020",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.021",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.022",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.023",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.024",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.025",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.026",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.027",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.028",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.029",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.030",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallCrown.031",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.012",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.013",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.014",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.015",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.016",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.017",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.018",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.019",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.020",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.021",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.022",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.023",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.024",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.025",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.026",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.027",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.028",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.029",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.030",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallFoot.031",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.007",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.008",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.009",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.010",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.011",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.012",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.013",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.014",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.015",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.016",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.017",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.018",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.019",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.020",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.021",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.022",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.023",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.024",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.025",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.026",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.027",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.028",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.029",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.030",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallPanel.031",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent.001",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent.002",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent.003",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent.004",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent.005",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent.006",
+      "vertices": 8,
+      "modifiers": 0
+    },
+    {
+      "name": "WallVent.007",
+      "vertices": 8,
+      "modifiers": 0
+    }
+  ],
+  "materials": {
+    "recess": [
+      "BSDF_PRINCIPLED",
+      "OUTPUT_MATERIAL"
+    ],
+    "structure": [
+      "BSDF_PRINCIPLED",
+      "OUTPUT_MATERIAL"
+    ],
+    "floor": [
+      "BSDF_PRINCIPLED",
+      "OUTPUT_MATERIAL"
+    ],
+    "ceramic": [
+      "BSDF_PRINCIPLED",
+      "OUTPUT_MATERIAL"
+    ],
+    "cyan": [
+      "BSDF_PRINCIPLED",
+      "OUTPUT_MATERIAL"
+    ],
+    "amber": [
+      "BSDF_PRINCIPLED",
+      "OUTPUT_MATERIAL"
+    ],
+    "diffuser": [
+      "BSDF_PRINCIPLED",
+      "OUTPUT_MATERIAL"
+    ]
+  }
+}

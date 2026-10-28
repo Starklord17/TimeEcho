@@ -59,8 +59,15 @@ const effectNames = [
 const effectsBytes = (
   await Promise.all(effectNames.map((name) => stat(`public/audio/${name}.wav`)))
 ).reduce((sum, file) => sum + file.size, 0)
-for (const level of ['empty-room', 'split-signal', 'convergence', 'reversal']) {
-  const track = level === 'reversal' ? 'convergence' : level
+for (const level of [
+  'empty-room',
+  'split-signal',
+  'convergence',
+  'reversal',
+  'relay',
+]) {
+  const track =
+    level === 'reversal' || level === 'relay' ? 'convergence' : level
   const base = await stat(`public/audio/${track}.wav`)
   const tension = await stat('public/audio/tension.wav')
   const bytes = base.size + tension.size + effectsBytes

@@ -436,3 +436,18 @@ button.secondary-action {
   padding: 7px 11px;
   margin-top: 8px;
 }
+
+.relay-label,
+.relay-sign {
+  display: block;
+  color: #d9fbff;
+  background: #18262ee8;
+  border: 1px solid #8eaeb9;
+  padding: 6px 10px;
+  white-space: nowrap;
+  text-align: center;
+  font: 12px monospace;
+}
+.relay-sign strong {
+  font-size: 18px;
+}

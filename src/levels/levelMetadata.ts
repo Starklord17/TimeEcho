@@ -31,6 +31,14 @@ export const LEVELS = [
     environment: 'glb',
     spawn: [0, 0.92, 13],
   },
+  {
+    id: 'relay',
+    name: 'Relay',
+    duration: 60,
+    echoLimit: 3,
+    environment: 'glb',
+    spawn: [0, 0.92, 13],
+  },
 ] as const
 export type LevelId = (typeof LEVELS)[number]['id']
 export function levelMetadata(id: LevelId) {
@@ -38,5 +46,5 @@ export function levelMetadata(id: LevelId) {
 }
 
 export function levelMusic(id: LevelId) {
-  return id === 'reversal' ? 'convergence' : id
+  return id === 'reversal' || id === 'relay' ? 'convergence' : id
 }
