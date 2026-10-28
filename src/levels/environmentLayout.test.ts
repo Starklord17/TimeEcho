@@ -1,3 +1,9 @@
+import {
+  RELAY_BOXES,
+  RELAY_PLATES,
+  RELAY_DOOR,
+  RELAY_EXIT,
+} from './relayLayout'
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { LEVELS } from './levelMetadata'
@@ -49,6 +55,12 @@ const layouts = [
     plates: REVERSAL_PLATES,
     doors: REVERSAL_DOORS,
     exit: REVERSAL_EXIT,
+  },
+  {
+    boxes: RELAY_BOXES,
+    plates: RELAY_PLATES,
+    door: RELAY_DOOR,
+    exit: RELAY_EXIT,
   },
 ]
 

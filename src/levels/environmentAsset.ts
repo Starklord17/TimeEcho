@@ -8,6 +8,7 @@ const ROOM_BOUNDS: Record<
   'empty-room': { width: 12.6, depth: 14.6, centerZ: 0 },
   'split-signal': { width: 16.6, depth: 18.6, centerZ: 0 },
   convergence: { width: 16.6, depth: 18.6, centerZ: 0 },
+  relay: { width: 20.6, depth: 32.6, centerZ: 0 },
   reversal: { width: 12.6, depth: 32.6, centerZ: -1 },
 }
 

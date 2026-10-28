@@ -194,7 +194,7 @@ it('unlocks Reversal after Convergence and resets its two memories on Replay', (
   }
   expect(store().runs.map((run) => run.cycle)).toEqual([2, 3])
   store().completeLevel()
-  expect(store().unlockedLevels).toHaveLength(4)
+  expect(store().unlockedLevels).toContain('relay')
   store().selectLevel('reversal')
   expect(store().runs).toEqual([])
   expect(store().cycle).toBe(1)
@@ -208,4 +208,23 @@ it('unlocks Reversal after Convergence and resets its two memories on Replay', (
   ).toBe(false)
   store().selectLevel('empty-room')
   useGameStore.setState({ unlockedLevels: ['empty-room'] })
+})
+
+it('keeps three Relay memories, discards the oldest and clears on Replay', () => {
+  const store = useGameStore.getState
+  store().setLevelAccessMode('free')
+  store().selectLevel('relay')
+  for (let cycle = 1; cycle <= 4; cycle++) {
+    const r = new Recorder(60)
+    r.begin(cycle, { x: 0, y: 0.92, z: 13 }, { x: 0, y: 0, z: 0, w: 1 })
+    store().saveRun(r.finish('restart'))
+  }
+  expect(store().runs.map((r) => r.cycle)).toEqual([2, 3, 4])
+  store().completeLevel()
+  expect(store().unlockedLevels).toEqual(['empty-room'])
+  store().resetSession()
+  expect(store().runs).toEqual([])
+  expect(store().remainingSeconds).toBe(60)
+  store().setLevelAccessMode('progression')
+  expect(store().currentLevel).toBe('empty-room')
 })
